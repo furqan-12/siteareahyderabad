@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Placeholder Image Generator</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .placeholder { margin: 20px 0; }
+        canvas { border: 1px solid #ccc; }
+        button { padding: 10px 20px; margin: 5px; background: #007bff; color: white; border: none; cursor: pointer; }
+        button:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <h1>Placeholder Image Generator</h1>
+    <p>Click the buttons below to generate placeholder images for your website:</p>
+    
+    <div class="placeholder">
+        <h3>Logo (48x48)</h3>
+        <canvas id="logo" width="48" height="48"></canvas>
+        <button onclick="downloadCanvas('logo', 'logo.png')">Download Logo</button>
+    </div>
+    
+    <div class="placeholder">
+        <h3>SSSS Logo (210x210)</h3>
+        <canvas id="ssss-logo" width="210" height="210"></canvas>
+        <button onclick="downloadCanvas('ssss-logo', 'ssss-logo.png')">Download SSSS Logo</button>
+    </div>
+    
+    <div class="placeholder">
+        <h3>Person Images (80x80)</h3>
+        <canvas id="person1" width="80" height="80"></canvas>
+        <button onclick="downloadCanvas('person1', 'person1.jpg')">Download Person 1</button>
+        <canvas id="person2" width="80" height="80"></canvas>
+        <button onclick="downloadCanvas('person2', 'person2.jpg')">Download Person 2</button>
+        <canvas id="person3" width="80" height="80"></canvas>
+        <button onclick="downloadCanvas('person3', 'person3.jpg')">Download Person 3</button>
+        <canvas id="person4" width="80" height="80"></canvas>
+        <button onclick="downloadCanvas('person4', 'person4.jpg')">Download Person 4</button>
+    </div>
+    
+    <div class="placeholder">
+        <h3>Event Images (350x220)</h3>
+        <canvas id="event1" width="350" height="220"></canvas>
+        <button onclick="downloadCanvas('event1', 'event1.jpg')">Download Event 1</button>
+        <canvas id="event2" width="350" height="220"></canvas>
+        <button onclick="downloadCanvas('event2', 'event2.jpg')">Download Event 2</button>
+        <canvas id="event3" width="350" height="220"></canvas>
+        <button onclick="downloadCanvas('event3', 'event3.jpg')">Download Event 3</button>
+    </div>
+
+    <script>
+        // Generate all placeholder images
+        function generatePlaceholder(canvasId, text, bgColor = '#2e7d32', textColor = '#fff') {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            
+            // Fill background
+            ctx.fillStyle = bgColor;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Add text
+            ctx.fillStyle = textColor;
+            ctx.font = `${Math.max(12, canvas.width / 10)}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+        }
+        
+        // Download canvas as image
+        function downloadCanvas(canvasId, filename) {
+            const canvas = document.getElementById(canvasId);
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+        
+        // Generate all placeholders when page loads
+        window.onload = function() {
+            generatePlaceholder('logo', 'SITE', '#2e7d32', '#fff');
+            generatePlaceholder('ssss-logo', 'SSSS\nSCMC', '#2e7d32', '#fff');
+            generatePlaceholder('person1', 'Ali Raza', '#2e7d32', '#fff');
+            generatePlaceholder('person2', 'Fatima Khan', '#2e7d32', '#fff');
+            generatePlaceholder('person3', 'Usman Tariq', '#2e7d32', '#fff');
+            generatePlaceholder('person4', 'Rabia Noor', '#2e7d32', '#fff');
+            generatePlaceholder('event1', 'EOBI\nHELPDESK', '#2e7d32', '#fff');
+            generatePlaceholder('event2', 'WOMEN\nEMPOWERMENT', '#2e7d32', '#fff');
+            generatePlaceholder('event3', 'K-ELECTRIC\nMEETING', '#2e7d32', '#fff');
+        };
+    </script>
+</body>
+</html> 

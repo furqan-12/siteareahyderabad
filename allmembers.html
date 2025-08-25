@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Members - S.I.T.E Association</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      background: linear-gradient(120deg, #f8f9fa 60%, #e6f0fa 100%);
+    }
+    .members-section {
+      padding: 2.5rem 2rem;
+      background: transparent;
+      border-radius: 0;
+      box-shadow: none;
+      margin: 2rem 0 0 0;
+     
+      max-width: 100vw;
+    }
+    .members-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2.5rem 2rem;
+      margin-top: 2.5rem;
+      width: 100%;
+    }
+    .person-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(53,130,50,0.10), 0 1.5px 6px rgba(53,130,50,0.06);
+      padding: 2.2rem 1.2rem 1.5rem 1.2rem;
+      text-align: center;
+      position: relative;
+      transition: box-shadow 0.22s, transform 0.22s;
+      border-top: 5px solid rgb(53, 130, 50);
+      overflow: hidden;
+      margin-top: 1rem;
+    }
+    .person-card:hover {
+      box-shadow: 0 8px 32px rgba(53,130,50,0.18), 0 2px 12px rgba(53,130,50,0.10);
+      transform: translateY(-6px) scale(1.04);
+      border-top: 5px solid rgb(177, 145, 79);
+    }
+    .person-card .person-img {
+      margin-bottom: 1.1rem;
+      border-radius: 12px;
+      border: 3px solid #e6f0fa;
+      box-shadow: 0 2px 8px rgba(53,130,50,0.08);
+      width: 150px;
+      height: 200px;
+      object-fit: cover;
+      transition: transform 0.22s, box-shadow 0.22s;
+    }
+    /* .person-card:hover .person-img {
+      transform: scale(1.08) rotate(-2deg);
+      box-shadow: 0 6px 24px rgba(53,130,50,0.18);
+      border-color: rgb(177, 145, 79);
+    } */
+    .person-card h4 {
+      margin: 0.5rem 0 0.2rem 0;
+      color: rgb(53, 130, 50);
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      background: #e6f0fa;
+      padding: 0.4rem 0;
+      border-radius: 6px;
+      box-shadow: 0 1px 4px rgba(53,130,50,0.04);
+      margin-bottom: 0.5rem;
+    }
+    .person-card .divider {
+      width: 40px;
+      height: 3px;
+      background: rgb(177, 145, 79);
+      border-radius: 2px;
+      margin: 0.5rem auto 1rem auto;
+    }
+    .person-card p {
+      color: #333;
+      font-size: 1.05rem;
+      margin-bottom: 0.3rem;
+    }
+    .members-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 cards per row */
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .person-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+
+  .person-img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 10px;
+  }
+
+  @media screen and (max-width: 768px) {
+    .members-grid {
+      grid-template-columns: repeat(2, 1fr); /* tablet view */
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    .members-grid {
+      grid-template-columns: 1fr; /* mobile view */
+    }
+  }
+    @media (max-width: 1200px) {
+      .members-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 900px) {
+      .members-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .members-grid { grid-template-columns: 1fr; }
+      .person-card .person-img { width: 100px; height: 130px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="navbar-brand">
+        <div class="logo-img">
+          <img src="assests/SITE Official Logo.JPG" alt=SITE Association of Industry">
+        </div>
+        <div class="logo-text">HYDERABAD SITE ASSOCIATION <br> OF TRADE AND INDUSTRY</div>
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="circulars.html">Circulars</a></li>
+        <li class="dropdown">
+          <a href="members.html">Committee Members</a>
+          <div class="dropdown-content">
+            <a href="members.html">Current Members</a>
+            <a href="pastExecutivecommittee.html">Executive Committee Members</a>
+            <a href="allmembers.html">All Members</a>
+
+          </div>
+        </li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="clean-green.html">Clean & Green S.I.T.E</a></li>
+        <li class="dropdown">
+          <a href="#downloads">Downloads</a>
+          <div class="dropdown-content">
+            <a href="membershipForm.html">Membership Form</a>
+          </div>
+        </li>
+        <li class="dropdown">
+          <a href="about.html">About Us</a>
+          <div class="dropdown-content" >
+            <a href="about.html">about us</a>
+            <a href="messages.html">our vision</a>
+          </div>
+        </li>
+        <li><a href="maps.html">Infrastructure</a></li>
+        <li><a href="members.html#contact-section">Contact Us</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <section class="members-section">
+      <h2 style="text-align:center; color:rgb(53, 130, 50); font-size:2.2rem;">Our Committee Members</h2>
+      <div class="members-grid mt-5" id="memberTable">
+        <!-- Cards will be injected here -->
+      </div>
+    </section>
+  </main>
+  <div class="pre-footer-row" id="contact-section">
+    <div class="pre-footer-col col-md-6">
+      <div class="mb-5">
+        <div class="contact-info">
+          <p><strong>Head Office:</strong> Plot # C/41, Mirpurkhas Road, Near Railway Crossing, SITE Area,
+            Hyderabad, Sindh.</p>
+            <p>
+              <strong>
+                <svg width="18" height="18" viewBox="0 0 24 24" style="vertical-align:middle;margin-right:4px;">
+                  <path d="M2 4h20v16H2z" fill="none" stroke="currentColor" stroke-width="2" />
+                  <polyline points="2,4 12,13 22,4" fill="none" stroke="currentColor" stroke-width="2" />
+                </svg>
+                : ali.raza@example.com
+              </strong>
+            </p>
+
+            <p>
+              <svg width="18" height="18" viewBox="0 0 24 24" style="vertical-align:middle;margin-right:4px;" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.11-.21 11.36 11.36 0 003.54.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.36 11.36 0 00.57 3.54 1 1 0 01-.21 1.11z"
+                  fill="none" stroke="currentColor" stroke-width="2" />
+              </svg>
+              : +92334-4544474
+            </p>
+          <p><strong></strong>  022-383504 - 3882001</p>
+        </div>
+        <div class="social-icons mt-5">
+            <!-- Facebook -->
+            <a href="https://www.facebook.com/share/16XmGEcoN5/" aria-label="Facebook" target="_blank"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M17 2.1h-3.2C10.1 2.1 9 3.2 9 5.1V7H7v3h2v9h4v-9h2.6l.4-3H13V5.5c0-.4.1-.5.5-.5H17V2.1z" fill="rgb(53,130,50)"/></svg></a>
+            <!-- Twitter -->
+            <a href="#" aria-label="Twitter" target="_blank"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M22 5.9c-.8.4-1.6.7-2.5.8.9-.5 1.6-1.4 2-2.3-.8.5-1.7.9-2.6 1.1C17.9 4.6 17 4 16 4c-2 0-3.4 1.8-2.9 3.7C9.1 7.6 6.2 6.2 4.2 4.1c-.6 1-.3 2.3.7 3-.7 0-1.3-.2-1.8-.5 0 1.5 1 2.8 2.5 3.1-.4.1-.8.2-1.2.1.3 1 1.3 1.7 2.4 1.7C5.6 13.1 4.1 13.7 2.5 13.7c-.4 0-.7 0-1.1-.1C3 15 5 15.7 7.2 15.7c5.2 0 8-4.3 8-8v-.4c.6-.4 1.2-1 1.6-1.6z" fill="rgb(53,130,50)"/></svg></a>
+            <!-- LinkedIn -->
+            <a href="#" aria-label="LinkedIn" target="_blank"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M6.9 19H3.7V8.5h3.2V19zM5.3 7.2c-1 0-1.7-.7-1.7-1.6 0-.9.7-1.6 1.7-1.6s1.7.7 1.7 1.6c0 .9-.7 1.6-1.7 1.6zM20.3 19h-3.2v-5.2c0-1.2-.4-2-1.4-2-.8 0-1.2.5-1.4 1-.1.2-.1.5-.1.8V19h-3.2s.1-9.2 0-10.5h3.2v1.5c.4-.7 1.1-1.7 2.8-1.7 2 0 3.5 1.3 3.5 4.1V19z" fill="rgb(53,130,50)"/></svg></a>
+            <!-- YouTube -->
+            <a href="#" aria-label="YouTube" target="_blank"><svg width="32" height="28" viewBox="0 0 32 24" fill="none"><rect width="32" height="24" rx="5" fill="rgb(53,130,50)"/><polygon points="13,8 22,12 13,16" fill="#fff"/></svg></a>
+          </div>
+      </div>
+    </div>
+    <div class="pre-footer-col col-md-6">
+      <h3>Contact Us</h3>
+      <form class="pre-footer-contact-form">
+        <div class="pre-footer-form-row">
+          <div class="pre-footer-form-group">
+            <label for="pre-footer-first-name">First Name</label>
+            <input id="pre-footer-first-name" type="text" placeholder="First Name" required>
+          </div>
+          <div class="pre-footer-form-group">
+            <label for="pre-footer-last-name">Last Name</label>
+            <input id="pre-footer-last-name" type="text" placeholder="Last Name" required>
+          </div>
+        </div>
+        <label for="pre-footer-email">Email</label>
+        <input id="pre-footer-email" type="email" placeholder="Email" required>
+        <label for="pre-footer-message">Message</label>
+        <textarea id="pre-footer-message" placeholder="Message" required></textarea>
+        <button type="submit">Send</button>
+      </form>
+    </div>
+  </div>
+  <footer>
+    <div class="footer-content">
+      <p>Copyright © 2025 All rights reserved.</p>
+      <p>Designed & Developed by Digital Hyperlink (PVT) LTD.</p>
+    </div>
+  </footer>
+  <script>
+   document.addEventListener("DOMContentLoaded", () => {
+  fetch("http://localhost:3000/get-all-members")
+    .then(response => response.json())
+    .then(data => {
+      const grid = document.getElementById("memberTable");
+
+      if (!data.message || !Array.isArray(data.message) || data.message.length === 0) {
+        grid.innerHTML = "<p>No members found.</p>";
+        return;
+      }
+
+      data.message.forEach(member => {
+        const card = document.createElement("div");
+        card.className = "person-card";
+        // Show member image if available, else show default avatar
+        card.innerHTML = `
+          <img src="${member.file_url || 'assests/avatar.png'}" alt="${member.name}" class="person-img" />
+          <h4>${member.name}</h4>
+          <div class="divider"></div>
+          <p><strong>Designation:</strong> ${member.designation}</p>
+          <p><strong>Email:</strong> ${member.email}</p>
+          <p><strong>Phone:</strong> ${member.phoneno}</p>
+          <p><strong>Address:</strong> ${member.companyaddress}</p>
+        `;
+        grid.appendChild(card);
+      });
+    })
+    .catch(err => {
+      console.error("Error fetching members:", err);
+      document.getElementById("memberTable").innerHTML =
+        "<p style='color:red;'>Failed to load members. Please try again later.</p>";
+    });
+});
+
+  </script>
+  
+</body>
+</html> 

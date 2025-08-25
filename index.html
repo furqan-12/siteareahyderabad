@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SITE Association of Industry</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+      #management-row-top, #management-row-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+  a.see-more:hover {
+    font-size: 19px;
+  }
+
+    @media (max-width: 992px) {
+    #management-row-top, #management-row-bottom {
+      flex-direction: column;
+      align-items: center;
+    }
+    .management-col.person-card {
+      max-width: 95vw;
+      min-width: 220px;
+      margin: 12px 0;
+    }
+  }
+  @media (max-width: 600px) {
+    .management-col.person-card {
+      max-width: 100vw;
+      min-width: 180px;
+      padding: 10px;
+      font-size: 0.95rem;
+    }
+    #management-row-top, #management-row-bottom {
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+  }
+  </style>
+</head>
+<body>
+  <header>
+    <!-- <div class="top-bar">
+      <span>NEED HELP? +9221-32560704-5 | sg@site-association.org</span>
+    </div> -->
+        <nav class="navbar">
+      <div class="navbar-brand">
+        <div class="logo-img">
+          <img src="assests/logo.png" alt="SITE Association of Industry">
+        </div>
+        <div class="logo-text">HYDERABAD SITE ASSOCIATION <br> OF TRADE AND INDUSTRY</div>
+    </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="circulars.html">Circulars</a></li>
+        <li class="dropdown">
+          <a href="members.html">Committee Members</a>
+          <div class="dropdown-content">
+            <a href="members.html">Current Members</a>
+            <a href="pastExecutivecommittee.html">Executive Committee Members</a>
+            <a href="allmembers.html">All Members</a>
+
+          </div>
+          <li><a href="events.html">Events</a></li>
+          <li><a href="clean-green.html">Clean & Green SITE</a></li>
+          <li class="dropdown">
+            <a href="#downloads">Downloads</a>
+            <div class="dropdown-content">
+              <a href="membershipForm.html">Membership Form</a>
+            </div>
+          </li>
+          
+          <li class="dropdown">
+            <a href="about.html">About Us</a>
+            <div class="dropdown-content">
+                  <a href="about.html">about us</a>
+                  <a href="messages.html">our vision</a>
+            </div>
+          </li>
+          <li><a href="maps.html">Infrastructure</a></li>
+          <li><a href="#contact-section">Contact Us</a></li>
+        </li>
+      </ul>
+    </nav>
+    <div class="slider-section">
+      <div class="slider-container">
+        <button class="slider-arrow slider-arrow-left">&#8592;</button>
+        <div class="slider-track">
+          <div class="slider-slide active">
+            <img src="assests/industryimage1.jpg" alt=SITE Industry Image 1" onload="console.log('Image 1 loaded')" onerror="console.error('Image 1 failed')">
+            <div class="slider-overlay">
+              <h1>HYDERABAD SITE ASSOCIATION OF TRADE AND INDUSTRY</h1>
+              <p>Empowering Pakistan's Industrial Growth</p>
+              <button class="slider-see-more">See More</button>
+            </div>
+          </div>
+          <div class="slider-slide">
+            <img src="assests/industryimage21.jpg" alt=SITE Industry Image 2" onload="console.log('Image 2 loaded')" onerror="console.error('Image 2 failed')">
+            <div class="slider-overlay">
+              <h1>Modern Industrial Solutions</h1>
+              <p>Advancing Technology & Innovation</p>
+              <button class="slider-see-more">See More</button>
+            </div>
+          </div>
+          <div class="slider-slide">
+            <img src="assests/industryimage2.jpg" alt=SITE Industry Image 3" onload="console.log('Image 3 loaded')" onerror="console.error('Image 3 failed')">
+            <div class="slider-overlay">
+              <h1>Empowering Growth</h1>
+              <p>Building a Stronger Industrial Future</p>
+              <button class="slider-see-more">See More</button>
+            </div>
+          </div>
+          <div class="slider-slide">
+            <img src="assests/industryimage4.jpg" alt=SITE Industry Image 4" onload="console.log('Image 4 loaded')" onerror="console.error('Image 4 failed')">
+            <div class="slider-overlay">
+              <h1>Innovation & Excellence</h1>
+              <p>Leading the Future of Industry</p>
+              <button class="slider-see-more">See More</button>
+            </div>
+          </div>
+        </div>
+        <button class="slider-arrow slider-arrow-right">&#8594;</button>
+      </div>
+    </div>
+  </header>
+  <main>
+    <div class="prosperity-section">
+      <div class="prosperity-content">
+        <h2 class="prosperity-heading">PROSPERITY THROUGH INDUSTRIES</h2>
+        <div class="prosperity-underline"></div>
+        <p>Welcome to the Hyderabad SITE Association of Trade & Industry, the premier trade body representing over 300 industrial units in the Sindh Industrial Trading Estate (SITE), Hyderabad. Established to support and advocate for the industrial community, our Association operates under License No. 02 of 2023  .</p>
+        <p>Situated along Mirpurkhas Road, near the railway crossing in SITE Area, Hyderabad, our registered office serves as the coordination hub for industrial stakeholders across the estate  .</p>
+        <p>Founded to provide collective industry representation, the association plays a vital role in driving economic growth, social impact, and sustainable development in the region. Through coordinated efforts with government agencies, utility providers, and security entities, we strive to:</p>
+        <ul>
+          <li>Ensure reliable utilities and infrastructure improvements</li>
+          <li>Advocate for sanitation, drainage, and road upgrades</li>
+          <li>Enhance the safety and operational environment for industries</li>
+          <li>Facilitate transparent and effective governance for member enterprises
+          </li>
+        </ul>
+        <p>Industrial success in Hyderabad translates into broader regional prosperity. We are committed to supporting industrial growth, innovation, and investor confidence through proactive leadership and collaboration with stakeholders.</p>
+      </div>
+      <div class="prosperity-image">
+        <img src="assests/logo.png" alt="SSSS & SCMC Logo">
+        <div class="prosperity-label">SSSS & SCMC</div>
+      </div>
+    </div>
+    <div class="aim-management-section">
+      <div class="aim-col col-md-6 ">
+        <h3 class="management-heading">MANAGEMENT</h3>
+        <div class="management-underline"></div>
+        <p>The policies and programs of the Hyderabad SITE Association of Trade and Industry are formulated by an 11-member Managing Committee, elected by the General Body for a tenure of two years.
+
+          The Managing Committee elects the Chairman, Senior Vice Chairman, Vice Chairman, General Secretary, and Finance Secretary. The Chairman oversees all operational and administrative matters of the Association, assisted by the Senior Vice Chairman and Vice Chairman.
+          
+          To ensure efficient office functioning, the Managing Committee also appoints an Office Secretary, responsible for official correspondence, record-keeping, and the coordination of meetings.
+          
+          At the conclusion of each tenure, fresh elections are held to constitute a new Managing Committee, thereby continuing the democratic and representative governance of the Association.</p>
+          
+      </div>
+      <div class="management-col col-md-6">
+        <img src="assests/management.png" alt="management" class="management-img">
+      </div>
+    </div>
+    
+    
+      <div class="management-row text-align-center align-items-center" id="management-row-top"></div>
+<div class="management-row" id="management-row-bottom"></div>
+
+      <div class="see-all-events-btn-wrap">
+        <a href="members.html"><button class="see-all-events-btn">See All Members</button></a>
+    </div>
+    <section id="events" class="events">
+      <h2>Our Events</h2>
+      <div class="event-list"></div>
+      <div class="see-all-events-btn-wrap">
+        <a href="events.html"><button class="see-all-events-btn">See All Events</button></a>
+      </div>
+    </section>
+    <section id="industries" class="industries">
+      <h2>Industries Under SITE Association</h2>
+      <div class="industries-grid">
+        <div class="industry-tab industry-tab-animate">
+          <span class="industry-icon-bg">
+            <!-- Wheat SVG -->
+            <svg width="38" height="38" viewBox="0 0 24 24" fill="none"><polygon points="0,0 24,0 24,24 6,24 0,18" fill="rgb(177,145,79)"/><path d="M12 2v20M12 6l-2 2m2-2l2 2m-2 4l-2 2m2-2l2 2m-2 4l-2 2m2-2l2 2" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+          </span>
+          <span class="industry-label">Textile & Garments</span>
+        </div>
+        <div class="industry-tab industry-tab-animate">
+          <span class="industry-icon-bg">
+            <!-- Car SVG -->
+            <svg width="38" height="38" viewBox="0 0 24 24" fill="none"><polygon points="0,0 24,0 24,24 6,24 0,18" fill="rgb(177,145,79)"/><path d="M3 13l2-5h14l2 5M5 13v4a1 1 0 001 1h1a1 1 0 001-1v-1h6v1a1 1 0 001 1h1a1 1 0 001-1v-4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7.5" cy="17.5" r="1.5" fill="#fff"/><circle cx="16.5" cy="17.5" r="1.5" fill="#fff"/></svg>
+          </span>
+          <span class="industry-label">Foods & Beverages</span>
+        </div>
+        <div class="industry-tab industry-tab-animate">
+          <span class="industry-icon-bg">
+            <!-- Factory SVG -->
+            <svg width="38" height="38" viewBox="0 0 24 24" fill="none"><polygon points="0,0 24,0 24,24 6,24 0,18" fill="rgb(177,145,79)"/><path d="M3 21V10l6 4V10l6 4V10l6 4v7H3z" stroke="#fff" stroke-width="2" stroke-linejoin="round" fill="none"/></svg>
+          </span>
+          <span class="industry-label">Bangles and Jewellery</span>
+        </div>
+        <div class="industry-tab industry-tab-animate">
+          <span class="industry-icon-bg">
+            <!-- Gas Pump SVG -->
+            <svg width="38" height="38" viewBox="0 0 24 24" fill="none"><polygon points="0,0 24,0 24,24 6,24 0,18" fill="rgb(177,145,79)"/><rect x="3" y="7" width="13" height="13" rx="2" stroke="#fff" stroke-width="2" fill="none"/><path d="M16 7v-2a2 2 0 012-2h1a2 2 0 012 2v10a2 2 0 01-2 2h-1" stroke="#fff" stroke-width="2" fill="none"/></svg>
+          </span>
+          <span class="industry-label">Auto Mobiles </span>
+        </div>
+        <div class="industry-tab industry-tab-animate">
+          <span class="industry-icon-bg">
+            <!-- Fan SVG -->
+            <svg width="38" height="38" viewBox="0 0 24 24" fill="none"><polygon points="0,0 24,0 24,24 6,24 0,18" fill="rgb(177,145,79)"/><path d="M12 12m-2,0a2,2 0 1,0 4,0a2,2 0 1,0 -4,0" fill="#fff"/><path d="M12 2v4M12 18v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M2 12h4M18 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+          </span>
+          <span class="industry-label">Flour & Rice Mills</span>
+        </div>
+        <div class="industry-tab industry-tab-animate">
+          <span class="industry-icon-bg">
+            <!-- Shirt SVG for Textile and Garments -->
+            <svg width="38" height="38" viewBox="0 0 24 24" fill="none"><polygon points="0,0 24,0 24,24 6,24 0,18" fill="rgb(177,145,79)"/><path d="M4 4l4-2 4 2 4-2 4 2v2l-2 2v12a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2V8L4 6V4z" stroke="#fff" stroke-width="2" fill="none"/></svg>
+          </span>
+          <span class="industry-label">Pharmaceuticals  & Pesticides</span>
+        </div>
+        <div class="industry-tab industry-tab-animate">
+          <span class="industry-icon-bg">
+            <!-- Pill SVG for Pharma and Pharmaceuticals -->
+            <svg width="38" height="38" viewBox="0 0 24 24" fill="none"><polygon points="0,0 24,0 24,24 6,24 0,18" fill="rgb(177,145,79)"/><rect x="3" y="11" width="8" height="8" rx="4" stroke="#fff" stroke-width="2" fill="none"/><rect x="13" y="3" width="8" height="8" rx="4" stroke="#fff" stroke-width="2" fill="none"/><path d="M7 15l10-10" stroke="#fff" stroke-width="2"/></svg>
+          </span>
+          <span class="industry-label"> Agriculture & Machinery</span>
+        </div>
+        <div class="industry-tab industry-tab-animate">
+          <span class="industry-icon-bg">
+            <!-- Diamond SVG for Bangles and Jewellery -->
+            <svg width="38" height="38" viewBox="0 0 24 24" fill="none"><polygon points="0,0 24,0 24,24 6,24 0,18" fill="rgb(177,145,79)"/><polygon points="12,3 2,9 12,21 22,9" stroke="#fff" stroke-width="2" fill="none"/><polyline points="2,9 12,9 22,9" stroke="#fff" stroke-width="2" fill="none"/></svg>
+          </span>
+          <span class="industry-label">Dall & Oil Mills</span>
+        </div>
+        <div class="industry-tab industry-tab-animate">
+          <span class="industry-icon-bg">
+            <!-- Flask SVG for Detergents and Chemicals -->
+            <svg width="38" height="38" viewBox="0 0 24 24" fill="none"><polygon points="0,0 24,0 24,24 6,24 0,18" fill="rgb(177,145,79)"/><path d="M9 3v5.586l-5.293 5.293A1 1 0 0 0 4 16h16a1 1 0 0 0 .707-1.707L15 8.586V3" stroke="#fff" stroke-width="2" fill="none"/><circle cx="12" cy="17" r="1.5" fill="#fff"/></svg>
+          </span>
+          <span class="industry-label">Detergents & Chemicals</span>
+        </div>
+        <div class="industry-tab industry-tab-animate">
+          <span class="industry-icon-bg">
+            <!-- Marble SVG -->
+            <svg width="38" height="38" viewBox="0 0 24 24" fill="none">
+              <polygon points="0,0 24,0 24,24 6,24 0,18" fill="rgb(177,145,79)"/>
+              <ellipse cx="12" cy="12" rx="7" ry="9" stroke="#fff" stroke-width="2" fill="none"/>
+              <path d="M7 15c2-2 6-2 8 0" stroke="#fff" stroke-width="2" fill="none"/>
+            </svg>
+          </span>
+          <span class="industry-label">Plant & Machinery</span>
+        </div>
+        <div class="industry-tab industry-tab-animate">
+          <span class="industry-icon-bg">
+            <!-- Salt and Spices SVG -->
+            <svg width="38" height="38" viewBox="0 0 24 24" fill="none">
+              <polygon points="0,0 24,0 24,24 6,24 0,18" fill="rgb(177,145,79)"/>
+              <circle cx="9" cy="15" r="2" stroke="#fff" stroke-width="2" fill="none"/>
+              <circle cx="15" cy="11" r="2" stroke="#fff" stroke-width="2" fill="none"/>
+              <path d="M7 19c2-2 8-8 10-10" stroke="#fff" stroke-width="2" fill="none"/>
+            </svg>
+          </span>
+          <span class="industry-label">Salt & Spices</span>
+        </div>
+        <div class="industry-tab industry-tab-animate">
+          <span class="industry-icon-bg">
+            <!-- Cold Storage and Ice Factories SVG -->
+            <svg width="38" height="38" viewBox="0 0 24 24" fill="none">
+              <polygon points="0,0 24,0 24,24 6,24 0,18" fill="rgb(177,145,79)"/>
+              <rect x="6" y="6" width="12" height="12" rx="3" stroke="#fff" stroke-width="2" fill="none"/>
+              <path d="M12 8v8M8 12h8" stroke="#fff" stroke-width="2"/>
+            </svg>
+          </span>
+          <span class="industry-label">Cold Storage & Ice Factories</span>
+        </div>
+        <div class="industry-tab industry-tab-animate">
+          <span class="industry-icon-bg">
+            <!-- Gear SVG for Plant and Machinery -->
+            <svg width="38" height="38" viewBox="0 0 24 24" fill="none">
+              <polygon points="0,0 24,0 24,24 6,24 0,18" fill="rgb(177,145,79)"/>
+              <g stroke="#fff" stroke-width="2" fill="none">
+                <circle cx="12" cy="12" r="4"/>
+                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+              </g>
+            </svg>
+          </span>
+          <span class="industry-label">Marble</span>
+        </div><div class="industry-tab industry-tab-animate">
+          <span class="industry-icon-bg">
+            <!-- Paper Industry SVG -->
+            <svg width="38" height="38" viewBox="0 0 24 24" fill="none">
+              <polygon points="0,0 24,0 24,24 6,24 0,18" fill="rgb(177,145,79)"/>
+              <path d="M6 2h9l5 5v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z" stroke="#fff" stroke-width="2" fill="none"/>
+              <path d="M14 2v6h6" stroke="#fff" stroke-width="2" fill="none"/>
+            </svg>
+          </span>
+          <span class="industry-label">Paper and general industry</span>
+        </div>
+        
+        <div class="industry-tab industry-tab-animate">
+          <span class="industry-icon-bg">
+            <!-- Plastic & Rubber Industry SVG -->
+            <svg width="38" height="38" viewBox="0 0 24 24" fill="none">
+              <polygon points="0,0 24,0 24,24 6,24 0,18" fill="rgb(177,145,79)"/>
+              <!-- Plastic Bottle Shape -->
+              <path d="M10 2h4v4h2v2h-2v3h2v2h-2v3h2v2h-2v4h-4v-4H8v-2h2v-3H8v-2h2V8H8V6h2V2z" 
+                    stroke="#fff" stroke-width="2" fill="none"/>
+            </svg>
+          </span>
+          <span class="industry-label">Plastic and rubber industry</span>
+        </div>
+        
+        <div class="industry-tab industry-tab-animate">
+          <span class="industry-icon-bg">
+            <!-- Electric & Electronics SVG -->
+            <svg width="38" height="38" viewBox="0 0 24 24" fill="none">
+              <polygon points="0,0 24,0 24,24 6,24 0,18" fill="rgb(177,145,79)"/>
+              <path d="M13 2L6 14h5v8l7-12h-5z" stroke="#fff" stroke-width="2" fill="none"/>
+            </svg>
+          </span>
+          <span class="industry-label">Electric and electronics</span>
+        </div>
+        
+      </div>
+    </section>
+   
+  </main>
+  <div class="pre-footer-row" id="contact-section">
+    <div class="pre-footer-col col-md-6">
+      <div class="mb-5">
+        
+        <div class="contact-info">
+          <p><strong>Head Office:</strong> Plot # C/41, Mirpurkhas Road, Near Railway Crossing, SITE Area,
+            Hyderabad, Sindh.</p>
+            <p>
+              <strong>
+                <svg width="18" height="18" viewBox="0 0 24 24" style="vertical-align:middle;margin-right:4px;">
+                  <path d="M2 4h20v16H2z" fill="none" stroke="currentColor" stroke-width="2" />
+                  <polyline points="2,4 12,13 22,4" fill="none" stroke="currentColor" stroke-width="2" />
+                </svg>
+                : ali.raza@example.com
+              </strong>
+            </p>
+
+            <p>
+              <svg width="18" height="18" viewBox="0 0 24 24" style="vertical-align:middle;margin-right:4px;" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.11-.21 11.36 11.36 0 003.54.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.36 11.36 0 00.57 3.54 1 1 0 01-.21 1.11z"
+                  fill="none" stroke="currentColor" stroke-width="2" />
+              </svg>
+              : +92334-4544474
+            </p>
+          <!-- <p><strong>Phone:</strong> +92334-4544474</p> -->
+          <p>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 640 640" style="vertical-align:middle; margin-right:8px; fill:currentColor;">
+              <path d="M514.2 330.8C530 337.3 548.3 331.1 556.8 316.2L559.2 312C587.1 263.1 582.8 193.2 527.9 157.5C401.9 75.5 238.3 75.5 112.3 157.5C57.4 193.2 53 263.2 81 312L83.4 316.2C91.9 331.1 110.1 337.3 126 330.8L207.9 297.1C221.8 291.4 230.3 277.2 228.8 262.2L223.7 211.2C286.2 190.2 354.5 191.3 416.3 214.5L411.5 262.2C410 277.2 418.5 291.4 432.4 297.1L514.3 330.8zM96 416C96 433.7 110.3 448 128 448C145.7 448 160 433.7 160 416C160 398.3 145.7 384 128 384C110.3 384 96 398.3 96 416zM192 416C192 433.7 206.3 448 224 448C241.7 448 256 433.7 256 416C256 398.3 241.7 384 224 384C206.3 384 192 398.3 192 416zM128 480C110.3 480 96 494.3 96 512C96 529.7 110.3 544 128 544C145.7 544 160 529.7 160 512C160 494.3 145.7 480 128 480zM480 512C480 529.7 494.3 544 512 544C529.7 544 544 529.7 544 512C544 494.3 529.7 480 512 480C494.3 480 480 494.3 480 512zM320 384C302.3 384 288 398.3 288 416C288 433.7 302.3 448 320 448C337.7 448 352 433.7 352 416C352 398.3 337.7 384 320 384zM384 416C384 433.7 398.3 448 416 448C433.7 448 448 433.7 448 416C448 398.3 433.7 384 416 384C398.3 384 384 398.3 384 416zM512 384C494.3 384 480 398.3 480 416C480 433.7 494.3 448 512 448C529.7 448 544 433.7 544 416C544 398.3 529.7 384 512 384zM192 512C192 529.7 206.3 544 224 544L416 544C433.7 544 448 529.7 448 512C448 494.3 433.7 480 416 480L224 480C206.3 480 192 494.3 192 512z"/>
+            </svg>
+            <strong></strong> +92334-4544474
+          </p>
+        </div>
+        <div class="social-icons mt-5">
+            <!-- Facebook -->
+            <a href="https://www.facebook.com/share/16XmGEcoN5/" aria-label="Facebook" target="_blank"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M17 2.1h-3.2C10.1 2.1 9 3.2 9 5.1V7H7v3h2v9h4v-9h2.6l.4-3H13V5.5c0-.4.1-.5.5-.5H17V2.1z" fill="rgb(53,130,50)"/></svg></a>
+            <!-- Twitter -->
+            <a href="#" aria-label="Twitter" target="_blank"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M22 5.9c-.8.4-1.6.7-2.5.8.9-.5 1.6-1.4 2-2.3-.8.5-1.7.9-2.6 1.1C17.9 4.6 17 4 16 4c-2 0-3.4 1.8-2.9 3.7C9.1 7.6 6.2 6.2 4.2 4.1c-.6 1-.3 2.3.7 3-.7 0-1.3-.2-1.8-.5 0 1.5 1 2.8 2.5 3.1-.4.1-.8.2-1.2.1.3 1 1.3 1.7 2.4 1.7C5.6 13.1 4.1 13.7 2.5 13.7c-.4 0-.7 0-1.1-.1C3 15 5 15.7 7.2 15.7c5.2 0 8-4.3 8-8v-.4c.6-.4 1.2-1 1.6-1.6z" fill="rgb(53,130,50)"/></svg></a>
+            <!-- LinkedIn -->
+            <a href="#" aria-label="LinkedIn" target="_blank"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M6.9 19H3.7V8.5h3.2V19zM5.3 7.2c-1 0-1.7-.7-1.7-1.6 0-.9.7-1.6 1.7-1.6s1.7.7 1.7 1.6c0 .9-.7 1.6-1.7 1.6zM20.3 19h-3.2v-5.2c0-1.2-.4-2-1.4-2-.8 0-1.2.5-1.4 1-.1.2-.1.5-.1.8V19h-3.2s.1-9.2 0-10.5h3.2v1.5c.4-.7 1.1-1.7 2.8-1.7 2 0 3.5 1.3 3.5 4.1V19z" fill="rgb(53,130,50)"/></svg></a>
+            <!-- YouTube -->
+            <a href="#" aria-label="YouTube" target="_blank"><svg width="32" height="28" viewBox="0 0 32 24" fill="none"><rect width="32" height="24" rx="5" fill="rgb(53,130,50)"/><polygon points="13,8 22,12 13,16" fill="#fff"/></svg></a>
+          </div>
+      </div>
+    </div>
+    <div class="pre-footer-col col-md-6">
+      <h3>Contact Us</h3>
+      <form class="pre-footer-contact-form">
+        <div class="pre-footer-form-row">
+          <div class="pre-footer-form-group">
+            <label for="pre-footer-first-name">First Name</label>
+            <input id="pre-footer-first-name" type="text" placeholder="First Name" required>
+          </div>
+          <div class="pre-footer-form-group">
+            <label for="pre-footer-last-name">Last Name</label>
+            <input id="pre-footer-last-name" type="text" placeholder="Last Name" required>
+          </div>
+        </div>
+        <label for="pre-footer-email">Email</label>
+        <input id="pre-footer-email" type="email" placeholder="Email" required>
+        <label for="pre-footer-message">Message</label>
+        <textarea id="pre-footer-message" placeholder="Message" required></textarea>
+        <button type="submit">Send</button>
+      </form>
+    </div>
+  </div>
+  <footer>
+    <div class="footer-content">
+      <p>Copyright © 2025 All rights reserved.</p>
+      <p>Designed & Developed by Digital Hyperlink (PVT) LTD.</p>
+    </div>
+  </footer>
+</body>
+</html>
+<script>
+// Simple slider logic
+const slides = document.querySelectorAll('.slider-slide');
+const leftArrow = document.querySelector('.slider-arrow-left');
+const rightArrow = document.querySelector('.slider-arrow-right');
+let currentSlide = 0;
+
+// Debug: Check if images are loading
+document.addEventListener('DOMContentLoaded', function() {
+  const images = document.querySelectorAll('.slider-slide img');
+  images.forEach((img, index) => {
+    console.log(`Image ${index + 1}:`, img.src);
+    img.addEventListener('load', () => {
+      console.log(`Image ${index + 1} loaded successfully`);
+    });
+    img.addEventListener('error', () => {
+      console.error(`Image ${index + 1} failed to load:`, img.src);
+      // Add fallback styling for broken images
+      img.style.backgroundColor = '#e0e3e7';
+      img.style.display = 'flex';
+      img.style.alignItems = 'center';
+      img.style.justifyContent = 'center';
+      img.style.color = '#666';
+      img.style.fontSize = '14px';
+      img.style.fontFamily = 'Arial, sans-serif';
+    });
+  });
+});
+
+function showSlide(idx) {
+  slides.forEach((slide, i) => {
+    slide.classList.toggle('active', i === idx);
+  });
+}
+
+leftArrow.addEventListener('click', () => {
+  currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+  showSlide(currentSlide);
+});
+rightArrow.addEventListener('click', () => {
+  currentSlide = (currentSlide + 1) % slides.length;
+  showSlide(currentSlide);
+});
+
+// Optional: auto-slide every 6 seconds
+setInterval(() => {
+  currentSlide = (currentSlide + 1) % slides.length;
+  showSlide(currentSlide);
+}, 6000);
+
+// Dynamic events on homepage (show top 3)
+document.addEventListener('DOMContentLoaded', async () => {
+  const list = document.querySelector('#events .event-list');
+  if (!list) return;
+  try {
+    const res = await fetch('http://localhost:3000/getevents');
+    const { members } = await res.json();
+    const items = Array.isArray(members) ? members.slice(0, 3) : [];
+    list.innerHTML = '';
+    if (!items.length) {
+      list.innerHTML = '<p>No events found.</p>';
+      return;
+    }
+    items.forEach(ev => {
+      const card = document.createElement('div');
+      card.className = 'event-card';
+      const imageSrc = ev.image_url || 'assests/event1.jpg';
+      const title = ev.title || 'Event';
+      const dateText = formatDate(ev.eventdate);
+      card.innerHTML = `
+        <div class="event-img-wrap">
+          <img src="${imageSrc}" alt="${title}">
+          <div class="event-date-bar">
+            <span class="event-date-icon">📅</span>
+            <span class="event-date-text">${dateText}</span>
+          </div>
+          <div class="event-hover-overlay">
+            <span class="see-more-btn">SEE MORE</span>
+          </div>
+        </div>
+        <div class="event-desc">${title}</div>
+      `;
+      list.appendChild(card);
+    });
+  } catch (err) {
+    console.error('Failed to load homepage events:', err);
+  }
+
+  function formatDate(dateStr) {
+    if (!dateStr || typeof dateStr !== 'string') return 'N/A';
+    const parts = dateStr.split('-');
+    if (parts.length === 3) {
+      const [y, m, d] = parts;
+      return `${d}-${m}-${y}`;
+    }
+    return dateStr;
+  }
+});
+
+document.getElementById('contactForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const name = document.getElementById('contactName').value;
+  const email = document.getElementById('contactEmail').value;
+  const message = document.getElementById('contactMessage').value;
+
+  const payload = { name, email, message };
+  try {
+    const res = await fetch('http://localhost:3000/send-contact-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const result = await res.json();
+    if (result.success) {
+      alert('Message sent!');
+      document.getElementById('contactForm').reset();
+    } else {
+      alert('Failed to send message.');
+    }
+  } catch (err) {
+    alert('Server error.');
+  }
+});
+
+</script> 
+<script src="dynamic-management-cards.js"></script>

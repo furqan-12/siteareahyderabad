@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us – SITE Area Association of Industry</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      background: linear-gradient(180deg, #e6f0ea 0%, #f8f9fa 100%);
+      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .about-hero {
+      background: #1a5c3a;
+      color: #fff;
+      padding: 3.5rem 1rem 2.5rem 1rem;
+      text-align: center;
+    }
+    .about-hero h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      letter-spacing: 1px;
+    }
+    .about-hero .subtitle {
+      font-size: 1.1rem;
+      font-style: italic;
+      opacity: 0.95;
+      margin-bottom: 0.5rem;
+    }
+    .about-hero p {
+      font-size: 1.08rem;
+      max-width: 700px;
+      margin: 0 auto;
+      opacity: 0.97;
+    }
+    .about-container {
+      max-width: 1100px;
+      margin: -2.5rem auto 0 auto;
+      padding: 0 1rem 2rem 1rem;
+    }
+    .about-cards-row {
+      display: flex;
+      gap: 4rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .about-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(53,130,50,0.07);
+      padding: 2rem 1.5rem 1.5rem 1.5rem;
+      min-width: 260px;
+      flex: 1 1 320px;
+      max-width: 500px;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      margin-top: 4rem;
+    }
+    .about-card h2, .about-card h3 {
+      color: #1a5c3a;
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 0.7rem;
+      margin-top: 0;
+      text-align: center;
+    }
+    .about-card p {
+      color: #222;
+      font-size: 1.05rem;
+      margin-bottom: 0;
+    }
+    .about-aims {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(53,130,50,0.07);
+      padding: 2rem 1.5rem 1.5rem 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .about-aims h2 {
+      color: #1a5c3a;
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    .about-aims ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .about-aims li {
+      margin-bottom: 0.7rem;
+      font-size: 1.05rem;
+      color: #222;
+      position: relative;
+      padding-left: 2rem;
+    }
+    .about-aims li:before {
+      content: '✔';
+      color: #1a5c3a;
+      font-size: 1.1rem;
+      position: absolute;
+      left: 0;
+      top: 0.1rem;
+    }
+    .core-values-section {
+      background: #f3f7f2;
+      border-radius: 0 0 18px 18px;
+      padding: 2.5rem 1rem 2rem 1rem;
+      margin-bottom: 2rem;
+    }
+    .core-values-section h2 {
+      color: #1a5c3a;
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      text-align: left;
+    }
+    .core-values-row {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .core-value-card {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 1px 8px rgba(53,130,50,0.07);
+      padding: 1.5rem 1rem 1.2rem 1rem;
+      min-width: 200px;
+      max-width: 260px;
+      flex: 1 1 220px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .core-value-icon {
+      font-size: 2.1rem;
+      margin-bottom: 0.5rem;
+      color: #1a5c3a;
+      background: #e6f0ea;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 0.7rem auto;
+    }
+    .core-value-title {
+      font-weight: 700;
+      color: #1a5c3a;
+      margin-bottom: 0.3rem;
+      font-size: 1.08rem;
+    }
+    .core-value-desc {
+      color: #333;
+      font-size: 0.98rem;
+      opacity: 0.97;
+    }
+    @media (max-width: 900px) {
+      .about-cards-row, .core-values-row { flex-direction: column; gap: 1.2rem; }
+      .about-container { padding: 0 0.2rem 2rem 0.2rem;}
+    }
+    @media (max-width: 600px) {
+      .about-hero h1 { font-size: 1.5rem; }
+      .about-card h2, .about-card h3, .about-aims h2, .core-values-section h2 { font-size: 1.1rem; text-align: center; }
+      .about-card, .about-aims, .core-value-card { padding: 1rem 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="navbar-brand">
+        <div class="logo-img">
+          <img src="assests/SITE Official Logo.JPG" alt=SITE Association of Industry">
+        </div>
+        <div class="logo-text">HYDERABAD SITE ASSOCIATION <br> OF TRADE AND INDUSTRY</div>
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="circulars.html">Circulars</a></li>
+        <li class="dropdown">
+          <a href="members.html">Committee Members</a>
+          <div class="dropdown-content">
+            <a href="members.html">Current Members</a>
+            <a href="pastExecutivecommittee.html">Executive Committee Members</a>
+            <a href="allmembers.html">All Members</a>
+          </div>
+        </li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="clean-green.html">Clean & Green SITE</a></li>
+        <li class="dropdown">
+          <a href="#downloads">Downloads</a>
+          <div class="dropdown-content">
+            <a href="membershipForm.html">Membership Form</a>
+          </div>
+        </li>
+        <li class="dropdown">
+            <a href="about.html">About Us</a>
+            <div class="dropdown-content">
+                <a href="about.html">about us</a>
+                <a href="messages.html">our vision</a>
+            </div>
+        </li>
+        <li><a href="maps.html">Infrastructure</a></li>
+        <li><a href="about.html#contact-section">Contact Us</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <div class="about-hero">
+      <h1>Who We Are</h1>
+      <div class="subtitle">The Hyderabad SITE Association of Trade and Industry (HSATI) is a representative body committed to the progress, unity, and development of the industrial sector within the SITE. area of Hyderabad, the primary industrial hub of the region.</div>
+      <p>Since its establishment, HSATI has consistently worked to enhance collaboration among industrial stakeholders and to advocate for essential infrastructure and policy reforms that support industrial growth, sustainability, and competitiveness in the SITE. area.</p>
+    </div>
+    <div class="about-container">
+      <div class="about-cards-row">
+        <div class="about-card">
+          <h2>Who We Are</h2>
+          <p>The Hyderabad SITE Association of Trade and Industry (HSATI) is a representative body committed to the progress, unity, and development of the industrial sector. Since its establishment, HSATI has consistently worked to enhance collaboration among industrial stakeholders and to advocate for essential infrastructure and policy reforms that support industrial growth, sustainability, and competitiveness in the SITE. area.</p>
+        </div>
+        <div class="about-card">
+          <h2>Our Vision</h2>
+          <p>To promote a forward-looking industrial ecosystem in Hyderabad that fosters sustainable development, drives innovation, and generates long-term value for our industries, workforce, and community.
+            We aim to create a business-friendly environment that attracts investment, strengthens industrial infrastructure, and supports local and national economic goals.</p>
+        </div>
+      </div>
+      <div class="about-aims">
+        <h2>Our Aims and Objectives</h2>
+        <ul>
+          <li> To unite all industries of the Hyderabad SITE. area under one representative platform.</li>
+          <li>To raise industrial concerns before government bodies, utility providers, and regulatory authorities.</li>
+          <li>To advocate for the improvement of infrastructure, utilities, drainage, roads, and working conditions.</li>
+          <li>To ensure effective coordination between industries and relevant public institutions.</li>
+          <li>To provide advisory support on legal, safety, environmental, and compliance issues.</li>
+          <li>To encourage responsible industrial practices, innovation, and sustainable growth.</li>
+          <li>To safeguard the interests of member industries and promote collective progress.</li>
+          <li> To facilitate regular interaction among stakeholders for resolving shared concerns and accelerating development.</li>
+        </ul>
+      </div>
+      <div class="core-values-section">
+        <h2>Our Core Values</h2>
+        <div class="core-values-row">
+          <div class="core-value-card">
+            <div class="core-value-icon">🤝</div>
+            <div class="core-value-title">Unity & Representation</div>
+            <div class="core-value-desc">We believe in collective strength and working together for mutual benefit.</div>
+          </div>
+          <div class="core-value-card">
+            <div class="core-value-icon">🔍</div>
+            <div class="core-value-title">Integrity & Transparency</div>
+            <div class="core-value-desc">We maintain honesty in our actions and open communication with stakeholders.</div>
+          </div>
+          <div class="core-value-card">
+            <div class="core-value-icon">🌱</div>
+            <div class="core-value-title">Commitment to Progress</div>
+            <div class="core-value-desc">We encourage the adoption of modern practices for long-term industrial development.</div>
+          </div>
+          <div class="core-value-card">
+            <div class="core-value-icon">💡</div>
+            <div class="core-value-title">Innovation & Sustainability</div>
+            <div class="core-value-desc">We encourage the adoption of modern practices for long-term industrial development.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <div class="pre-footer-row" id="contact-section">
+    <div class="pre-footer-col col-md-6">
+      <div class="mb-5">
+        <div class="contact-info">
+          <p><strong>Head Office:</strong> Plot # C/41, Mirpurkhas Road, Near Railway Crossing, SITE Area,
+            Hyderabad, Sindh.</p>
+            <p>
+              <strong>
+                <svg width="18" height="18" viewBox="0 0 24 24" style="vertical-align:middle;margin-right:4px;">
+                  <path d="M2 4h20v16H2z" fill="none" stroke="currentColor" stroke-width="2" />
+                  <polyline points="2,4 12,13 22,4" fill="none" stroke="currentColor" stroke-width="2" />
+                </svg>
+                : ali.raza@example.com
+              </strong>
+            </p>
+
+            <p>
+              <svg width="18" height="18" viewBox="0 0 24 24" style="vertical-align:middle;margin-right:4px;" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.11-.21 11.36 11.36 0 003.54.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.36 11.36 0 00.57 3.54 1 1 0 01-.21 1.11z"
+                  fill="none" stroke="currentColor" stroke-width="2" />
+              </svg>
+              : +92334-4544474
+            </p>
+            <p>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 640 640" style="vertical-align:middle; margin-right:8px; fill:currentColor;">
+                <path d="M514.2 330.8C530 337.3 548.3 331.1 556.8 316.2L559.2 312C587.1 263.1 582.8 193.2 527.9 157.5C401.9 75.5 238.3 75.5 112.3 157.5C57.4 193.2 53 263.2 81 312L83.4 316.2C91.9 331.1 110.1 337.3 126 330.8L207.9 297.1C221.8 291.4 230.3 277.2 228.8 262.2L223.7 211.2C286.2 190.2 354.5 191.3 416.3 214.5L411.5 262.2C410 277.2 418.5 291.4 432.4 297.1L514.3 330.8zM96 416C96 433.7 110.3 448 128 448C145.7 448 160 433.7 160 416C160 398.3 145.7 384 128 384C110.3 384 96 398.3 96 416zM192 416C192 433.7 206.3 448 224 448C241.7 448 256 433.7 256 416C256 398.3 241.7 384 224 384C206.3 384 192 398.3 192 416zM128 480C110.3 480 96 494.3 96 512C96 529.7 110.3 544 128 544C145.7 544 160 529.7 160 512C160 494.3 145.7 480 128 480zM480 512C480 529.7 494.3 544 512 544C529.7 544 544 529.7 544 512C544 494.3 529.7 480 512 480C494.3 480 480 494.3 480 512zM320 384C302.3 384 288 398.3 288 416C288 433.7 302.3 448 320 448C337.7 448 352 433.7 352 416C352 398.3 337.7 384 320 384zM384 416C384 433.7 398.3 448 416 448C433.7 448 448 433.7 448 416C448 398.3 433.7 384 416 384C398.3 384 384 398.3 384 416zM512 384C494.3 384 480 398.3 480 416C480 433.7 494.3 448 512 448C529.7 448 544 433.7 544 416C544 398.3 529.7 384 512 384zM192 512C192 529.7 206.3 544 224 544L416 544C433.7 544 448 529.7 448 512C448 494.3 433.7 480 416 480L224 480C206.3 480 192 494.3 192 512z"/>
+              </svg>
+              <strong></strong> +92334-4544474
+            </p>
+            
+            
+            
+            
+            
+        </div>
+        <div class="social-icons mt-5">
+            <!-- Facebook -->
+            <a href="https://www.facebook.com/share/16XmGEcoN5/" aria-label="Facebook" target="_blank"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M17 2.1h-3.2C10.1 2.1 9 3.2 9 5.1V7H7v3h2v9h4v-9h2.6l.4-3H13V5.5c0-.4.1-.5.5-.5H17V2.1z" fill="rgb(53,130,50)"/></svg></a>
+            <!-- Twitter -->
+            <a href="#" aria-label="Twitter" target="_blank"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M22 5.9c-.8.4-1.6.7-2.5.8.9-.5 1.6-1.4 2-2.3-.8.5-1.7.9-2.6 1.1C17.9 4.6 17 4 16 4c-2 0-3.4 1.8-2.9 3.7C9.1 7.6 6.2 6.2 4.2 4.1c-.6 1-.3 2.3.7 3-.7 0-1.3-.2-1.8-.5 0 1.5 1 2.8 2.5 3.1-.4.1-.8.2-1.2.1.3 1 1.3 1.7 2.4 1.7C5.6 13.1 4.1 13.7 2.5 13.7c-.4 0-.7 0-1.1-.1C3 15 5 15.7 7.2 15.7c5.2 0 8-4.3 8-8v-.4c.6-.4 1.2-1 1.6-1.6z" fill="rgb(53,130,50)"/></svg></a>
+            <!-- LinkedIn -->
+            <a href="#" aria-label="LinkedIn" target="_blank"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M6.9 19H3.7V8.5h3.2V19zM5.3 7.2c-1 0-1.7-.7-1.7-1.6 0-.9.7-1.6 1.7-1.6s1.7.7 1.7 1.6c0 .9-.7 1.6-1.7 1.6zM20.3 19h-3.2v-5.2c0-1.2-.4-2-1.4-2-.8 0-1.2.5-1.4 1-.1.2-.1.5-.1.8V19h-3.2s.1-9.2 0-10.5h3.2v1.5c.4-.7 1.1-1.7 2.8-1.7 2 0 3.5 1.3 3.5 4.1V19z" fill="rgb(53,130,50)"/></svg></a>
+            <!-- YouTube -->
+            <a href="#" aria-label="YouTube" target="_blank"><svg width="32" height="28" viewBox="0 0 32 24" fill="none"><rect width="32" height="24" rx="5" fill="rgb(53,130,50)"/><polygon points="13,8 22,12 13,16" fill="#fff"/></svg></a>
+          </div>
+      </div>
+    </div>
+    <div class="pre-footer-col col-md-6">
+      <h3>Contact Us</h3>
+      <form class="pre-footer-contact-form">
+        <div class="pre-footer-form-row">
+          <div class="pre-footer-form-group">
+            <label for="pre-footer-first-name">First Name</label>
+            <input id="pre-footer-first-name" type="text" placeholder="First Name" required>
+          </div>
+          <div class="pre-footer-form-group">
+            <label for="pre-footer-last-name">Last Name</label>
+            <input id="pre-footer-last-name" type="text" placeholder="Last Name" required>
+          </div>
+        </div>
+        <label for="pre-footer-email">Email</label>
+        <input id="pre-footer-email" type="email" placeholder="Email" required>
+        <label for="pre-footer-message">Message</label>
+        <textarea id="pre-footer-message" placeholder="Message" required></textarea>
+        <button type="submit">Send</button>
+      </form>
+    </div>
+  </div>
+  <footer>
+    <div class="footer-content">
+      <p>Copyright © 2025 All rights reserved.</p>
+      <p>Designed & Developed by Digital Hyperlink (PVT) LTD.</p>
+    </div>
+  </footer>
+</body>
+</html> 

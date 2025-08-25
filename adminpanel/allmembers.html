@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel - Members</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+  <style>
+    body {
+      background-color: #ffffff;
+      color: #358232;
+    }
+
+    /* Sidebar Styles */
+    .sidebar {
+      height: 100vh;
+      background-color: #358232;
+      padding: 1rem;
+      color: white;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 220px;
+    }
+
+    .sidebar h4 {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .sidebar a {
+      display: block;
+      background-color: #d0f0d0;
+      color: #358232;
+      text-decoration: none;
+      margin: 10px 0;
+      padding: 10px 15px;
+      border-radius: 8px;
+      font-weight: 500;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .sidebar a:hover {
+      background-color: #2c6e27;
+      color: #ffffff;
+    }
+
+    .sidebar a.active {
+      background-color: #2c6e27;
+      color: #ffffff;
+    }
+
+    /* Top Navbar */
+    .navbar {
+      margin-left: 220px;
+    }
+
+    /* Main Content */
+    .main-content {
+      margin-left: 240px;
+      padding: 2rem;
+      background-color: #ffffff;
+    }
+
+    .main {
+      margin-left: 220px;
+      padding: 20px;
+    }
+    
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .card {
+      background: white;
+      border-left: 6px solid #102b5d;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+
+    .card h3 {
+      font-size: 16px;
+      color: #555;
+    }
+
+    .card p {
+      font-size: 24px;
+      font-weight: bold;
+      margin-top: 5px;
+      color: #102b5d;
+    }  
+
+    .dropdown-container {
+  width: 100%;
+}
+
+.dropdown-btn {
+  display: block;
+  background-color: #d0f0d0;
+  color: #358232;
+  padding: 10px 15px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.dropdown-btn:hover {
+  background-color: #2c6e27;
+  color: #ffffff;
+}
+
+.dropdown-content {
+  display: none;
+  padding-left: 20px;
+  margin-left: 10px;
+  flex-direction: column;
+}
+.dropdown-content.active {
+  display: block;
+}
+.dropdown-content a {
+  display: block;
+  margin: 5px 0;
+  color: #358232;
+  background-color: #e6f8e6;
+  padding: 8px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.dropdown-content a:hover {
+  background-color: #2c6e27;
+  color: #fff;
+}
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  /* Table headings center align */
+  table th {
+    text-align: center;
+    white-space: nowrap; /* Heading ko wrap hone se roke */
+  }
+
+  /* Table cells ko thoda space dena */
+  table td {
+    white-space: nowrap;
+    vertical-align: middle;
+    text-align: center;
+  }
+/* Show dropdown on button click */
+.dropdown-container.active .dropdown-content {
+  display: block;
+}
+    @media (max-width: 768px) {
+      .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+      }
+      .main-content, .navbar {
+        margin-left: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom px-4 py-2">
+    <a class="navbar-brand d-flex align-items-center" href="#">
+      <img src="../assests/logo.png" height="60px" width="60px" alt="Logo" class="me-2" />
+      <span class="fw-bold text-success" style="font-size: 1rem;">Hyderabad SITE ASSOCIATION OF TRADE AND INDUSTRY</span>
+    </a>
+  </nav>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h4>📋 Admin Panel</h4>
+    <a href="dashboard.html">🏠 Dashboard</a>
+    <div class="dropdown-container">
+      <button class="dropdown-btn">👥 Members ▾</button>
+      <div class="dropdown-content">
+        <a href="adminmembers.html">👤 Committee Members</a>
+        <a href="allmembers.html" class="active">👥 All Members</a>
+      </div>
+    </div>
+    <div class="dropdown-container">
+      <button class="dropdown-btn">👥 Committees ▾</button>
+      <div class="dropdown-content" id="committeesDropdown">
+        <!-- API se data yahan inject hoga -->
+      </div>
+    </div>
+    <a href="adminevents.html">📅 Events</a>
+    <a href="admincircular.html">📢 Circulars</a>
+    <a href="clean&green.html" >♻️ Clean&Green</a>
+
+    <a href="#" onclick="logout()">🚪 Logout</a>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <h2 class="mb-4">🛠 Manage All Members</h2>
+    <div class="d-flex justify-content-end mb-3">
+      <button class="btn btn-success" onclick="openForm()">➕ Add Member</button>
+    </div>
+    
+    <h2>Add New Category</h2>
+  
+    <!-- Input field -->
+    <input type="text" id="categoryName" placeholder="Enter category name">
+    
+    <!-- Button -->
+    <button onclick="addcategories()">Add Category</button>
+  
+    <p id="responseMsg"></p>
+
+    <h3 id="apiTitle" style="display:none;">API Result</h3>
+
+<table id="categoriesTable" border="1" style="display:none;">
+  <tr><th>Category</th></tr>
+</table>
+
+<table id="apiResultTable" border="1" style="display:none;">
+  <tr><th>Result</th></tr>
+</table>
+    
+    <!-- API Result Table (hidden) -->
+    <h3 id="apiTitle" style="display: none;">API Result:</h3>
+    <table border="1" id="apiResultTable" style="display: none;">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <div class="table-container">
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th>Select</th> 
+            <th>Photo</th>
+            <th>Name</th>
+            <th>Designation</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Company Address</th>
+            <th>Member Code</th>
+            <th>Company</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Office Address</th>
+            <th>Office Address Doc</th>
+            <th>Nature of Business</th>
+            <th>Company NTN</th>
+            <th>Sales Tax Reg</th>
+            <th>Fax No</th>
+            <th>Website</th>
+            <th>Join Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="memberTable"></tbody>
+      </table>
+    </div>
+    
+  </div>
+
+  <!-- Add/Edit Modal -->
+  <div class="modal fade" id="memberModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <form id="memberForm">
+          <div class="modal-header">
+            <h5 class="modal-title">Add/Edit Member</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row g-2">
+              <div class="col-md-6">
+                <input type="text" class="form-control" name="member_code" placeholder="Member Code" required />
+              </div>
+              <div class="col-md-6">
+                <input type="text" class="form-control" name="company" placeholder="Company" required />
+              </div>
+
+              <div class="col-md-6">
+                <input type="text" class="form-control" name="designation" placeholder="Designation" />
+              </div>
+        
+              <div class="col-md-6">
+                <input type="text" class="form-control" name="first_name" placeholder="First Name" required />
+              </div>
+              <div class="col-md-6">
+                <input type="text" class="form-control" name="last_name" placeholder="Last Name" required />
+              </div>
+        
+              <div class="col-md-6">
+                <input type="text" class="form-control" name="office_address" placeholder="Office Address" required />
+              </div>
+              <div class="col-md-6">
+                <select class="form-control" name="office_address_doc" required>
+                  <option value="">Office Address (Supporting Document)</option>
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                </select>
+              </div>
+        
+              <div class="col-md-6">
+                <input type="text" class="form-control" name="nature_of_business" placeholder="Nature of Business" required />
+              </div>
+              <div class="col-md-6">
+                <input type="text" class="form-control" name="phoneno" placeholder="Phone" required />
+              </div>
+
+              <div class="col-md-12">
+                <input type="text" class="form-control" name="companyaddress" placeholder="Company Address" />
+              </div>
+        
+              <div class="col-md-6">
+                <select class="form-control" name="company_ntn" required>
+                  <option value="">Company Holding National Tax Number</option>
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <select class="form-control" name="sales_tax_reg" required>
+                  <option value="">Sales Tax Registration</option>
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                </select>
+              </div>
+        
+              <div class="col-md-6">
+                <input type="text" class="form-control" name="fax_no" placeholder="Fax No" />
+              </div>
+              <div class="col-md-6">
+                <input type="text" class="form-control" name="website" placeholder="Website" />
+              </div>
+        
+              <div class="col-md-6">
+                <input type="email" class="form-control" name="email" placeholder="Email" required />
+              </div>
+              <div class="col-md-6">
+                <input type="date" class="form-control" name="join_date" id="whenEstablished" />
+              </div>
+        
+              <div class="col-md-6">
+                <select class="form-control" name="active" required>
+                  <option value="">Active</option>
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <input type="file" class="form-control" name="photo" accept="image/*" id="memberImage" />
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">Save</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          </div>
+        </form>
+        
+      </div>
+    </div>
+  </div>
+  
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+
+  // Session Management Functions
+  function checkAuth() {
+    const session = localStorage.getItem('adminSession');
+    if (!session) {
+      window.location.href = 'login.html';
+      return false;
+    }
+    
+    const sessionData = JSON.parse(session);
+    if (!sessionData.isLoggedIn) {
+      window.location.href = 'login.html';
+      return false;
+    }
+    
+    // Check if session is older than 24 hours
+    const loginTime = new Date(sessionData.loginTime);
+    const now = new Date();
+    const hoursDiff = (now - loginTime) / (1000 * 60 * 60);
+    
+    if (hoursDiff > 24) {
+      logout();
+      return false;
+    }
+    
+    return true;
+  }
+  
+  function logout() {
+    localStorage.removeItem('adminSession');
+    window.location.href = 'login.html';
+  }
+  
+  // Check authentication on page load
+  document.addEventListener('DOMContentLoaded', function() {
+    if (!checkAuth()) return;
+  });
+
+    const memberModal = new bootstrap.Modal(document.getElementById('memberModal'));
+    const memberForm = document.getElementById('memberForm');
+    let editingMemberId = null;
+
+    function openForm() {
+      memberModal.show();
+    }
+
+    // document.getElementById('memberForm').addEventListener('submit', function (e) {
+    //   e.preventDefault();
+    //   alert('Member saved! (Connect to backend)');
+    //   memberModal.hide();
+    // });
+
+    document.getElementById('memberForm').addEventListener('submit', async function (e) {
+  e.preventDefault();
+  const formData = new FormData(memberForm);
+  const imageInput = document.getElementById('memberImage');
+
+  // Convert image to base64
+  if (imageInput && imageInput.files && imageInput.files[0]) {
+    const file = imageInput.files[0];
+    const reader = new FileReader();
+    reader.onloadend = async function () {
+      const base64Image = reader.result;
+      const payload = {
+        name: formData.get('name'),
+        designation: formData.get('designation'),
+        email: formData.get('email'),
+        phoneno: formData.get('phoneno'),
+        companyaddress: formData.get('companyaddress'),
+        member_code: formData.get('member_code'),
+        company: formData.get('company'),
+        first_name: formData.get('first_name'),
+        last_name: formData.get('last_name'),
+        office_address: formData.get('office_address'),
+        office_address_doc: formData.get('office_address_doc'),
+        nature_of_business: formData.get('nature_of_business'),
+        company_ntn: formData.get('company_ntn'),
+        sales_tax_reg: formData.get('sales_tax_reg'),
+        fax_no: formData.get('fax_no'),
+        website: formData.get('website'),
+        join_date: formData.get('join_date'),
+        active: formData.get('active') === 'true',
+        image: base64Image
+      };
+      const url = editingMemberId
+        ? `http://localhost:3000/update-all-members/${editingMemberId}`
+        : 'http://localhost:3000/add-all-members';
+      const method = editingMemberId ? 'PUT' : 'POST';
+      try {
+        const response = await fetch(url, {
+          method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const result = await response.json();
+        if (!response.ok) {
+          alert('❌ Error: ' + result.message);
+        } else {
+          alert(`✅ Member ${editingMemberId ? 'updated' : 'added'} successfully!`);
+          editingMemberId = null;
+          memberForm.reset();
+          await fetchAndRenderMembers();
+          if (window.bootstrap) {
+            const modal = bootstrap.Modal.getInstance(document.getElementById('memberModal'));
+            if (modal) modal.hide();
+          }
+        }
+      } catch (err) {
+        alert('❌ Error: ' + err.message);
+      }
+    };
+    reader.readAsDataURL(file);
+  } else {
+    // No image, send rest of data
+    const payload = {
+      name: formData.get('name'),
+      designation: formData.get('designation'),
+      email: formData.get('email'),
+      phoneno: formData.get('phoneno'),
+      companyaddress: formData.get('companyaddress'),
+      member_code: formData.get('member_code'),
+      company: formData.get('company'),
+      first_name: formData.get('first_name'),
+      last_name: formData.get('last_name'),
+      office_address: formData.get('office_address'),
+      office_address_doc: formData.get('office_address_doc'),
+      nature_of_business: formData.get('nature_of_business'),
+      company_ntn: formData.get('company_ntn'),
+      sales_tax_reg: formData.get('sales_tax_reg'),
+      fax_no: formData.get('fax_no'),
+      website: formData.get('website'),
+      join_date: formData.get('join_date'),
+      active: formData.get('active') === 'true'
+    };
+    const url = editingMemberId
+      ? `http://localhost:3000/update-all-members/${editingMemberId}`
+      : 'http://localhost:3000/add-all-members';
+    const method = editingMemberId ? 'PUT' : 'POST';
+    try {
+      const response = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const result = await response.json();
+      if (!response.ok) {
+        alert('❌ Error: ' + result.message);
+      } else {
+        alert(`✅ Member ${editingMemberId ? 'updated' : 'added'} successfully!`);
+        editingMemberId = null;
+        memberForm.reset();
+        await fetchAndRenderMembers();
+        if (window.bootstrap) {
+          const modal = bootstrap.Modal.getInstance(document.getElementById('memberModal'));
+          if (modal) modal.hide();
+        }
+      }
+    } catch (err) {
+      alert('❌ Error: ' + err.message);
+    }
+  }
+});
+
+async function fetchAndRenderMembers() {
+  try {
+    const response = await fetch('http://localhost:3000/get-all-members');
+    const result = await response.json();
+
+    const tableBody = document.getElementById('memberTable');
+    tableBody.innerHTML = ''; // Clear previous data
+
+    result.message.forEach(member => {
+      const row = document.createElement('tr');
+
+      const fullName = ([member.first_name, member.last_name].filter(Boolean).join(' ') || member.name || '-');
+
+      row.innerHTML = `
+      <td><input type="checkbox" class="member-checkbox" value="${member.id}"></td>
+        <td><img src="${member.file_url || 'https://via.placeholder.com/60'}" class="rounded" width="60" alt="img"></td>
+        <td>${fullName}</td>
+        <td>${member.designation || '-'}</td>
+        <td>${member.email || '-'}</td>
+        <td>${member.phoneno || '-'}</td>
+        <td>${member.companyaddress || '-'}</td>
+        <td>${member.member_code || '-'}</td>
+        <td>${member.company || '-'}</td>
+        <td>${member.first_name || '-'}</td>
+        <td>${member.last_name || '-'}</td>
+        <td>${member.office_address || '-'}</td>
+        <td>${member.office_address_doc ? `<a href="${member.office_address_doc}" target="_blank">View</a>` : '-'}</td>
+        <td>${member.nature_of_business || '-'}</td>
+        <td>${member.company_ntn || '-'}</td>
+        <td>${member.sales_tax_reg || '-'}</td>
+        <td>${member.fax_no || '-'}</td>
+        <td>${member.website ? `<a href="${member.website}" target="_blank">${member.website}</a>` : '-'}</td>
+        <td>${member.join_date || '-'}</td>
+        <td>${member.active ? 'Active' : 'Inactive'}</td>
+        <td>
+          <button class="btn btn-sm btn-edit" data-id="${member.id}">Edit</button>
+          <button class="btn btn-sm btn-delete" data-id="${member.id}">Delete</button>
+        </td>
+      `;
+      // Keep full member data for editing
+      row.dataset.member = encodeURIComponent(JSON.stringify(member));
+
+      tableBody.appendChild(row);
+    });
+  } catch (error) {
+    console.error('Error fetching members:', error);
+    alert('❌ Failed to load members');
+  }
+}
+
+fetchAndRenderMembers();
+
+
+
+
+document.addEventListener('click', async function (e) {
+    if (e.target && e.target.classList.contains('btn-delete')) {
+      const memberId = e.target.getAttribute('data-id');
+
+      if (!confirm('Are you sure you want to delete this member?')) return;
+
+      try {
+        const res = await fetch(`http://localhost:3000/delete-all-members/${memberId}`, {
+          method: 'DELETE'
+        });
+
+        const result = await res.json();
+
+        if (!res.ok) {
+          alert('❌ Error deleting member: ' + result.message);
+        } else {
+          alert('✅ Member deleted successfully!');
+          await fetchAndRenderMembers(); // Re-fetch and update table
+        }
+      } catch (err) {
+        alert('❌ Network or server error: ' + err.message);
+      }
+    }
+  });
+
+  document.addEventListener('click', async function (e) {
+  // EDIT handler
+
+  if (e.target && e.target.classList.contains('btn-edit')) {
+    const row = e.target.closest('tr');
+    const memberId = e.target.getAttribute('data-id');
+    console.log("memberid", memberId);
+
+    // Read full object from row dataset
+    const encoded = row.dataset.member || '';
+    const member = encoded ? JSON.parse(decodeURIComponent(encoded)) : {};
+
+    // Populate modal form using correct field names
+    const setValue = (selector, value) => {
+      const el = memberForm.querySelector(selector);
+      if (el) el.value = value ?? '';
+    };
+
+    setValue('input[name="member_code"]', member.member_code);
+    setValue('input[name="company"]', member.company);
+    setValue('input[name="designation"]', member.designation);
+    setValue('input[name="first_name"]', member.first_name);
+    setValue('input[name="last_name"]', member.last_name);
+    setValue('input[name="office_address"]', member.office_address);
+
+    const officeDocEl = memberForm.querySelector('select[name="office_address_doc"]');
+    if (officeDocEl) {
+      officeDocEl.value = (!member.office_address_doc || member.office_address_doc === 'No') ? 'No' : 'Yes';
+    }
+
+    setValue('input[name="nature_of_business"]', member.nature_of_business);
+    setValue('input[name="phoneno"]', member.phoneno);
+    setValue('input[name="companyaddress"]', member.companyaddress);
+
+    const companyNtnEl = memberForm.querySelector('select[name="company_ntn"]');
+    if (companyNtnEl) companyNtnEl.value = member.company_ntn === 'Yes' ? 'Yes' : 'No';
+
+    const salesTaxEl = memberForm.querySelector('select[name="sales_tax_reg"]');
+    if (salesTaxEl) salesTaxEl.value = member.sales_tax_reg === 'Yes' ? 'Yes' : 'No';
+
+    setValue('input[name="fax_no"]', member.fax_no);
+    setValue('input[name="website"]', member.website);
+    setValue('input[name="email"]', member.email);
+
+    const joinDateEl = memberForm.querySelector('input[name="join_date"]');
+    if (joinDateEl) joinDateEl.value = (member.join_date || '').slice(0, 10);
+
+    const activeEl = memberForm.querySelector('select[name="active"]');
+    if (activeEl) activeEl.value = member.active ? 'true' : 'false';
+
+    // File input cannot be pre-filled for security; leave it empty
+
+    editingMemberId = memberId;
+    memberModal.show();
+  }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  const dropdowns = document.querySelectorAll('.dropdown-container');
+
+  dropdowns.forEach(container => {
+    const btn = container.querySelector('.dropdown-btn');
+    const content = container.querySelector('.dropdown-content');
+
+    btn.addEventListener('click', () => {
+      content.classList.toggle('active');
+    });
+  });
+});
+  </script>
+
+
+
+<script>
+  async function addcategories() {
+    const inputField = document.getElementById("categoryName");
+    const categoryName = inputField.value;
+    
+    if (!categoryName) {
+      alert("Please enter a category name!");
+      return;
+    }
+
+    try {
+      const res = await fetch("http://localhost:3000/add-categories", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name: categoryName })
+      });
+
+      const result = await res.json();
+
+      // ✅ Check statusCode
+      if (res.status === 200) {
+        alert("✅ Category added successfully!");
+        inputField.value = ""; // Clear input after alert OK
+      } else {
+        alert("❌ Failed to add category: " + result.message);
+      }
+
+    } catch (error) {
+      console.error("Error:", error);
+      alert("⚠️ Something went wrong!");
+    }
+  }
+</script>
+
+<script>
+  async function loadCommittees() {
+    try {
+      const res = await fetch("http://localhost:3000/members-categories");
+      const result = await res.json();
+  
+      const dropdown = document.getElementById("committeesDropdown");
+      dropdown.innerHTML = ""; // clear old items
+  
+      result.data.forEach(category => {
+        const a = document.createElement("a");
+        a.href = `admincommittee.html?id=${category.id}`;
+        a.textContent = `👤 ${category.name}`;
+        dropdown.appendChild(a);
+      });
+    } catch (error) {
+      console.error("Error loading committees:", error);
+    }
+  }
+  
+  loadCommittees();
+  </script>
+
+<script>
+  const categoriesTable = document.getElementById("categoriesTable");
+  const apiTitle = document.getElementById("apiTitle");
+  // Table ko default par hide rakho
+  categoriesTable.style.display = "none";
+  apiTitle.style.display = "none";
+
+  // Table ko checkbox select hone par hi show karo
+  async function fetchAndRenderCategories() {
+    try {
+      const res = await fetch("http://localhost:3000/members-categories");
+      const result = await res.json();
+      categoriesTable.innerHTML = '<tr><th>Select</th><th>ID</th><th>Category Name</th></tr>';
+      if (result.data && Array.isArray(result.data)) {
+        result.data.forEach(category => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td><input type="checkbox" class="category-checkbox" value="${category.id}"></td>
+            <td>${category.id}</td>
+            <td>${category.name}</td>
+          `;
+          categoriesTable.appendChild(row);
+        });
+        categoriesTable.style.display = "table";
+        apiTitle.style.display = "block";
+      } else {
+        categoriesTable.style.display = "none";
+        apiTitle.style.display = "none";
+      }
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+      categoriesTable.style.display = "none";
+      apiTitle.style.display = "none";
+    }
+  }
+
+  // Checkbox change par categories table show karo
+  document.addEventListener("change", (e) => {
+    if (e.target.classList.contains("member-checkbox")) {
+      const anyChecked = document.querySelectorAll(".member-checkbox:checked").length > 0;
+      if (anyChecked) {
+        fetchAndRenderCategories();
+      } else {
+        categoriesTable.style.display = "none";
+        apiTitle.style.display = "none";
+      }
+    }
+  });
+</script>
+  
+  
+
+
+
+</body>
+</html>
