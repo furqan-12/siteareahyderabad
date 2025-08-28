@@ -224,6 +224,10 @@
     
     <!-- Button -->
     <button onclick="addcategories()">Add Category</button>
+
+    <select id="categories" onChange="handleCategoryChange(this.value)">
+      <option value="0">All</option>
+      </select>
   
     <p id="responseMsg"></p>
 
@@ -554,12 +558,25 @@
 async function fetchAndRenderMembers() {
   try {
     const response = await fetch('http://localhost:3000/get-all-members');
-    const result = await response.json();
+    const allMembers = await response.json();
+    const selectedCategory = parseInt(document.getElementById('categories').value ?? 0);
+    
+    let data = allMembers.message;
 
-    const tableBody = document.getElementById('memberTable');
+    if(selectedCategory !== 0) data = data.filter(member=> menubar.categoryId === selectedCategory);
+
+    renderMemberTable(data)
+  } catch (error) {
+    console.error('Error fetching members:', error);
+    alert('❌ Failed to load members');
+  }
+}
+
+function renderMemberTable(allMembers) {
+  const tableBody = document.getElementById('memberTable');
     tableBody.innerHTML = ''; // Clear previous data
 
-    result.message.forEach(member => {
+    allMembers.forEach(member => {
       const row = document.createElement('tr');
 
       const fullName = ([member.first_name, member.last_name].filter(Boolean).join(' ') || member.name || '-');
@@ -595,12 +612,7 @@ async function fetchAndRenderMembers() {
 
       tableBody.appendChild(row);
     });
-  } catch (error) {
-    console.error('Error fetching members:', error);
-    alert('❌ Failed to load members');
-  }
 }
-
 fetchAndRenderMembers();
 
 
@@ -741,9 +753,13 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 <script>
+  function handleCategoryChange(value) {
+    console.log(value);
+    fetchAndRenderMembers();
+  }
   async function loadCommittees() {
     try {
-      const res = await fetch("http://localhost:3000/members-categories");
+      var res = await fetch("http://localhost:3000/members-categories");
       const result = await res.json();
   
       const dropdown = document.getElementById("committeesDropdown");
@@ -755,6 +771,12 @@ document.addEventListener('DOMContentLoaded', () => {
         a.textContent = `👤 ${category.name}`;
         dropdown.appendChild(a);
       });
+
+
+      const select = document.getElementById('categories');
+      let html = result.data.map(res => `<option value="${res.id}">${res.name}</option>`).join('');
+      console.log(html)
+      select.innerHTML = '<option value="0">All</option>' + html;
     } catch (error) {
       console.error("Error loading committees:", error);
     }
