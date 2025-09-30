@@ -4,28 +4,67 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import supabase from './config/supabaseclient/supabaseclient.js';
 import nodemailer from 'nodemailer';
+import dotenv from "dotenv"
+dotenv.config()
+
+const PORT = process.env.PORT || 3000
 
 const app = express();
-app.use(cors());
-app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://127.0.0.1:5500",
+  "https://siteareahyderabadfrontend.vercel.app"
+];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // allow requests with no origin (like mobile apps or curl)
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  })
+);
+
 app.use(express.json({ limit: '50mb' }));
-app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
+
+console.log("Supabase URL:", process.env.SUPABASE_URL);
+console.log("Supabase Key (first 10 chars):", process.env.SUPABASE_KEY?.slice(0,10));
 
 
 // login api start from here
 app.post('/login', async (req, res) => {
-  const { email, password } = req.body;
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email,
-    password
-  });
+  try {
+    const { email, password } = req.body;  // ab error nahi aayega
+    console.log("Login attempt:", email);
 
-  if (error) {
-    return res.status(401).json({ message: error.message });
-  } else {
-    return res.status(200).json({ message: 'Login successful', user: data.user });
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email and password required" });
+    }
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (error) {
+      return res.status(401).json({ message: error.message });
+    } else {
+      return res.status(200).json({ message: 'Login successful', user: data.user });
+    }
+  } catch (err) {
+    console.error("Login API Error:", err.message);
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 });
+
 
 // members apis start from here
 app.post('/add-member', async (req, res) => {
@@ -937,6 +976,6 @@ app.post('/send-contact-email', async (req, res) => {
   }
 });
 
-app.listen(3000, () => {
+app.listen(PORT, () => {
   console.log('🚀 Server running on http://localhost:3000');
 });
