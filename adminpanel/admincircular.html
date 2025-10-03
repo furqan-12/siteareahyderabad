@@ -484,14 +484,14 @@
     let response;
     if (id) {
       // Update existing circular
-      response = await fetch(`http://localhost:3000/update-circular/${id}`, {
+      response = await fetch(`https://siteareahyderabadbackend.onrender.com/update-circular/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
     } else {
       // Add new circular
-      response = await fetch('http://localhost:3000/add-circular', {
+      response = await fetch('https://siteareahyderabadbackend.onrender.com/add-circular', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -528,7 +528,7 @@ function toBase64(file) {
     // 📦 Fetch and list circulars
     async function fetchCirculars() {
       try {
-        const response = await fetch('http://localhost:3000/getcirculars');
+        const response = await fetch('https://siteareahyderabadbackend.onrender.com/getcirculars');
         const result = await response.json();
   
         const tbody = document.getElementById('memberTable');
@@ -586,7 +586,7 @@ function toBase64(file) {
     if (!confirmed) return;
 
     try {
-      const response = await fetch(`http://localhost:3000/delete-circular/${id}`, {
+      const response = await fetch(`https://siteareahyderabadbackend.onrender.com/delete-circular/${id}`, {
         method: 'DELETE'
       });
 

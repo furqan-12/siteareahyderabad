@@ -464,7 +464,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const list = document.querySelector('#events .event-list');
   if (!list) return;
   try {
-    const res = await fetch('http://localhost:3000/getevents');
+    const res = await fetch('https://siteareahyderabadbackend.onrender.com/getevents');
     const { members } = await res.json();
     const items = Array.isArray(members) ? members.slice(0, 3) : [];
     list.innerHTML = '';
@@ -516,7 +516,7 @@ document.getElementById('contactForm').addEventListener('submit', async function
 
   const payload = { name, email, message };
   try {
-    const res = await fetch('http://localhost:3000/send-contact-email', {
+    const res = await fetch('https://siteareahyderabadbackend.onrender.com/send-contact-email', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)

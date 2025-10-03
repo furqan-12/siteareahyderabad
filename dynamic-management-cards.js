@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   ];
 
   try {
-    const res = await fetch('http://localhost:3000/getmembers');
+    const res = await fetch('https://siteareahyderabadbackend.onrender.com/getmembers');
     const { members } = await res.json();
     if (!Array.isArray(members)) return;
 

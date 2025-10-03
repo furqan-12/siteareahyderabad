@@ -132,7 +132,7 @@
       const container = document.querySelector('.event-list');
       if (!container) return;
       try {
-        const res = await fetch('http://localhost:3000/get-clean');
+        const res = await fetch('https://siteareahyderabadbackend.onrender.com/get-clean');
         const result = await res.json();
         const items = (result && result.mesage) ? result.mesage : [];
 

@@ -182,7 +182,7 @@
   const eventRow = document.querySelector(".event-row");
 
   try {
-    const res = await fetch('http://localhost:3000/getevents');
+    const res = await fetch('https://siteareahyderabadbackend.onrender.com/getevents');
     const { members } = await res.json(); // assuming `members` contains your events
 
     // Clear static cards if any

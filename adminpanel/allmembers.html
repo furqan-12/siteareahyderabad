@@ -557,7 +557,7 @@
 
 async function fetchAndRenderMembers() {
   try {
-    const response = await fetch('http://localhost:3000/get-all-members');
+    const response = await fetch('https://siteareahyderabadbackend.onrender.com/get-all-members');
     const allMembers = await response.json();
     const selectedCategory = parseInt(document.getElementById('categories').value ?? 0);
     
@@ -625,7 +625,7 @@ document.addEventListener('click', async function (e) {
       if (!confirm('Are you sure you want to delete this member?')) return;
 
       try {
-        const res = await fetch(`http://localhost:3000/delete-all-members/${memberId}`, {
+        const res = await fetch(`https://siteareahyderabadbackend.onrender.com/delete-all-members/${memberId}`, {
           method: 'DELETE'
         });
 
@@ -759,7 +759,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   async function loadCommittees() {
     try {
-      var res = await fetch("http://localhost:3000/members-categories");
+      var res = await fetch("https://siteareahyderabadbackend.onrender.com/members-categories");
       const result = await res.json();
   
       const dropdown = document.getElementById("committeesDropdown");
@@ -795,7 +795,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Table ko checkbox select hone par hi show karo
   async function fetchAndRenderCategories() {
     try {
-      const res = await fetch("http://localhost:3000/members-categories");
+      const res = await fetch("https://siteareahyderabadbackend.onrender.com/members-categories");
       const result = await res.json();
       categoriesTable.innerHTML = '<tr><th>Select</th><th>ID</th><th>Category Name</th></tr>';
       if (result.data && Array.isArray(result.data)) {

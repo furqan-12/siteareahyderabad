@@ -368,8 +368,8 @@
   };
   console.log('Payload:', payload); // Debug log
   const url = editingMemberId
-    ? `http://localhost:3000/update-member/${editingMemberId}`
-    : 'http://localhost:3000/add-member';
+    ? `https://siteareahyderabadbackend.onrender.com/update-member/${editingMemberId}`
+    : 'https://siteareahyderabadbackend.onrender.com/add-member';
   const method = editingMemberId ? 'PUT' : 'POST';
   try {
     const response = await fetch(url, {
@@ -406,7 +406,7 @@ function toBase64(file) {
 
   async function fetchAndRenderMembers() {
   try {
-    const response = await fetch('http://localhost:3000/getmembers');
+    const response = await fetch('https://siteareahyderabadbackend.onrender.com/getmembers');
     const result = await response.json();
 
     const activeBody = document.getElementById('memberTable');
@@ -456,7 +456,7 @@ document.addEventListener('click', async function (e) {
       if (!confirm('Are you sure you want to delete this member?')) return;
 
       try {
-        const res = await fetch(`http://localhost:3000/delete-member/${memberId}`, {
+        const res = await fetch(`https://siteareahyderabadbackend.onrender.com/delete-member/${memberId}`, {
           method: 'DELETE'
         });
 
@@ -503,7 +503,7 @@ document.addEventListener('click', async function (e) {
     const payload = { active: !isActive };
 
     try {
-      const res = await fetch(`http://localhost:3000/toggle-member-active/${memberId}`, {
+      const res = await fetch(`https://siteareahyderabadbackend.onrender.com/toggle-member-active/${memberId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
