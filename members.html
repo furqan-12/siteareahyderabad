@@ -51,7 +51,7 @@
       border: 3px solid #e6f0fa;
       box-shadow: 0 2px 8px rgba(53,130,50,0.08);
       width: 150px;
-      height: 200px;
+      height: auto;
       object-fit: cover;
       transition: transform 0.22s, box-shadow 0.22s;
     }
@@ -129,6 +129,11 @@
       .members-grid { grid-template-columns: 1fr; }
       .person-card .person-img { width: 100px; height: 130px; }
     }
+  /* small helpers for this page */
+  .section-title { color: rgb(53, 130, 50); font-size: 2.2rem; text-align: center; }
+  .designation { font-weight: bold; color: #358232; }
+  .icon-inline { vertical-align: middle; margin-right: 6px; }
+    
   </style>
 </head>
 <body>
@@ -140,6 +145,7 @@
         </div>
         <div class="logo-text">HYDERABAD SITE ASSOCIATION <br> OF TRADE AND INDUSTRY</div>
       </div>
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false"><span class="icon">☰</span></button>
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
         <li><a href="circulars.html">Circulars</a></li>
@@ -173,7 +179,7 @@
   </header>
   <main>
     <section class="members-section">
-      <h2 style="text-align:center; color:rgb(53, 130, 50); font-size:2.2rem;">Our Committee Members</h2>
+  <h2 class="section-title">Our Committee Members</h2>
       <div class="members-grid mt-5">
      
       </div>
@@ -275,28 +281,42 @@
           card.appendChild(divider);
   
           const desig = document.createElement('p');
-          desig.innerHTML = `<span style="font-weight:bold; color:#358232;">${member.designation}</span>`;
+          const desigSpan = document.createElement('span');
+          desigSpan.className = 'designation';
+          desigSpan.textContent = member.designation || '';
+          desig.appendChild(desigSpan);
           card.appendChild(desig);
   
           const email = document.createElement('p');
-          email.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" style="vertical-align:middle;margin-right:4px;">
-                 <path d="M2 4h20v16H2z" fill="none" stroke="#358232" stroke-width="2"/>
-                 <polyline points="2,4 12,13 22,4" fill="none" stroke="#358232" stroke-width="2"/>
-               </svg> ${member.email}`;
+          const mailIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+          mailIcon.setAttribute('width', '18');
+          mailIcon.setAttribute('height', '18');
+          mailIcon.setAttribute('viewBox', '0 0 24 24');
+          mailIcon.classList.add('icon-inline');
+          mailIcon.innerHTML = '<path d="M2 4h20v16H2z" fill="none" stroke="#358232" stroke-width="2"/><polyline points="2,4 12,13 22,4" fill="none" stroke="#358232" stroke-width="2"/>';
+          email.appendChild(mailIcon);
+          email.appendChild(document.createTextNode(' ' + (member.email || '')));
           card.appendChild(email);
   
           const phone = document.createElement('p');
-phone.innerHTML = `
-  <svg width="18" height="18" viewBox="0 0 24 24" style="vertical-align:middle;margin-right:4px;" xmlns="http://www.w3.org/2000/svg">
-    <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.11-.21 11.36 11.36 0 003.54.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.36 11.36 0 00.57 3.54 1 1 0 01-.21 1.11z" fill="none" stroke="#358232" stroke-width="2"/>
-  </svg>
-  ${member.phone}
-`;
-card.appendChild(phone);
+          const phoneIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+          phoneIcon.setAttribute('width', '18');
+          phoneIcon.setAttribute('height', '18');
+          phoneIcon.setAttribute('viewBox', '0 0 24 24');
+          phoneIcon.classList.add('icon-inline');
+          phoneIcon.innerHTML = '<path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.11-.21 11.36 11.36 0 003.54.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.36 11.36 0 00.57 3.54 1 1 0 01-.21 1.11z" fill="none" stroke="#358232" stroke-width="2"/>';
+          phone.appendChild(phoneIcon);
+          phone.appendChild(document.createTextNode(' ' + (member.phone || '')));
+          card.appendChild(phone);
 
   
           const addr = document.createElement('p');
-          addr.innerHTML = `<span style="font-weight:bold; color:#358232;">Company Address:</span><br> ${member.company_address}`;
+          const addrLabel = document.createElement('span');
+          addrLabel.className = 'designation';
+          addrLabel.textContent = 'Company Address:';
+          addr.appendChild(addrLabel);
+          addr.appendChild(document.createElement('br'));
+          addr.appendChild(document.createTextNode(member.company_address || ''));
           card.appendChild(addr);
   
           grid.appendChild(card);
@@ -307,6 +327,21 @@ card.appendChild(phone);
     }
   
     document.addEventListener('DOMContentLoaded', loadMembers);
+  </script>
+  <script>
+    (function() {
+      const toggle = document.querySelector('.nav-toggle');
+      const navLinks = document.querySelector('.nav-links');
+      const icon = toggle ? toggle.querySelector('.icon') : null;
+      function openNav(){ navLinks.classList.add('open'); toggle.setAttribute('aria-expanded','true'); if(icon) icon.textContent='✕'; }
+      function closeNav(){ navLinks.classList.remove('open'); toggle.setAttribute('aria-expanded','false'); if(icon) icon.textContent='☰'; }
+      if(toggle && navLinks){
+        toggle.addEventListener('click', e => { e.stopPropagation(); navLinks.classList.contains('open') ? closeNav() : openNav(); });
+        document.addEventListener('click', e => { if(!navLinks.contains(e.target) && !toggle.contains(e.target) && navLinks.classList.contains('open')) closeNav(); });
+        navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', closeNav));
+        document.addEventListener('keydown', e => { if(e.key === 'Escape' && navLinks.classList.contains('open')) closeNav(); });
+      }
+    })();
   </script>
   
 </body>

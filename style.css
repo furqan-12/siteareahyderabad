@@ -29,6 +29,48 @@ header {
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
+/* Responsive navbar helpers (site-wide) */
+.nav-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  font-size: 26px;
+  cursor: pointer;
+  z-index: 70;
+}
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+}
+.nav-links.open { display: flex; }
+
+@media (max-width: 768px) {
+  .nav-toggle { display: inline-block; }
+  /* Hide nav-links by default on small screens; show when .open present */
+  .nav-links {
+    position: absolute;
+    top: 64px;
+    right: 16px;
+    background: rgba(255,255,255,0.98);
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 12px;
+    border-radius: 8px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    display: none; /* hidden until toggled */
+    width: calc(100% - 40px);
+    max-width: 360px;
+    z-index: 75;
+  }
+  .nav-links.open { display: flex; }
+  .nav-links li { width: 100%; }
+  .nav-links a { width: 100%; padding: 10px 8px; display: block; }
+}
+
 .navbar-brand {
   display: flex;
   align-items: center;
@@ -74,10 +116,10 @@ header {
 }
 .nav-links {
   list-style: none;
-  display: flex;
   gap: 2rem;
   margin: 0;
   padding: 0;
+  /* Default to visible on desktop via flex set in desktop rules; mobile will override to display:none */
 }
 .nav-links li a {
   color: #358232;
@@ -506,6 +548,19 @@ footer {
   margin: 0.5rem 0 0.2rem 0;
   color: #2e7d32;
 }
+.person-name {
+  margin: 0.5rem 0 0.2rem 0;
+  color: rgb(53, 130, 50);
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  background: #e6f0fa;
+  padding: 0.4rem 0;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(53, 130, 50, 0.04);
+  margin-bottom: 0.5rem;
+}
+.message-text { font-size: 1.02rem; display: block; margin-top: 0.5rem; }
 .contact-form-bg {
   background: linear-gradient(135deg, #e6f0ea 0%, #f4f8fc 100%);
   padding: 2rem 1.5rem;
@@ -1502,3 +1557,128 @@ section h2, .pre-footer-col h3, .management-col h3, .footer-col h3, .committee h
   height: 500px;
   max-width: 450px;
 }
+
+/* --- Responsive utilities (shared across pages) --- */
+/* Container */
+.container, .site-container {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+/* Row / col helpers (flex grid) */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.col {
+  flex: 1 1 0;
+  min-width: 0;
+}
+.col-1 { flex: 0 0 8.3333%; }
+.col-2 { flex: 0 0 16.6667%; }
+.col-3 { flex: 0 0 25%; }
+.col-4 { flex: 0 0 33.3333%; }
+.col-6 { flex: 0 0 50%; }
+.col-12 { flex: 0 0 100%; }
+
+/* Fluid image */
+.img-fluid, img.img-fluid { max-width: 100%; height: auto; display: block; }
+
+/* Responsive tables */
+.table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.table-responsive table { width: 100%; border-collapse: collapse; }
+
+/* Common helpers */
+.text-center { text-align: center; }
+.hide-sm { display: none !important; }
+.show-sm { display: none; }
+
+@media (max-width: 768px) {
+  .hide-sm { display: block !important; }
+  .show-sm { display: block; }
+  /* Simple utility to stack columns */
+  .col-4, .col-3, .col-6 { flex: 0 0 100%; }
+}
+
+/* Ensure images in card areas don't overflow */
+.management-col .person-img, .person-card .person-img { max-width: 100%; height: auto; }
+
+/* Make buttons touch-friendly on mobile */
+button, .see-more, .see-all-events-btn { padding: 0.65rem 1.1rem; min-height: 44px; }
+
+/* small typography scaling */
+@media (max-width: 600px) {
+  body { font-size: 15px; }
+}
+
+/* ------------------ Mobile nav override (force correct behavior) ------------------ */
+@media (max-width: 900px) {
+  /* Ensure the hamburger button is visible on mobile/tablet */
+  .nav-toggle { display: inline-flex !important; }
+
+  /* Hide nav by default on smaller screens; rely on .open to display it */
+  .nav-links {
+    display: none !important;
+    position: absolute !important;
+    top: 64px !important;
+    right: 12px !important;
+    width: calc(100% - 32px) !important;
+    max-width: 360px !important;
+    background: rgba(255,255,255,0.98) !important;
+    flex-direction: column !important;
+    padding: 12px !important;
+    border-radius: 8px !important;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12) !important;
+    z-index: 9999 !important;
+  }
+
+  /* When JS toggles .open, force it visible */
+  .nav-links.open { display: flex !important; }
+
+  /* Simple hamburger visuals */
+  .nav-toggle {
+    width: 44px;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    background: transparent;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    z-index: 10001;
+  }
+  .nav-toggle .hamburger,
+  .nav-toggle .hamburger::before,
+  .nav-toggle .hamburger::after {
+    content: '';
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: #27611e;
+    border-radius: 2px;
+    transition: transform 0.18s ease, opacity 0.18s ease;
+  }
+  .nav-toggle .hamburger::before { transform: translateY(-7px); }
+  .nav-toggle .hamburger::after { transform: translateY(5px); }
+
+  /* Open state: middle line hidden, top+bottom form an X */
+  .nav-toggle.open .hamburger { background: transparent; }
+  .nav-toggle.open .hamburger::before { transform: rotate(45deg) translate(3px, 3px); }
+  .nav-toggle.open .hamburger::after { transform: rotate(-45deg) translate(3px, -3px); }
+
+  /* Make nav links full width touch targets */
+  .nav-links a { padding: 12px 10px !important; }
+}
+
+/* Desktop: ensure nav is visible as flex when not overridden */
+@media (min-width: 901px) {
+  .nav-links { display: flex !important; position: static !important; box-shadow: none !important; }
+}
+
+/* ---------------------------------------------------------------------------- */

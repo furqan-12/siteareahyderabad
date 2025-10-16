@@ -23,6 +23,9 @@
         </div>
         <div class="logo-text">HYDERABAD SITE ASSOCIATION <br> OF TRADE AND INDUSTRY</div>
       </div>
+      <button class="nav-toggle" aria-label="Open navigation">
+        <span class="hamburger"></span>
+      </button>
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
         <li><a href="circulars.html">Circulars</a></li>
@@ -127,6 +130,29 @@
       <p>Designed & Developed by Digital Hyperlink (PVT) LTD.</p>
     </div>
   </footer>
+  <script>
+    (function () {
+      document.addEventListener('click', function (e) {
+        const toggle = e.target.closest('.nav-toggle');
+        if (toggle) {
+          document.querySelectorAll('.nav-links').forEach(n => n.classList.toggle('open'));
+          document.querySelectorAll('.nav-toggle').forEach(b => b.classList.toggle('open'));
+        }
+      });
+      document.addEventListener('click', function (e) {
+        if (!e.target.closest('.navbar')) {
+          document.querySelectorAll('.nav-links.open').forEach(n => n.classList.remove('open'));
+          document.querySelectorAll('.nav-toggle.open').forEach(b => b.classList.remove('open'));
+        }
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+          document.querySelectorAll('.nav-links.open').forEach(n => n.classList.remove('open'));
+          document.querySelectorAll('.nav-toggle.open').forEach(b => b.classList.remove('open'));
+        }
+      });
+    })();
+  </script>
   <script>
     async function fetchCleanInitiatives() {
       const container = document.querySelector('.event-list');
