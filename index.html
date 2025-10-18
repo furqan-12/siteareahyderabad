@@ -101,6 +101,24 @@
       .management-col.person-card { flex: 0 1 45%; width: 45%; max-width: 420px; }
     }
 
+    .office h2{
+      text-align: center;
+      color: rgb(53, 130, 50) !important;
+      padding-bottom: 2rem;
+      font-size: 2.3rem;    
+      position: relative;
+    }
+
+    .office h2::after {
+    content: "";
+    display: block;
+    width: 20%;
+    height: 4px;
+    background: rgb(177, 145, 79);
+    border-radius: 2px;
+    margin: 0.3rem auto 0 auto;
+}
+
     @media (max-width: 600px) {
       .slider-slide img { height: 200px; }
       /* Mobile: stack cards vertically and make them full-width with comfortable padding */
@@ -136,7 +154,13 @@
     </button>
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
-        <li><a href="circulars.html">Circulars</a></li>
+        <li class="dropdown">
+            <a href="about.html">About Us</a>
+            <div class="dropdown-content">
+                  <a href="about.html">about us</a>
+                  <a href="messages.html">our vision</a>
+            </div>
+          </li>
         <li class="dropdown">
           <a href="members.html">Committee Members</a>
           <div class="dropdown-content">
@@ -154,13 +178,8 @@
             </div>
           </li>
           
-          <li class="dropdown">
-            <a href="about.html">About Us</a>
-            <div class="dropdown-content">
-                  <a href="about.html">about us</a>
-                  <a href="messages.html">our vision</a>
-            </div>
-          </li>
+                  <li><a href="circulars.html">Circulars</a></li>
+
           <li><a href="maps.html">Infrastructure</a></li>
           <li><a href="#contact-section">Contact Us</a></li>
         </li>
@@ -246,8 +265,10 @@
         <img src="assests/management.png" alt="management" class="management-img">
       </div>
     </div>
-    
-    
+    <div class="office">
+
+      <h2>Office barriers </h2>
+    </div>
       <div class="management-row text-align-center align-items-center" id="management-row-top"></div>
 <div class="management-row" id="management-row-bottom"></div>
 

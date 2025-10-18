@@ -146,6 +146,8 @@ console.log(response);
           const sessionData = {
             isLoggedIn: true,
             user: result.user,
+            // Store the full session returned by the backend (if present) which contains access_token
+            session: result.session || null,
             loginTime: new Date().toISOString(),
             sessionId: 'session_' + Date.now()
           };
