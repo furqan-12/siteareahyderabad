@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Members - S.I.T.E Association</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=5">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     html {
       scroll-behavior: smooth;
@@ -132,52 +133,19 @@
   </style>
 </head>
 <body>
-  <header>
-    <nav class="navbar">
-      <div class="navbar-brand">
-        <div class="logo-img">
-          <img src="assests/SITE Official Logo.JPG" alt=SITE Association of Industry">
-        </div>
-        <div class="logo-text">HYDERABAD SITE ASSOCIATION <br> OF TRADE AND INDUSTRY</div>
-      </div>
-      <button class="nav-toggle" aria-label="Open navigation">
-        <span class="hamburger"></span>
-      </button>
-      <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="circulars.html">Circulars</a></li>
-        <li class="dropdown">
-          <a href="members.html">Committee Members</a>
-          <div class="dropdown-content">
-            <a href="members.html">Current Members</a>
-            <a href="pastExecutivecommittee.html">Executive Committee Members</a>
-            <a href="allmembers.html">All Members</a>
-
-          </div>
-        </li>
-        <li><a href="events.html">Events</a></li>
-        <li><a href="clean-green.html">Clean & Green S.I.T.E</a></li>
-        <li class="dropdown">
-          <a href="#downloads">Downloads</a>
-          <div class="dropdown-content">
-            <a href="membershipForm.html">Membership Form</a>
-          </div>
-        </li>
-        <li class="dropdown">
-          <a href="about.html">About Us</a>
-          <div class="dropdown-content" >
-            <a href="about.html">about us</a>
-            <a href="messages.html">our vision</a>
-          </div>
-        </li>
-        <li><a href="maps.html">Infrastructure</a></li>
-        <li><a href="members.html#contact-section">Contact Us</a></li>
-      </ul>
-    </nav>
-  </header>
+  <header id="site-navbar"></header>
   <main>
     <section class="members-section">
       <h2 style="text-align:center; color:rgb(53, 130, 50); font-size:2.2rem;">Our Committee Members</h2>
+      
+      <!-- Search Bar -->
+      <div style="max-width: 500px; margin: 20px auto;">
+        <div class="input-group">
+          <span class="input-group-text">🔍</span>
+          <input type="text" id="searchInput" class="form-control" placeholder="Search by name..." onkeyup="filterMembersByName()" style="border: 2px solid rgb(53, 130, 50); border-radius: 8px;">
+        </div>
+      </div>
+      
       <div class="members-grid mt-5" id="memberTable">
         <!-- Cards will be injected here -->
       </div>
@@ -189,7 +157,7 @@
         <div class="contact-info">
           <p><strong>Head Office:</strong> Plot # C/41, Mirpurkhas Road, Near Railway Crossing, SITE Area,
             Hyderabad, Sindh.</p>
-            <p>
+             <p>
               <strong>
                 <svg width="18" height="18" viewBox="0 0 24 24" style="vertical-align:middle;margin-right:4px;">
                   <path d="M2 4h20v16H2z" fill="none" stroke="currentColor" stroke-width="2" />
@@ -204,9 +172,19 @@
                 <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.11-.21 11.36 11.36 0 003.54.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.36 11.36 0 00.57 3.54 1 1 0 01-.21 1.11z"
                   fill="none" stroke="currentColor" stroke-width="2" />
               </svg>
-              : +92334-4544474
+              <strong>
+              :+92334-4544474    
+              </strong>
+             
+              
             </p>
-          <p><strong></strong>  022-383504 - 3882001</p>
+            <p>
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 640 640" style="vertical-align:middle; 
+              fill:currentColor;">
+                <path d="M514.2 330.8C530 337.3 548.3 331.1 556.8 316.2L559.2 312C587.1 263.1 582.8 193.2 527.9 157.5C401.9 75.5 238.3 75.5 112.3 157.5C57.4 193.2 53 263.2 81 312L83.4 316.2C91.9 331.1 110.1 337.3 126 330.8L207.9 297.1C221.8 291.4 230.3 277.2 228.8 262.2L223.7 211.2C286.2 190.2 354.5 191.3 416.3 214.5L411.5 262.2C410 277.2 418.5 291.4 432.4 297.1L514.3 330.8zM96 416C96 433.7 110.3 448 128 448C145.7 448 160 433.7 160 416C160 398.3 145.7 384 128 384C110.3 384 96 398.3 96 416zM192 416C192 433.7 206.3 448 224 448C241.7 448 256 433.7 256 416C256 398.3 241.7 384 224 384C206.3 384 192 398.3 192 416zM128 480C110.3 480 96 494.3 96 512C96 529.7 110.3 544 128 544C145.7 544 160 529.7 160 512C160 494.3 145.7 480 128 480zM480 512C480 529.7 494.3 544 512 544C529.7 544 544 529.7 544 512C544 494.3 529.7 480 512 480C494.3 480 480 494.3 480 512zM320 384C302.3 384 288 398.3 288 416C288 433.7 302.3 448 320 448C337.7 448 352 433.7 352 416C352 398.3 337.7 384 320 384zM384 416C384 433.7 398.3 448 416 448C433.7 448 448 433.7 448 416C448 398.3 433.7 384 416 384C398.3 384 384 398.3 384 416zM512 384C494.3 384 480 398.3 480 416C480 433.7 494.3 448 512 448C529.7 448 544 433.7 544 416C544 398.3 529.7 384 512 384zM192 512C192 529.7 206.3 544 224 544L416 544C433.7 544 448 529.7 448 512C448 494.3 433.7 480 416 480L224 480C206.3 480 192 494.3 192 512z"/>
+              </svg>
+              <strong>:+92334-4544474</strong> 
+            </p>
         </div>
         <div class="social-icons mt-5">
             <!-- Facebook -->
@@ -247,7 +225,7 @@
       <p>Designed & Developed by Digital Hyperlink (PVT) LTD.</p>
     </div>
   </footer>
-  <script>
+  <!-- <script>
     // Mobile nav toggle (added site-wide)
     (function () {
       document.addEventListener('click', function (e) {
@@ -271,13 +249,23 @@
         }
       });
     })();
-  </script>
+  </script> -->
+  <script src="nav-fix.js" defer></script>
   <script>
-   document.addEventListener("DOMContentLoaded", () => {
-  fetch("https://siteareahyderabadbackend.onrender.com/get-all-members")
-    .then(response => response.json())
-    .then(data => {
-      const grid = document.getElementById("memberTable");
+  document.addEventListener("DOMContentLoaded", async () => {
+    const grid = document.getElementById("memberTable");
+    try {
+      // Fetch industries first to map ids to names
+      const indRes = await fetch("https://siteareahyderabadbackend.onrender.com/get-industries");
+      let industryMap = {};
+      if (indRes.ok) {
+        const indJson = await indRes.json();
+        const industries = Array.isArray(indJson.industries) ? indJson.industries : indJson.data || [];
+        industries.forEach(i => { if (i && (i.id || i.industry_id)) industryMap[i.id || i.industry_id] = i.name || i.industry_name || i.title || '' });
+      }
+
+      const res = await fetch("https://siteareahyderabadbackend.onrender.com/get-all-members");
+      const data = await res.json();
 
       if (!data.message || !Array.isArray(data.message) || data.message.length === 0) {
         grid.innerHTML = "<p>No members found.</p>";
@@ -286,26 +274,72 @@
 
       data.message.forEach(member => {
         const card = document.createElement("div");
+        console.log("check memeber dettails ", member);
+
         card.className = "person-card";
-        // Show member image if available, else show default avatar
+
+        const first = member.first_name || member.firstName || '';
+        const last = member.last_name || member.lastName || '';
+        console.log("company name ", member.company);
+        const companyname = member.company || '';
+        const full = (first + ' ' + last).trim();
+        const displayName = member.name || full || member.membername || first || 'Member Name';
+        const imgSrc = (member.file_url && member.file_url.trim()) || member.image || member.photo || 'assests/avatar.png';
+        let industryText = '';
+        
+        if (member.industrycategories) industryText = member.industrycategories;
+        
+        else if (member.industry || member.industrycategory) industryText = member.industry || member.industrycategory;
+        else if (member.industry_id || member.industryId) industryText = industryMap[member.industry_id || member.industryId] || String(member.industry_id || member.industryId || '');
+
         card.innerHTML = `
-          <img src="${member.file_url || 'assests/avatar.png'}" alt="${member.name}" class="person-img" />
-          <h4>${member.name}</h4>
+          <img src="${imgSrc || 'assests/avatar.png'}" alt="${displayName}" class="person-img" onerror="this.onerror=null;this.src='assests/avatar.png'" />
+          <h4>${displayName}</h4>
+          <h4>${companyname}</h4>
           <div class="divider"></div>
-          <p><strong>Designation:</strong> ${member.designation}</p>
-          <p><strong>Email:</strong> ${member.email}</p>
-          <p><strong>Phone:</strong> ${member.phoneno}</p>
-          <p><strong>Address:</strong> ${member.companyaddress}</p>
+          <p class="industry-cats">${industryText}</p>
+         
         `;
+        
+        // Add data attribute for filtering by name
+        card.setAttribute('data-member-name', displayName);
+
         grid.appendChild(card);
       });
-    })
-    .catch(err => {
+    } catch (err) {
       console.error("Error fetching members:", err);
-      document.getElementById("memberTable").innerHTML =
-        "<p style='color:red;'>Failed to load members. Please try again later.</p>";
-    });
-});
+      grid.innerHTML = "<p style='color:red;'>Failed to load members. Please try again later.</p>";
+    }
+  });
+
+  // Helper function to normalize text (remove spaces and dots for comparison)
+  function normalizeText(text) {
+    return text.toLowerCase()
+      .replace(/\s+/g, '')      // Remove all spaces
+      .replace(/\./g, '');       // Remove all dots
+  }
+
+  // Search/Filter function for members by name only
+  function filterMembersByName() {
+    const searchInput = document.getElementById('searchInput');
+    const rawFilter = searchInput.value.trim();
+    const filter = normalizeText(rawFilter);
+    const grid = document.getElementById('memberTable');
+    const cards = grid.getElementsByClassName('person-card');
+
+    for (let i = 0; i < cards.length; i++) {
+      const card = cards[i];
+      const memberName = card.getAttribute('data-member-name') || '';
+      const normalizedName = normalizeText(memberName);
+      
+      // Show/hide card based on name match
+      if (normalizedName.includes(filter) || filter === '') {
+        card.style.display = '';
+      } else {
+        card.style.display = 'none';
+      }
+    }
+  }
 
   </script>
   

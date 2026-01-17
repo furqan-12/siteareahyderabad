@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Industry Members</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { font-family: system-ui, Arial, sans-serif; padding: 20px; }
+    .topbar { display:flex; align-items:center; gap:12px; margin-bottom:18px }
+    .back-btn { background:#358232; color:#fff; border:none; padding:8px 12px; border-radius:6px; cursor:pointer }
+    .industry-title { font-size:22px; color:#102b5d; font-weight:700 }
+    .members-grid { display:flex; flex-wrap:wrap; gap:16px; margin-top:18px }
+    .member-card { width:260px; background:#fff; border-radius:8px; padding:12px; box-shadow:0 6px 18px rgba(0,0,0,0.06) }
+    .member-card img { width:64px; height:64px; object-fit:cover; border-radius:6px }
+    .member-card .name { font-weight:600; color:#102b5d }
+    .member-card .meta { font-size:13px; color:#556 }
+    .empty { color:#666; margin-top:16px }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <button class="back-btn" id="backBtn">← Back</button>
+    <div class="industry-title" id="industryTitle">Industry Members</div>
+  </div>
+  <div id="membersContainer">
+    <div id="membersGrid" class="members-grid"></div>
+    <div id="emptyMsg" class="empty" style="display:none">No members found.</div>
+    <!-- Debug output: visible while troubleshooting -->
+    <!-- <details id="debugBox" style="margin-top:16px;color:#444;max-width:900px;">
+      <summary style="cursor:pointer">Debug: fetch info (click to expand)</summary>
+      <div style="padding:8px;">
+        <div><strong>Fetch URL:</strong> <span id="debugUrl"></span></div>
+        <div><strong>Status:</strong> <span id="debugStatus"></span></div>
+        <pre id="debugJson" style="white-space:pre-wrap;background:#f7f7f7;border-radius:6px;padding:8px;overflow:auto;max-height:320px;"></pre>
+      </div>
+    </details> -->
+  </div>
+
+  <script>
+    (function(){
+      const API_BASE = 'https://siteareahyderabadbackend.onrender.com';
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id');
+      const name = params.get('name') || '';
+      document.getElementById('industryTitle').textContent = name ? `Members — ${decodeURIComponent(name)}` : 'Members';
+      document.getElementById('backBtn').addEventListener('click', ()=> history.back());
+
+      async function load() {
+        if (!id) {
+            // Try to resolve id from name when id is not provided
+            if (name) {
+              try {
+                const res = await fetch(`${API_BASE}/get-industries`);
+                if (res.ok) {
+                  const js = await res.json();
+                  const industries = js.industries || [];
+                  const normalizedName = name.toLowerCase().replace(/\s+/g, ' ').trim();
+                  const exact = industries.find(ind => String(ind.name || '').toLowerCase().replace(/\s+/g, ' ').trim() === normalizedName);
+                  if (exact && exact.id) {
+                    id = exact.id;
+                    console.log('Resolved industry id from name (exact):', id);
+                  } else {
+                    const fuzzy = industries.find(ind => String(ind.name || '').toLowerCase().includes(normalizedName) || normalizedName.includes(String(ind.name || '').toLowerCase()));
+                    if (fuzzy && fuzzy.id) {
+                      id = fuzzy.id;
+                      console.log('Resolved industry id from name (fuzzy):', id, 'name:', fuzzy.name);
+                    }
+                  }
+                } else {
+                  console.warn('get-industries fetch failed with status', res.status);
+                }
+              } catch (err) {
+                console.error('Error resolving industry id from name:', err);
+              }
+            }
+
+            if (!id) {
+              document.getElementById('emptyMsg').textContent = name ? `No industry found for "${name}".` : 'No industry specified.';
+              document.getElementById('emptyMsg').style.display = 'block';
+              return;
+            }
+          }
+        try {
+            console.log('Fetching all members and filtering for industry:', id); // Debug log
+            // Get all members first
+            const res = await fetch(`${API_BASE}/get-all-members`);
+            if (!res.ok) throw new Error('Network response not ok: ' + res.status);
+            const json = await res.json();
+            
+            // Filter members by industry_id
+            const allMembers = Array.isArray(json.message) ? json.message : 
+                             Array.isArray(json.members) ? json.members : [];
+            
+            console.log('All members industry IDs:', allMembers.map(m => ({
+              name: m.first_name + ' ' + m.last_name,
+              industry_id: m.industry_id
+            })));
+            
+            // Filter only members matching the current industry_id
+            const filteredMembers = allMembers.filter(member => {
+              console.log('Checking member:', member.first_name, member.last_name, 
+                'Industry ID:', member.industry_id, 
+                'Looking for ID:', id,
+                'Match?:', member.industry_id?.toString() === id.toString());
+              return member.industry_id?.toString() === id.toString();
+            });
+            console.log('Got all members, filtering for industry:', id); // Debug log
+            // populate debug UI
+            const debugUrlEl = document.getElementById('debugUrl');
+            const debugStatusEl = document.getElementById('debugStatus');
+            const debugJsonEl = document.getElementById('debugJson');
+            if (debugUrlEl) debugUrlEl.textContent = `${API_BASE}/get-all-members (Filtered for industry ${id})`;
+            if (debugStatusEl) debugStatusEl.textContent = res.status;
+            if (debugJsonEl) debugJsonEl.textContent = JSON.stringify({
+              total_members: allMembers.length,
+              filtered_members: filteredMembers.length,
+              industry_id: id,
+              members: filteredMembers
+            }, null, 2);
+
+            // Use the filtered members
+            const members = filteredMembers;
+
+            console.log('Total members found:', members.length); // Debug log
+            console.log('Preview members (first 5):', members.slice(0,5));
+          
+          const grid = document.getElementById('membersGrid');
+          grid.innerHTML = '';
+          if (!members.length) {
+            document.getElementById('emptyMsg').style.display = 'block';
+            return;
+          }
+          document.getElementById('emptyMsg').style.display = 'none';
+          members.forEach(m => {
+            const card = document.createElement('div');
+            card.className = 'member-card';
+            // Use avatar fallback and show only Name + Designation per request
+            const imgSrc = (m.file_url && m.file_url.toString().trim()) || (m.image_url && m.image_url.toString().trim()) || (m.image && m.image.toString().trim()) || 'assests/avatar.png';
+            const first = (m.first_name || m.firstName || '').toString().trim();
+            const last = (m.last_name || m.lastName || '').toString().trim();
+            const fullname = (first || last) ? `${first} ${last}`.trim() : (m.name || m.membername || m.company || 'No Name');
+            card.innerHTML = `
+              <div style="display:flex;gap:12px;align-items:center">
+                <img src="${imgSrc}" alt="${fullname}" onerror="this.onerror=null;this.src='assests/avatar.png'">
+                <div style="flex:1">
+                  <div class="name">${fullname || '-'}</div>
+                  <div class="meta">${m.designation || ''}</div>
+                </div>
+              </div>
+            `;
+            grid.appendChild(card);
+          });
+        } catch (err) {
+          console.error('Failed to load members:', err);
+          document.getElementById('emptyMsg').textContent = 'Failed to load members.';
+          document.getElementById('emptyMsg').style.display = 'block';
+        }
+      }
+      load();
+    })();
+  </script>
+</body>
+</html>

@@ -183,6 +183,7 @@
     <a class="navbar-brand d-flex align-items-center" href="#">
       <img src="../assests/logo.png" height="60px" width="60px" alt="Logo" class="me-2" />
       <span class="fw-bold text-success" style="font-size: 1rem;">Hyderabad SITE ASSOCIATION OF TRADE AND INDUSTRY</span>
+        <span id="roleBadge" style="margin-left:12px; padding:6px 10px; background:#f0f0f0; border-radius:6px; color:#102b5d; font-weight:600; display:none;">Role: -</span>
     </a>
   </nav>
 
@@ -197,17 +198,12 @@
         <a href="allmembers.html" class="active">👥 All Members</a>
       </div>
     </div>
-    <div class="dropdown-container">
-      <button class="dropdown-btn">👥 Committees ▾</button>
-      <div class="dropdown-content" id="committeesDropdown">
-        <!-- API se data yahan inject hoga -->
-      </div>
-    </div>
     <a href="adminevents.html">📅 Events</a>
     <a href="admincircular.html">📢 Circulars</a>
-    <a href="clean&green.html" >♻️ Clean&Green</a>
-
-    <a href="#" onclick="logout()">🚪 Logout</a>
+    <a href="clean&green.html">♻️ Clean&Green</a>
+    <a href="adminpressrelease.html">📰 Press Releases</a>
+    <a href="siteindustries.html">🏭 IndustryCategory</a>
+    <a href="index.html" onclick="logout()">🚪 Logout</a>
   </div>
 
   <!-- Main Content -->
@@ -234,8 +230,13 @@
     <h3 id="apiTitle" style="display:none;">API Result</h3>
 
 <table id="categoriesTable" border="1" style="display:none;">
-  <tr><th>Category</th></tr>
+  <tr><th>Select</th><th>ID</th><th>Category Name</th></tr>
 </table>
+<!-- OK button for assigning category to selected members -->
+<div id="assignCategoryContainer" style="display:none; margin:10px 0;">
+  <p id="selectedMembersSummary" class="mb-2 text-muted" style="margin:0;"></p>
+  <button id="assignCategoryBtn" class="btn btn-primary mt-2">OK: Assign Selected Category</button>
+</div>
 
 <table id="apiResultTable" border="1" style="display:none;">
   <tr><th>Result</th></tr>
@@ -252,6 +253,14 @@
       </thead>
       <tbody></tbody>
     </table>
+
+    <!-- Search Bar -->
+    <div class="mb-3">
+      <div class="input-group" style="max-width: 400px;">
+        <span class="input-group-text">🔍</span>
+        <input type="text" id="searchInput" class="form-control" placeholder="Search by name, email, company, phone..." onkeyup="filterMembersTable()">
+      </div>
+    </div>
 
     <div class="table-container">
       <table class="table table-bordered table-hover">
@@ -277,6 +286,8 @@
             <th>Website</th>
             <th>Join Date</th>
             <th>Status</th>
+            <th>Industry</th>
+            <th>Categories</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -332,6 +343,12 @@
               <div class="col-md-6">
                 <input type="text" class="form-control" name="phoneno" placeholder="Phone" required />
               </div>
+
+               <div class="col-md-6">
+              <select class="form-control" name="industry_id" id="industryDropdown" required>
+                <option value="">Select Industry</option>
+              </select>
+            </div>
 
               <div class="col-md-12">
                 <input type="text" class="form-control" name="companyaddress" placeholder="Company Address" />
@@ -393,6 +410,35 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="admin-roles.js" defer></script>
   <script>
+  // Show role badge when roles are available
+  function showRoleBadge(roles) {
+    try {
+      const badge = document.getElementById('roleBadge');
+      if (!badge) return;
+      badge.style.display = 'inline-block';
+      badge.textContent = 'Role: ' + (Array.isArray(roles) ? roles.join(', ') : String(roles));
+    } catch (e) { console.warn('showRoleBadge error', e); }
+  }
+
+  function updateDeleteButtonVisibility(roles = []) {
+    const shouldHide = Array.isArray(roles) && roles.length === 1 && roles.includes('admin');
+    document.querySelectorAll('.btn-delete').forEach(btn => {
+      btn.style.display = shouldHide ? 'none' : '';
+      btn.disabled = shouldHide;
+    });
+  }
+
+  document.addEventListener('adminRolesLoaded', (e) => {
+    const roles = e.detail.roles || [];
+    showRoleBadge(roles);
+    updateDeleteButtonVisibility(roles);
+  });
+
+  // If roles already present on window (script load order), show immediately
+  if (window.adminRoles && Array.isArray(window.adminRoles.roles) && window.adminRoles.roles.length) {
+    showRoleBadge(window.adminRoles.roles);
+    updateDeleteButtonVisibility(window.adminRoles.roles);
+  }
 
   // Session Management Functions
   function checkAuth() {
@@ -434,6 +480,72 @@
     const memberModal = new bootstrap.Modal(document.getElementById('memberModal'));
     const memberForm = document.getElementById('memberForm');
     let editingMemberId = null;
+    const API_BASE = 'https://siteareahyderabadbackend.onrender.com';
+    const selectedMemberIds = new Set();
+    let categoryMap = {}; // id -> name
+
+    // load categories into a map for resolving names in the table
+    async function loadCategoryMap() {
+      try {
+        const res = await fetch(`${API_BASE}/members-categories`, {
+          headers: createAuthHeaders()
+        });
+        const json = await res.json();
+        const cats = Array.isArray(json.data) ? json.data : Array.isArray(json.message) ? json.message : [];
+        categoryMap = {};
+        cats.forEach(c => {
+          if (c && (c.id || c.category_id)) categoryMap[c.id || c.category_id] = c.name || c.category_name || c.title || '';
+        });
+        console.log('[DEBUG] loadCategoryMap - cats:', cats);
+        console.log('[DEBUG] loadCategoryMap - categoryMap:', categoryMap);
+      } catch (err) {
+        console.warn('Failed to load category map', err);
+        categoryMap = {};
+      }
+    }
+
+    // prime the map once
+    loadCategoryMap();
+    const categoriesTable = document.getElementById("categoriesTable");
+    const apiTitle = document.getElementById("apiTitle");
+    const assignCategoryContainer = document.getElementById("assignCategoryContainer");
+    const assignCategoryBtn = document.getElementById("assignCategoryBtn");
+    const selectedMembersSummary = document.getElementById("selectedMembersSummary");
+
+    function createAuthHeaders({ json = false } = {}) {
+      const headers = json ? { 'Content-Type': 'application/json' } : {};
+      try {
+        const session = JSON.parse(localStorage.getItem('adminSession'));
+        const token = session?.session?.access_token;
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+      } catch (err) {
+        console.warn('Auth header build failed', err);
+      }
+      return headers;
+    }
+
+    function clearCategorySelections() {
+      document.querySelectorAll('.category-checkbox').forEach(cb => {
+        cb.checked = false;
+      });
+    }
+
+    function refreshSelectionUI() {
+      const anySelected = selectedMemberIds.size > 0;
+      if (selectedMembersSummary) {
+        selectedMembersSummary.textContent = anySelected
+          ? `${selectedMemberIds.size} member(s) selected`
+          : 'Select members to assign categories';
+      }
+      if (categoriesTable) categoriesTable.style.display = anySelected ? 'table' : 'none';
+      if (apiTitle) apiTitle.style.display = anySelected ? 'block' : 'none';
+      if (assignCategoryContainer) assignCategoryContainer.style.display = anySelected ? 'block' : 'none';
+      if (!anySelected) {
+        clearCategorySelections();
+      } else if (categoriesTable && categoriesTable.rows.length <= 1) {
+        fetchAndRenderCategories();
+      }
+    }
 
     function openForm() {
       memberModal.show();
@@ -450,63 +562,65 @@
   const formData = new FormData(memberForm);
   const imageInput = document.getElementById('memberImage');
 
-  // Convert image to base64
-  if (imageInput && imageInput.files && imageInput.files[0]) {
-    const file = imageInput.files[0];
-    const reader = new FileReader();
-    reader.onloadend = async function () {
-      const base64Image = reader.result;
-      const payload = {
-        name: formData.get('name'),
-        designation: formData.get('designation'),
-        email: formData.get('email'),
-        phoneno: formData.get('phoneno'),
-        companyaddress: formData.get('companyaddress'),
-        member_code: formData.get('member_code'),
-        company: formData.get('company'),
-        first_name: formData.get('first_name'),
-        last_name: formData.get('last_name'),
-        office_address: formData.get('office_address'),
-        office_address_doc: formData.get('office_address_doc'),
-        nature_of_business: formData.get('nature_of_business'),
-        company_ntn: formData.get('company_ntn'),
-        sales_tax_reg: formData.get('sales_tax_reg'),
-        fax_no: formData.get('fax_no'),
-        website: formData.get('website'),
-        join_date: formData.get('join_date'),
-        active: formData.get('active') === 'true',
-        image: base64Image
-      };
-      const url = editingMemberId
-        ? `http://localhost:3000/update-all-members/${editingMemberId}`
-        : 'http://localhost:3000/add-all-members';
-      const method = editingMemberId ? 'PUT' : 'POST';
+  // compress image file to a dataURL (resize + quality) to reduce payload
+  async function compressImageFile(file, maxWidth = 1200, maxHeight = 1200, quality = 0.7) {
+    if (!file || !file.type.startsWith('image/')) return null;
+    // read original image
+    const dataUrl = await new Promise((resolve, reject) => {
+      const r = new FileReader();
+      r.onload = () => resolve(r.result);
+      r.onerror = () => reject(r.error);
+      r.readAsDataURL(file);
+    });
+    // create image element
+    const img = await new Promise((resolve, reject) => {
+      const i = new Image();
+      i.onload = () => resolve(i);
+      i.onerror = reject;
+      i.src = dataUrl;
+    });
+    // calculate target size
+    let { width, height } = img;
+    let targetWidth = width;
+    let targetHeight = height;
+    if (width > maxWidth || height > maxHeight) {
+      const ratio = Math.min(maxWidth / width, maxHeight / height);
+      targetWidth = Math.round(width * ratio);
+      targetHeight = Math.round(height * ratio);
+    }
+    // draw to canvas
+    const canvas = document.createElement('canvas');
+    canvas.width = targetWidth;
+    canvas.height = targetHeight;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
+    // export compressed dataURL (jpeg for better compression)
+    const mime = file.type === 'image/png' ? 'image/jpeg' : file.type;
+    const compressed = canvas.toDataURL(mime, quality);
+    return compressed;
+  }
+
+  const saveBtn = memberForm.querySelector('button[type="submit"]');
+  const originalBtnHtml = saveBtn ? saveBtn.innerHTML : 'Save';
+  if (saveBtn) {
+    saveBtn.disabled = true;
+    saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...';
+  }
+
+  try {
+    let base64Image = null;
+    if (imageInput && imageInput.files && imageInput.files[0]) {
       try {
-        const response = await fetch(url, {
-          method,
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        });
-        const result = await response.json();
-        if (!response.ok) {
-          alert('❌ Error: ' + result.message);
-        } else {
-          alert(`✅ Member ${editingMemberId ? 'updated' : 'added'} successfully!`);
-          editingMemberId = null;
-          memberForm.reset();
-          await fetchAndRenderMembers();
-          if (window.bootstrap) {
-            const modal = bootstrap.Modal.getInstance(document.getElementById('memberModal'));
-            if (modal) modal.hide();
-          }
-        }
+        base64Image = await compressImageFile(imageInput.files[0], 1024, 1024, 0.7);
       } catch (err) {
-        alert('❌ Error: ' + err.message);
+        console.warn('Image compression failed, falling back to original', err);
+        // fallback to raw dataURL if compression fails
+        base64Image = await new Promise((resolve, reject) => {
+          const r = new FileReader(); r.onload = () => resolve(r.result); r.onerror = () => reject(r.error); r.readAsDataURL(imageInput.files[0]);
+        });
       }
-    };
-    reader.readAsDataURL(file);
-  } else {
-    // No image, send rest of data
+    }
+
     const payload = {
       name: formData.get('name'),
       designation: formData.get('designation'),
@@ -525,62 +639,222 @@
       fax_no: formData.get('fax_no'),
       website: formData.get('website'),
       join_date: formData.get('join_date'),
-      active: formData.get('active') === 'true'
+      active: formData.get('active') === 'true',
+      industry_id: formData.get('industry_id') ? parseInt(formData.get('industry_id'), 10) : null
     };
+
+    if (base64Image) payload.image = base64Image;
+
     const url = editingMemberId
-      ? `http://localhost:3000/update-all-members/${editingMemberId}`
-      : 'http://localhost:3000/add-all-members';
+      ? `${API_BASE}/update-all-members/${editingMemberId}`
+      : `${API_BASE}/add-all-members`;
     const method = editingMemberId ? 'PUT' : 'POST';
-    try {
-      const response = await fetch(url, {
-        method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-      const result = await response.json();
-      if (!response.ok) {
-        alert('❌ Error: ' + result.message);
-      } else {
-        alert(`✅ Member ${editingMemberId ? 'updated' : 'added'} successfully!`);
-        editingMemberId = null;
-        memberForm.reset();
-        await fetchAndRenderMembers();
-        if (window.bootstrap) {
-          const modal = bootstrap.Modal.getInstance(document.getElementById('memberModal'));
-          if (modal) modal.hide();
-        }
+
+    console.log('[DEBUG] save payload:', payload);
+    const response = await fetch(url, {
+      method,
+      headers: createAuthHeaders({ json: true }),
+      body: JSON.stringify(payload),
+    });
+    const result = await response.json();
+    if (!response.ok) {
+      alert('❌ Error: ' + (result.message || response.statusText));
+    } else {
+      alert(`✅ Member ${editingMemberId ? 'updated' : 'added'} successfully!`);
+      editingMemberId = null;
+      memberForm.reset();
+      await fetchAndRenderMembers();
+      if (window.bootstrap) {
+        const modal = bootstrap.Modal.getInstance(document.getElementById('memberModal'));
+        if (modal) modal.hide();
       }
-    } catch (err) {
-      alert('❌ Error: ' + err.message);
+    }
+  } catch (err) {
+    alert('❌ Error: ' + (err.message || err));
+  } finally {
+    if (saveBtn) {
+      saveBtn.disabled = false;
+      saveBtn.innerHTML = originalBtnHtml;
     }
   }
 });
 
 async function fetchAndRenderMembers() {
+  const categorySelect = document.getElementById('categories');
+  const selectedCategory = parseInt(categorySelect?.value ?? '0', 10);
+  const selectedCategoryLabel = selectedCategory && categorySelect
+    ? categorySelect.options[categorySelect.selectedIndex]?.textContent
+    : null;
   try {
-    const response = await fetch('https://siteareahyderabadbackend.onrender.com/get-all-members');
-    const allMembers = await response.json();
-    const selectedCategory = parseInt(document.getElementById('categories').value ?? 0);
+    console.log('[DEBUG] ========== STARTING fetchAndRenderMembers ==========');
     
-    let data = allMembers.message;
+    // ✅ First fetch industries and build industryMap (like allmembers.html does)
+    console.log('[DEBUG] Fetching industries...');
+    const indRes = await fetch(`${API_BASE}/get-industries`);
+    let industryMap = {};
+    if (indRes.ok) {
+      const indJson = await indRes.json();
+      console.log('[DEBUG] Industries API Raw Response:', indJson);
+      const industries = Array.isArray(indJson.industries) ? indJson.industries : (Array.isArray(indJson.data) ? indJson.data : []);
+      console.log('[DEBUG] Industries Array:', industries);
+      console.log('[DEBUG] Industries Count:', industries.length);
+      industries.forEach(i => {
+        if (i && (i.id || i.industry_id)) {
+          industryMap[i.id || i.industry_id] = i.name || i.industry_name || i.title || '';
+        }
+      });
+      console.log('[DEBUG] industryMap built:', industryMap);
+      console.log('[DEBUG] industryMap keys:', Object.keys(industryMap));
+      console.log('[DEBUG] industryMap values:', Object.values(industryMap));
+    } else {
+      console.warn('[DEBUG] Failed to load industries:', indRes.status);
+    }
 
-    if(selectedCategory !== 0) data = data.filter(member=> menubar.categoryId === selectedCategory);
+    // ✅ Also fetch categories for future use
+    const catRes = await fetch(`${API_BASE}/members-categories`, {
+      headers: createAuthHeaders()
+    });
+    if (catRes.ok) {
+      const catJson = await catRes.json();
+      const categories = Array.isArray(catJson.data) ? catJson.data : Array.isArray(catJson.message) ? catJson.message : [];
+      categoryMap = {};
+      categories.forEach(c => {
+        if (c && (c.id || c.category_id)) {
+          categoryMap[c.id || c.category_id] = c.name || c.category_name || c.title || '';
+        }
+      });
+      console.log('[DEBUG] categoryMap built:', categoryMap);
+    }
 
-    renderMemberTable(data)
+    let members = [];
+    if (selectedCategory && selectedCategory !== 0) {
+      const response = await fetch(`${API_BASE}/members-by-category/${selectedCategory}`, {
+        headers: createAuthHeaders()
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || 'Unable to fetch members for category');
+      }
+      members = data.members || [];
+      console.log('[DEBUG] ========== MEMBERS BY CATEGORY ==========');
+      console.log('[DEBUG] Selected Category ID:', selectedCategory);
+      console.log('[DEBUG] Members Count:', members.length);
+      console.log('[DEBUG] First 3 Members Sample:', members.slice(0, 3));
+      members.forEach((m, idx) => {
+        console.log(`[DEBUG] Member ${idx + 1} (ID: ${m.id}):`, {
+          category_id: m.category_id,
+          categoryId: m.categoryId,
+          category_ids: m.category_ids,
+          categories: m.categories,
+          category_name: m.category_name,
+          category: m.category
+        });
+      });
+    } else {
+      // Prefer backend endpoint that returns members with joined category objects
+      try {
+        let response = await fetch(`${API_BASE}/get-all-members-with-categories`, { headers: createAuthHeaders() });
+        if (response.ok) {
+          const data = await response.json();
+          // support different shapes: array, { message: [...] }, { members: [...] }, { data: [...] }
+          members = Array.isArray(data)
+            ? data
+            : (Array.isArray(data.message) ? data.message : (Array.isArray(data.members) ? data.members : (Array.isArray(data.data) ? data.data : [])));
+          console.log('[DEBUG] ========== GET ALL MEMBERS WITH CATEGORIES ==========');
+          console.log('[DEBUG] Members Count:', members.length);
+        } else {
+          console.warn('get-all-members-with-categories failed', response.status, 'falling back to get-all-members');
+          const fallbackRes = await fetch(`${API_BASE}/get-all-members`);
+          const fallbackData = await fallbackRes.json();
+          if (!fallbackRes.ok) throw new Error(fallbackData.message || 'Unable to fetch members');
+          members = fallbackData.message || [];
+          console.log('[DEBUG] get-all-members fallback - Members Count:', members.length);
+        }
+      } catch (err) {
+        console.warn('Joined-members fetch error, falling back to get-all-members', err);
+        const response = await fetch(`${API_BASE}/get-all-members`);
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.message || 'Unable to fetch members');
+        }
+        members = data.message || [];
+        console.log('[DEBUG] get-all-members final fallback - Members Count:', members.length);
+      }
+    }
+    
+    // ✅ Log members data structure
+    console.log('[DEBUG] ========== MEMBERS DATA STRUCTURE ==========');
+    console.log('[DEBUG] Total Members:', members.length);
+    if (members.length > 0) {
+      console.log('[DEBUG] First Member Sample:', members[0]);
+      console.log('[DEBUG] First Member Keys:', Object.keys(members[0]));
+      members.slice(0, 3).forEach((m, idx) => {
+        console.log(`[DEBUG] Member ${idx + 1} (ID: ${m.id}):`, {
+          industry_id: m.industry_id,
+          industryId: m.industryId,
+          category_id: m.category_id,
+          categoryId: m.categoryId,
+          category_ids: m.category_ids,
+          categories: m.categories
+        });
+      });
+    }
+    
+    renderMemberTable(members, selectedCategoryLabel, industryMap);
   } catch (error) {
     console.error('Error fetching members:', error);
     alert('❌ Failed to load members');
   }
 }
 
-function renderMemberTable(allMembers) {
+function renderMemberTable(allMembers, activeCategoryLabel = null, industryMap = {}) {
   const tableBody = document.getElementById('memberTable');
+    selectedMemberIds.clear();
     tableBody.innerHTML = ''; // Clear previous data
 
-    allMembers.forEach(member => {
+    console.log('[DEBUG] ========== RENDER MEMBER TABLE ==========');
+    console.log('[DEBUG] renderMemberTable called, members count:', allMembers.length);
+    console.log('[DEBUG] industryMap received:', industryMap);
+    console.log('[DEBUG] First 3 members sample:', allMembers.slice(0, 3));
+    
+    allMembers.forEach((member, idx) => {
+      console.log(`[DEBUG] Processing Member ${idx + 1} (ID: ${member.id}):`, {
+        industry_id: member.industry_id,
+        industryId: member.industryId,
+        category_id: member.category_id,
+        category_ids: member.category_ids,
+        categories: member.categories
+      });
+      
       const row = document.createElement('tr');
 
       const fullName = ([member.first_name, member.last_name].filter(Boolean).join(' ') || member.name || '-');
+      
+      // ✅ Get Industry Name using industryMap (like allmembers.html)
+      let industryText = '-';
+      if (member.industry_id || member.industryId) {
+        const indId = member.industry_id || member.industryId;
+        industryText = industryMap[indId] || String(indId) || '-';
+        console.log(`[DEBUG] Member ${member.id} - industry_id: ${indId}, industryName: ${industryText}`);
+      }
+      
+      // ✅ Categories - for now show "-" since API doesn't return category data
+      let categoryLabel = '-';
+      if (Array.isArray(member.categories) && member.categories.length) {
+        const firstItem = member.categories[0];
+        if (typeof firstItem === 'object') {
+          categoryLabel = member.categories.map(cat => cat.name || cat.category_name || cat).join(', ');
+        } else {
+          categoryLabel = member.categories.map(id => categoryMap[id] || String(id)).join(', ');
+        }
+      } else if (member.category_ids && Array.isArray(member.category_ids) && member.category_ids.length) {
+        categoryLabel = member.category_ids.map(id => categoryMap[id] || String(id)).join(', ');
+      } else if (member.category_id || member.categoryId) {
+        const catId = member.category_id || member.categoryId;
+        categoryLabel = categoryMap[catId] || String(catId) || '-';
+      } else {
+        categoryLabel = member.category_name || member.category || activeCategoryLabel || '-';
+      }
 
       row.innerHTML = `
       <td><input type="checkbox" class="member-checkbox" value="${member.id}"></td>
@@ -603,17 +877,102 @@ function renderMemberTable(allMembers) {
         <td>${member.website ? `<a href="${member.website}" target="_blank">${member.website}</a>` : '-'}</td>
         <td>${member.join_date || '-'}</td>
         <td>${member.active ? 'Active' : 'Inactive'}</td>
+        <td>${industryText || '-'}</td>
+        <td class="category-cell" data-member-id="${member.id}">${categoryLabel || '-'}</td>
         <td>
-          <button class="btn btn-sm btn-edit" data-id="${member.id}">Edit</button>
-          <button class="btn btn-sm btn-delete" data-id="${member.id}">Delete</button>
+          <button class="btn btn-primary btn-sm btn-edit me-2 d-inline-flex align-items-center" data-id="${member.id}">
+            <svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='currentColor' class='bi bi-pencil me-1' viewBox='0 0 16 16'><path d='M12.146.854a.5.5 0 0 1 .708 0l2.292 2.292a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-4 1.5a.5.5 0 0 1-.65-.65l1.5-4a.5.5 0 0 1 .11-.168l10-10z'/></svg>
+            Edit
+          </button>
+          <button class="btn btn-danger btn-sm btn-delete d-inline-flex align-items-center" data-id="${member.id}">
+            <svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='currentColor' class='bi bi-trash me-1' viewBox='0 0 16 16'><path d='M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6zm2.5.5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6zm3 .5a.5.5 0 0 1 .5-.5.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6z'/></svg>
+            Delete
+          </button>
         </td>
       `;
       // Keep full member data for editing
       row.dataset.member = encodeURIComponent(JSON.stringify(member));
 
       tableBody.appendChild(row);
+
+      // ✅ Simplified: Use categoryMap directly (already built in fetchAndRenderMembers)
+      // Only fetch per-member if categoryMap doesn't have the data
+      const cell = row.querySelector('.category-cell');
+      if (cell && categoryLabel === '-' && (member.category_id || member.categoryId)) {
+        // If categoryLabel is still '-', try to fetch from API as fallback
+        (async () => {
+          try {
+            let res = await fetch(`${API_BASE}/categories-by-member/${member.id}`, {
+              headers: createAuthHeaders()
+            });
+
+            if (res.status === 401 || res.status === 403) {
+              res = await fetch(`${API_BASE}/categories-by-member/${member.id}`);
+            }
+
+            if (res.ok) {
+              const json = await res.json();
+              const cats = Array.isArray(json.categories) ? json.categories : (Array.isArray(json.data) ? json.data : []);
+              if (cats.length) {
+                const names = cats.map(c => (c && (c.name || c.category_name)) || String(c)).join(', ');
+                cell.textContent = names || '-';
+              }
+            }
+          } catch (err) {
+            console.warn('Error loading categories for member', member.id, err);
+          }
+        })();
+      }
     });
+    refreshSelectionUI();
+    if (window.adminRoles && Array.isArray(window.adminRoles.roles)) {
+      updateDeleteButtonVisibility(window.adminRoles.roles);
+    }
+    
+    // Re-apply search filter if there's a search term
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput && searchInput.value.trim()) {
+      filterMembersTable();
+    }
 }
+
+// Helper function to normalize text (remove spaces, dots, commas for comparison)
+function normalizeText(text) {
+  return text.toLowerCase()
+    .replace(/\s+/g, '')      // Remove all spaces
+    .replace(/\./g, '')       // Remove all dots
+    .replace(/,/g, '');       // Remove all commas
+}
+
+// Search/Filter function for members table
+function filterMembersTable() {
+  const searchInput = document.getElementById('searchInput');
+  const rawFilter = searchInput.value.trim();
+  const filter = normalizeText(rawFilter);
+  const table = document.getElementById('memberTable');
+  const rows = table.getElementsByTagName('tr');
+
+  for (let i = 0; i < rows.length; i++) {
+    const row = rows[i];
+    const cells = row.getElementsByTagName('td');
+    let found = false;
+
+    // Search in multiple columns: Name, Email, Phone, Company, Member Code, etc.
+    for (let j = 0; j < cells.length; j++) {
+      const cellText = cells[j].textContent || cells[j].innerText;
+      const normalizedCellText = normalizeText(cellText);
+      
+      if (normalizedCellText.includes(filter)) {
+        found = true;
+        break;
+      }
+    }
+
+    // Show/hide row based on search match
+    row.style.display = found || filter === '' ? '' : 'none';
+  }
+}
+
 fetchAndRenderMembers();
 
 
@@ -627,13 +986,14 @@ document.addEventListener('click', async function (e) {
 
       try {
         const res = await fetch(`https://siteareahyderabadbackend.onrender.com/delete-all-members/${memberId}`, {
-          method: 'DELETE'
+          method: 'DELETE',
+          headers: createAuthHeaders()
         });
 
         const result = await res.json();
 
         if (!res.ok) {
-          alert('❌ Error deleting member: ' + result.message);
+          alert('❌ Error deleting member: ' + (result.message || res.statusText));
         } else {
           alert('✅ Member deleted successfully!');
           await fetchAndRenderMembers(); // Re-fetch and update table
@@ -684,6 +1044,9 @@ document.addEventListener('click', async function (e) {
     const salesTaxEl = memberForm.querySelector('select[name="sales_tax_reg"]');
     if (salesTaxEl) salesTaxEl.value = member.sales_tax_reg === 'Yes' ? 'Yes' : 'No';
 
+    const industryEl = memberForm.querySelector('select[name="industry_id"]');
+    if (industryEl) industryEl.value = member.industry_id ?? '';
+
     setValue('input[name="fax_no"]', member.fax_no);
     setValue('input[name="website"]', member.website);
     setValue('input[name="email"]', member.email);
@@ -720,7 +1083,7 @@ document.addEventListener('DOMContentLoaded', () => {
 <script>
   async function addcategories() {
     const inputField = document.getElementById("categoryName");
-    const categoryName = inputField.value;
+    const categoryName = inputField.value.trim();
     
     if (!categoryName) {
       alert("Please enter a category name!");
@@ -728,27 +1091,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     try {
-      const res = await fetch("http://localhost:3000/add-categories", {
+      const res = await fetch(`${API_BASE}/add-categories`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers: createAuthHeaders({ json: true }),
         body: JSON.stringify({ name: categoryName })
       });
 
       const result = await res.json();
 
-      // ✅ Check statusCode
       if (res.status === 200) {
         alert("✅ Category added successfully!");
         inputField.value = ""; // Clear input after alert OK
+        await loadCommittees();
       } else {
-        alert("❌ Failed to add category: " + result.message);
+        alert("❌ Failed to add category: " + (result.message || result.error || 'Unknown error'));
       }
 
     } catch (error) {
       console.error("Error:", error);
-      alert("⚠️ Something went wrong!");
+      alert("⚠️ Something went wrong: " + error.message);
     }
   }
 </script>
@@ -756,30 +1117,53 @@ document.addEventListener('DOMContentLoaded', () => {
 <script>
   function handleCategoryChange(value) {
     console.log(value);
+    selectedMemberIds.clear();
+    refreshSelectionUI();
     fetchAndRenderMembers();
   }
   async function loadCommittees() {
     try {
-      var res = await fetch("https://siteareahyderabadbackend.onrender.com/members-categories");
+      const res = await fetch(`${API_BASE}/members-categories`, {
+        headers: createAuthHeaders()
+      });
       const result = await res.json();
+      
+      if (!res.ok) {
+        console.error('Failed to load categories:', result);
+        throw new Error(result.message || 'Failed to load categories');
+      }
+      
+      // Backend returns: { message: "...", data: [...] }
+      const categories = Array.isArray(result.data) ? result.data : [];
+      
+      console.log('[DEBUG] loadCommittees - categories loaded:', categories.length);
   
       const dropdown = document.getElementById("committeesDropdown");
-      dropdown.innerHTML = ""; // clear old items
-  
-      result.data.forEach(category => {
-        const a = document.createElement("a");
-        a.href = `admincommittee.html?id=${category.id}`;
-        a.textContent = `👤 ${category.name}`;
-        dropdown.appendChild(a);
-      });
-
+      if (dropdown) {
+        dropdown.innerHTML = ""; // clear old items
+        categories.forEach(category => {
+          const a = document.createElement("a");
+          a.href = `admincommittee.html?id=${category.id}`;
+          a.textContent = `👤 ${category.name}`;
+          dropdown.appendChild(a);
+        });
+      }
 
       const select = document.getElementById('categories');
-      let html = result.data.map(res => `<option value="${res.id}">${res.name}</option>`).join('');
-      console.log(html)
-      select.innerHTML = '<option value="0">All</option>' + html;
+      if (select) {
+        if (categories.length > 0) {
+          const html = categories.map(cat => `<option value="${cat.id}">${cat.name}</option>`).join('');
+          select.innerHTML = '<option value="0">All</option>' + html;
+        } else {
+          select.innerHTML = '<option value="0">No categories available</option>';
+        }
+      }
     } catch (error) {
       console.error("Error loading committees:", error);
+      const select = document.getElementById('categories');
+      if (select) {
+        select.innerHTML = '<option value="0">Error loading categories</option>';
+      }
     }
   }
   
@@ -787,19 +1171,19 @@ document.addEventListener('DOMContentLoaded', () => {
   </script>
 
 <script>
-  const categoriesTable = document.getElementById("categoriesTable");
-  const apiTitle = document.getElementById("apiTitle");
-  // Table ko default par hide rakho
-  categoriesTable.style.display = "none";
-  apiTitle.style.display = "none";
+  if (categoriesTable) categoriesTable.style.display = "none";
+  if (apiTitle) apiTitle.style.display = "none";
+  refreshSelectionUI();
 
-  // Table ko checkbox select hone par hi show karo
   async function fetchAndRenderCategories() {
+    if (!categoriesTable) return;
     try {
-      const res = await fetch("https://siteareahyderabadbackend.onrender.com/members-categories");
+      const res = await fetch(`${API_BASE}/members-categories`, {
+        headers: createAuthHeaders()
+      });
       const result = await res.json();
       categoriesTable.innerHTML = '<tr><th>Select</th><th>ID</th><th>Category Name</th></tr>';
-      if (result.data && Array.isArray(result.data)) {
+      if (result.data && Array.isArray(result.data) && result.data.length > 0) {
         result.data.forEach(category => {
           const row = document.createElement('tr');
           row.innerHTML = `
@@ -810,28 +1194,90 @@ document.addEventListener('DOMContentLoaded', () => {
           categoriesTable.appendChild(row);
         });
         categoriesTable.style.display = "table";
-        apiTitle.style.display = "block";
+        if (apiTitle) apiTitle.style.display = "block";
       } else {
         categoriesTable.style.display = "none";
-        apiTitle.style.display = "none";
+        if (apiTitle) apiTitle.style.display = "none";
       }
     } catch (error) {
       console.error("Error fetching categories:", error);
       categoriesTable.style.display = "none";
-      apiTitle.style.display = "none";
+      if (apiTitle) apiTitle.style.display = "none";
     }
   }
 
-  // Checkbox change par categories table show karo
   document.addEventListener("change", (e) => {
     if (e.target.classList.contains("member-checkbox")) {
-      const anyChecked = document.querySelectorAll(".member-checkbox:checked").length > 0;
-      if (anyChecked) {
-        fetchAndRenderCategories();
+      const memberId = e.target.value;
+      if (e.target.checked) {
+        selectedMemberIds.add(memberId);
       } else {
-        categoriesTable.style.display = "none";
-        apiTitle.style.display = "none";
+        selectedMemberIds.delete(memberId);
       }
+      refreshSelectionUI();
+    }
+  });
+
+  if (assignCategoryBtn) {
+    assignCategoryBtn.addEventListener('click', async () => {
+      if (!selectedMemberIds.size) {
+        alert('Please select at least one member.');
+        return;
+      }
+      const selectedCategories = Array.from(document.querySelectorAll('.category-checkbox:checked')).map(cb => parseInt(cb.value, 10));
+      if (!selectedCategories.length) {
+        alert('Please select at least one category to assign.');
+        return;
+      }
+      const memberIds = Array.from(selectedMemberIds).map(id => parseInt(id, 10));
+      try {
+        for (const categoryId of selectedCategories) {
+          const res = await fetch(`${API_BASE}/assign-categories-to-members`, {
+            method: 'POST',
+            headers: createAuthHeaders({ json: true }),
+            body: JSON.stringify({ memberIds, categoryId })
+          });
+          const result = await res.json();
+          if (!res.ok) {
+            throw new Error(result.message || `Failed to assign category ID ${categoryId}`);
+          }
+        }
+        alert('✅ Selected members assigned to chosen categories successfully!');
+        selectedMemberIds.clear();
+        refreshSelectionUI();
+        fetchAndRenderMembers();
+      } catch (error) {
+        console.error('Error assigning category:', error);
+        alert('❌ ' + (error.message || 'Failed to assign category'));
+      }
+    });
+  }
+</script>
+
+<script>
+  // 🔥 Fetch industries and populate dropdown
+  document.addEventListener('DOMContentLoaded', async () => {
+    const dropdown = document.getElementById('industryDropdown');
+    if (!dropdown) return;
+    try {
+      const response = await fetch(`${API_BASE}/get-industries`);
+      const result = await response.json();
+      if (!response.ok) {
+        throw new Error(result.message || 'Failed to fetch industries');
+      }
+      const industries = Array.isArray(result.industries) ? result.industries : [];
+      dropdown.innerHTML = '<option value="">Select Industry</option>';
+
+      industries.forEach(industry => {
+        const option = document.createElement('option');
+        option.value = industry.id;
+        option.textContent = industry.name;
+        dropdown.appendChild(option);
+      });
+
+    } catch (err) {
+      console.error('Error fetching industries:', err);
+      dropdown.innerHTML = '<option value="">Failed to load industries</option>';
     }
   });
 </script>

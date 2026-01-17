@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SITE Association of Industry</title>
+  <!-- <meta name="description" content=""> -->
   <link rel="stylesheet" href="style.css">
   <style>
     html {
@@ -32,7 +33,7 @@
     .navbar-brand { display: flex; align-items: center; gap: 12px; }
     .nav-links { display: flex; list-style: none; gap: 12px; margin: 0; padding: 0; align-items: center; }
     .nav-links li { position: relative; }
-    .nav-links a { color: inherit; text-decoration: none; padding: 8px 10px; display: inline-block; }
+    .nav-links a { color: inherit; text-decoration: none; padding: 8px 9px; display: inline-block; }
 
     /* Hamburger (hidden on desktop) */
     .nav-toggle { display: none; background: transparent; border: none; font-size: 26px; cursor: pointer; z-index: 70; }
@@ -160,17 +161,16 @@
                   <a href="about.html">about us</a>
                   <a href="messages.html">our vision</a>
             </div>
-          </li>
+        </li>
         <li class="dropdown">
           <a href="members.html">Committee Members</a>
           <div class="dropdown-content">
-            <a href="members.html">Current Members</a>
-            <a href="pastExecutivecommittee.html">Executive Committee Members</a>
+            <a href="members.html">Executive committee </a>
             <a href="allmembers.html">All Members</a>
-
           </div>
+        </li>
           <li><a href="events.html">Events</a></li>
-          <li><a href="clean-green.html">Clean & Green SITE</a></li>
+          <li><a href="clean-green.html">Social Responsibility</a></li>
           <li class="dropdown">
             <a href="#downloads">Downloads</a>
             <div class="dropdown-content">
@@ -178,11 +178,20 @@
             </div>
           </li>
           
-                  <li><a href="circulars.html">Circulars</a></li>
+          <li class="dropdown">
+                <a href="circulars.html">Circulars</a>
+                    <div class="dropdown-content">
+                         <a href="circulars.html">Circulars</a>
+                         <br>
+                         <a href="pressrelease.html">Press Release</a>
+                         <br>
+                         <a href="letters.html">Letters</a>
+                    </div>
+          </li>
 
           <li><a href="maps.html">Infrastructure</a></li>
           <li><a href="#contact-section">Contact Us</a></li>
-        </li>
+        
       </ul>
     </nav>
     <div class="slider-section">
@@ -431,6 +440,11 @@
         </div>
         
       </div>
+      <!-- Members list rendered when an industry is clicked -->
+      <div id="industry-members" class="industry-members-grid" style="display:none; margin-top:24px;">
+        <h3 id="industry-members-title" style="width:100%; text-align:center; color:#355;color:#358232;"></h3>
+        <div id="industry-members-list" style="display:flex; flex-wrap:wrap; gap:16px; justify-content:center;"></div>
+      </div>
     </section>
    
   </main>
@@ -646,6 +660,286 @@ document.addEventListener('DOMContentLoaded', async () => {
     return dateStr;
   }
 });
+
+// --- Dynamic Industries & Members (fetch from backend) ---
+;(function(){
+  const API_BASE = 'https://siteareahyderabadbackend.onrender.com';
+  function escapeHtml(str){ return String(str||'').replace(/[&<>"]+/g, s=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[s])); }
+
+  async function loadIndustries(){
+    try{
+      const res = await fetch(`${API_BASE}/get-industries`);
+      const json = await res.json();
+      const industries = json.industries || [];
+      const grid = document.querySelector('.industries-grid');
+      if(!grid) return;
+      // If API returned nothing, keep existing static tiles
+        if(!industries.length) {
+          console.warn('No industries returned from API, using static mapping');
+          // Create mapping for static tiles
+          const staticMapping = {
+            'Textile & Garments': 1,
+            'Foods & Beverages': 2,
+            'Bangles and Jewellery': 3,
+            'Auto Mobiles': 4,
+            'Flour & Rice Mills': 5,
+            'Pharmaceuticals & Pesticides': 6,
+            'Agriculture & Machinery': 7,
+            'Dall & Oil Mills': 8,
+            'Detergents & Chemicals': 9,
+            'Plant & Machinery': 10,
+            'Salt & Spices': 11,
+            'Cold Storage & Ice Factories': 12,
+            'Marble': 13,
+            'Paper and general industry': 14,
+            'Plastic and rubber industry': 15,
+            'Electric and electronics': 16
+          };
+        
+          // Add data-id attributes to static tiles
+          grid.querySelectorAll('.industry-tab').forEach(tab => {
+            const label = tab.querySelector('.industry-label')?.textContent?.trim();
+            if (label && staticMapping[label]) {
+              tab.setAttribute('data-id', staticMapping[label].toString());
+              console.log('Mapped static tile:', label, 'to id:', staticMapping[label]);
+            }
+          });
+          return;
+        }
+      grid.innerHTML = industries.map(ind => `
+        <div class="industry-tab industry-tab-animate" data-id="${ind.id}">
+          <span class="industry-icon-bg">${ind.icon || '<svg width="38" height="38" viewBox="0 0 24 24" fill="none"><polygon points="0,0 24,0 24,24 6,24 0,18" fill="rgb(177,145,79)"/></svg>'}</span>
+          <span class="industry-label">${escapeHtml(ind.name)}</span>
+        </div>
+      `).join('');
+      // attach click handlers
+      grid.querySelectorAll('.industry-tab').forEach(tab=>{
+        tab.addEventListener('click', (e)=>{
+          e.preventDefault(); // Prevent any default action
+          const id = tab.dataset.id;
+          const name = tab.querySelector('.industry-label')?.textContent || '';
+          // Navigate to dedicated industry members page with absolute path
+          const url = `./industry-members.html?id=${encodeURIComponent(id)}&name=${encodeURIComponent(name)}`;
+          console.log('Navigating to:', url); // Debug log
+          window.location.href = url;
+        });
+      });
+    }catch(err){
+      console.error('Failed to load industries:', err);
+    }
+  }
+
+  async function loadMembersByIndustry(industryId, industryName){
+    try{
+      const res = await fetch(`${API_BASE}/get-members-by-industry/${industryId}`);
+      const json = await res.json();
+      const members = json.members || [];
+      const container = document.getElementById('industry-members');
+      const list = document.getElementById('industry-members-list');
+      const title = document.getElementById('industry-members-title');
+      if(!container || !list) return;
+      title.textContent = members.length ? `Members — ${industryName}` : `No members found for ${industryName}`;
+      list.innerHTML = '';
+      if(!members.length){
+        container.style.display = 'block';
+        return;
+      }
+      members.forEach(m=>{
+        const card = document.createElement('div');
+        card.className = 'industry-member-card';
+        card.style.cssText = 'width:260px;background:#fff;border-radius:8px;padding:12px;box-shadow:0 4px 10px rgba(0,0,0,0.06);text-align:left;';
+        const img = m.file_url || m.image_url || 'assests/person1.png';
+        const name = (m.first_name || m.name || '') + (m.last_name ? (' ' + m.last_name) : '');
+        card.innerHTML = `
+          <div style="display:flex;gap:12px;align-items:center">
+            <img src="${img}" alt="${escapeHtml(name)}" style="width:64px;height:64px;object-fit:cover;border-radius:6px;flex-shrink:0;">
+            <div style="flex:1">
+              <div style="font-weight:600;color:#102b5d">${escapeHtml(name) || '-'}</div>
+              <div style="font-size:13px;color:#556">${escapeHtml(m.company || m.designation || '')}</div>
+              <div style="font-size:12px;color:#666;margin-top:6px">${escapeHtml(m.email || '')}</div>
+            </div>
+          </div>
+        `;
+        list.appendChild(card);
+      });
+      container.style.display = 'block';
+      container.scrollIntoView({behavior:'smooth', block:'start'});
+    }catch(err){
+      console.error('Failed to load members for industry', industryId, err);
+    }
+  }
+
+  // Initialize
+  document.addEventListener('DOMContentLoaded', loadIndustries);
+  // ALSO: apply static mapping immediately so static tiles have IDs before any clicks
+  document.addEventListener('DOMContentLoaded', () => {
+    try {
+      const grid = document.querySelector('.industries-grid');
+      if (!grid) return;
+      const staticMapping = {
+        'Textile & Garments': 1,
+        'Foods & Beverages': 2,
+        'Bangles and Jewellery': 3,
+        'Auto Mobiles': 4,
+        'Flour & Rice Mills': 5,
+        'Pharmaceuticals & Pesticides': 6,
+        'Agriculture & Machinery': 7,
+        'Dall & Oil Mills': 8,
+        'Detergents & Chemicals': 9,
+        'Plant & Machinery': 10,
+        'Salt & Spices': 11,
+        'Cold Storage & Ice Factories': 12,
+        'Marble': 13,
+        'Paper and general industry': 14,
+        'Plastic and rubber industry': 15,
+        'Electric and electronics': 16
+      };
+      grid.querySelectorAll('.industry-tab').forEach(tab => {
+        const label = tab.querySelector('.industry-label')?.textContent?.trim();
+        if (label && staticMapping[label]) {
+          tab.setAttribute('data-id', staticMapping[label].toString());
+        }
+      });
+    } catch (err) {
+      console.error('Failed to apply static mapping on DOMContentLoaded', err);
+    }
+  });
+  // Expose for console debug
+  window.loadIndustries = loadIndustries;
+  window.loadMembersByIndustry = loadMembersByIndustry;
+
+  // Delegated click handler so static tiles (and dynamic tiles) both work
+  document.addEventListener('DOMContentLoaded', () => {
+    const grid = document.querySelector('.industries-grid');
+    if (!grid) return;
+    grid.addEventListener('click', async (e) => {
+      const tab = e.target.closest('.industry-tab');
+      if (!tab) return; // click outside a tile
+      e.preventDefault();
+      
+      let id = tab.dataset.id || tab.getAttribute('data-id') || '';
+      const name = tab.querySelector('.industry-label')?.textContent?.trim() || '';
+      console.log('Industry tile clicked (delegated):', { id, name });
+      
+      // If static tile has no id, fetch industries and try to match by name (case-insensitive)
+      if (!id && name) {
+        try {
+          console.log('Fetching industries to resolve ID for name:', name);
+          const res = await fetch(`${API_BASE}/get-industries`);
+          
+          if (!res.ok) {
+            throw new Error(`Failed to fetch industries: ${res.status}`);
+          }
+          
+          const js = await res.json();
+          console.log('Received industries response:', js);
+          
+          if (!js.industries || !Array.isArray(js.industries)) {
+            throw new Error('Invalid industries response format');
+          }
+          
+          const industries = js.industries;
+          // Normalize strings for comparison by removing extra spaces and making lowercase
+          const normalizedName = name.toLowerCase().replace(/\s+/g, ' ').trim();
+          console.log('Looking for normalized name:', normalizedName);
+          
+          // Log all available industries for debugging
+          console.log('Available industries:', industries.map(i => ({
+            id: i.id,
+            name: i.name,
+            normalizedName: String(i.name || '').toLowerCase().replace(/\s+/g, ' ').trim()
+          })));
+          
+          const match = industries.find(ind => {
+            const indName = String(ind.name || '').toLowerCase().replace(/\s+/g, ' ').trim();
+            const matches = indName === normalizedName;
+            console.log(`Comparing: "${indName}" with "${normalizedName}" -> ${matches}`);
+            return matches;
+          });
+          
+          if (match && match.id) {
+            id = match.id;
+            console.log('Successfully resolved industry id:', id, 'for name:', name);
+          } else {
+            console.warn('No exact industry match found for:', name);
+            // Try fuzzy matching as fallback
+            const fuzzyMatch = industries.find(ind => 
+              String(ind.name || '').toLowerCase().includes(normalizedName) ||
+              normalizedName.includes(String(ind.name || '').toLowerCase())
+            );
+            if (fuzzyMatch && fuzzyMatch.id) {
+              id = fuzzyMatch.id;
+              console.log('Found fuzzy match with id:', id, 'name:', fuzzyMatch.name);
+            } else {
+              console.warn('No fuzzy match found either');
+            }
+          }
+        } catch (err) {
+          console.error('Error resolving industry id:', err);
+        }
+      }
+      
+      // If we have a name, prefer loading members inline. If id exists use the API
+      if (name) {
+        if (id) {
+          console.log('Loading members inline for id:', id, 'name:', name);
+          await loadMembersByIndustry(id, name);
+        } else {
+          console.log('No industry id; attempting client-side filter by name:', name);
+          try {
+            const res = await fetch(`${API_BASE}/get-all-members`);
+            const js = await res.json();
+            const members = js.members || js.message || js.data || [];
+            const normalizedName = name.toLowerCase().replace(/\s+/g, ' ').trim();
+
+            const matched = (Array.isArray(members) ? members : []).filter(m => {
+              const cand = (m.industry || m.industrycategory || m.industrycategories || m.industry_name || m.company || '').toString().toLowerCase().replace(/\s+/g, ' ').trim();
+              if (!cand) return false;
+              return cand === normalizedName || cand.includes(normalizedName) || normalizedName.includes(cand);
+            });
+
+            const container = document.getElementById('industry-members');
+            const list = document.getElementById('industry-members-list');
+            const titleEl = document.getElementById('industry-members-title');
+            if (!container || !list || !titleEl) return;
+            titleEl.textContent = matched.length ? `Members — ${name}` : `No members found for ${name}`;
+            list.innerHTML = '';
+
+            if (matched.length) {
+              matched.forEach(m => {
+                const card = document.createElement('div');
+                card.className = 'industry-member-card';
+                card.style.cssText = 'width:260px;background:#fff;border-radius:8px;padding:12px;box-shadow:0 4px 10px rgba(0,0,0,0.06);text-align:left;';
+                const img = m.file_url || m.image_url || m.image || m.photo || 'assests/person1.png';
+                const first = m.first_name || m.firstName || '';
+                const last = m.last_name || m.lastName || '';
+                const nameDisp = (m.name || (first + ' ' + last).trim() || m.membername || first) || '';
+                card.innerHTML = `
+                  <div style="display:flex;gap:12px;align-items:center">
+                    <img src="${img}" alt="${escapeHtml(nameDisp)}" style="width:64px;height:64px;object-fit:cover;border-radius:6px;flex-shrink:0;" onerror="this.onerror=null;this.src='assests/person1.png'">
+                    <div style="flex:1">
+                      <div style="font-weight:600;color:#102b5d">${escapeHtml(nameDisp) || '-'}</div>
+                      <div style="font-size:13px;color:#556">${escapeHtml(m.company || m.designation || '')}</div>
+                      <div style="font-size:12px;color:#666;margin-top:6px">${escapeHtml(m.email || '')}</div>
+                    </div>
+                  </div>
+                `;
+                list.appendChild(card);
+              });
+            }
+
+            container.style.display = 'block';
+            container.scrollIntoView({behavior:'smooth', block:'start'});
+          } catch (err) {
+            console.error('Failed to fetch/filter members by name:', err);
+          }
+        }
+      } else {
+        console.error('Cannot show members: missing name');
+      }
+    });
+  });
+})();
 
 document.getElementById('contactForm').addEventListener('submit', async function(e) {
   e.preventDefault();

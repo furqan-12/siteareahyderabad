@@ -5,161 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin Panel - events</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
-  <!-- <style>
-    body {
-      background-color: #ffffff;
-      color: #358232;
-    }
-
-    /* Sidebar Styles */
-    .sidebar {
-      height: 100vh;
-      background-color: #358232;
-      padding: 1rem;
-      color: white;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 220px;
-    }
-
-    .sidebar h4 {
-      font-size: 1.2rem;
-      margin-bottom: 2rem;
-    }
-
-    .sidebar a {
-      display: block;
-      background-color: #d0f0d0;
-      color: #358232;
-      text-decoration: none;
-      margin: 10px 0;
-      padding: 10px 15px;
-      border-radius: 8px;
-      font-weight: 500;
-      transition: background-color 0.3s, color 0.3s;
-    }
-
-    .sidebar a:hover {
-      background-color: #2c6e27;
-      color: #ffffff;
-    }
-
-    .sidebar a.active {
-      background-color: #2c6e27;
-      color: #ffffff;
-    }
-
-    /* Top Navbar */
-    .navbar {
-      margin-left: 220px;
-    }
-
-    /* Main Content */
-    .main-content {
-      margin-left: 240px;
-      padding: 2rem;
-      background-color: #ffffff;
-    }
-
-    .main {
-      margin-left: 220px;
-      padding: 20px;
-    }
-    
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-      margin-top: 20px;
-    }
-
-    .card {
-      background: white;
-      border-left: 6px solid #102b5d;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.05);
-    }
-
-    .card h3 {
-      font-size: 16px;
-      color: #555;
-    }
-
-    .card p {
-      font-size: 24px;
-      font-weight: bold;
-      margin-top: 5px;
-      color: #102b5d;
-    }  
-
-    .dropdown-container {
-  width: 100%;
-}
-
-.dropdown-btn {
-  display: block;
-  background-color: #d0f0d0;
-  color: #358232;
-  padding: 10px 15px;
-  margin: 10px 0;
-  border: none;
-  border-radius: 8px;
-  font-weight: 500;
-  width: 100%;
-  text-align: left;
-  cursor: pointer;
-  transition: background-color 0.3s, color 0.3s;
-}
-
-.dropdown-btn:hover {
-  background-color: #2c6e27;
-  color: #ffffff;
-}
-
-.dropdown-content {
-  display: none;
-  padding-left: 20px;
-  margin-left: 10px;
-  flex-direction: column;
-}
-.dropdown-content.active {
-  display: block;
-}
-.dropdown-content a {
-  display: block;
-  margin: 5px 0;
-  color: #358232;
-  background-color: #e6f8e6;
-  padding: 8px 12px;
-  border-radius: 6px;
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.dropdown-content a:hover {
-  background-color: #2c6e27;
-  color: #fff;
-}
-
-/* Show dropdown on button click */
-.dropdown-container.active .dropdown-content {
-  display: block;
-}
-
-    @media (max-width: 768px) {
-      .sidebar {
-        position: relative;
-        width: 100%;
-        height: auto;
-      }
-      .main-content, .navbar {
-        margin-left: 0;
-      }
-    }
-  </style> -->
+ 
   <style>
     body {
       background-color: #ffffff;
@@ -273,6 +119,7 @@
   color: #ffffff;
 }
 
+
 .dropdown-content {
   display: none;
   padding-left: 20px;
@@ -282,6 +129,8 @@
 .dropdown-content.active {
   display: block;
 }
+
+
 .dropdown-content a {
   display: block;
   margin: 5px 0;
@@ -298,7 +147,33 @@
   background-color: #2c6e27;
   color: #fff;
 }
+.dropdown-btn{display:block;background:#d0f0d0;color:#358232;padding:10px 15px;margin:10px 0;border:none;border-radius:8px;font-weight:500;width:100%;text-align:left;cursor:pointer;transition:.3s;}
+.dropdown-btn:hover{background:#2c6e27;color:#fff;}
+.dropdown-content{display:none;padding-left:20px;margin-left:10px;flex-direction:column;}
+.dropdown-content a{display:block;margin:5px 0;color:#358232;background:#e6f8e6;padding:8px 12px;border-radius:6px;text-decoration:none;font-size:14px;font-weight:500;}
+.dropdown-container {
+  width: 100%;
+}
 
+.dropdown-btn {
+  display: block;
+  background-color: #d0f0d0;
+  color: #358232;
+  padding: 10px 15px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.dropdown-btn:hover {
+  background-color: #2c6e27;
+  color: #ffffff;
+}
 /* Show dropdown on button click */
 .dropdown-container.active .dropdown-content {
   display: block;
@@ -323,6 +198,7 @@
     <a class="navbar-brand d-flex align-items-center" href="#">
       <img src="../assests/logo.png" height="60px" width="60px" alt="Logo" class="me-2" />
       <span class="fw-bold text-success" style="font-size: 1rem;">Hyderabad SITE ASSOCIATION OF TRADE AND INDUSTRY</span>
+      <span id="roleBadge" style="margin-left:12px; padding:6px 10px; background:#f0f0f0; border-radius:6px; color:#102b5d; font-weight:600; display:none;">Role: -</span>
     </a>
   </nav>
 
@@ -338,17 +214,12 @@
       </div>
       
     </div>
-    <div class="dropdown-container">
-      <button class="dropdown-btn">👥 committees ▾</button>
-      <div class="dropdown-content">
-        <a href="admincommitee.html">👤 custom Committee</a>
-        <a href="admincommitee.html">👥 FBR Committee</a>
-      </div>
-    </div>
     <a href="adminevents.html">📅 Events</a>
     <a href="admincircular.html">📢 Circulars</a>
     <a href="clean&green.html"  class="active">♻️ Clean&Green</a>
-    <a href="#" onclick="logout()">🚪 Logout</a>
+    <a href="adminpressrelease.html">📰 Press Releases</a>
+    <a href="siteindustries.html" >🏭 IndustryCategory</a>
+    <a href="index.html" onclick="logout()">🚪 Logout</a>
   </div>
 
   <!-- Main Content -->
@@ -374,230 +245,383 @@
   </div>
 
   <!-- Add/Edit Modal -->
-  <div class="modal fade" id="memberModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <form id="memberForm" class="p-4">
-          <input type="hidden" id="circularId">
-          <h5 class="modal-title mb-3 text-center">Add Circular</h5>
-  
-          <div class="mb-3">
-            <label for="circularname" class="form-label">Clean title</label>
-            <input type="text" class="form-control" id="title" placeholder="Enter clean title" required>
-          </div>
-  
-          <div class="mb-4">
-            <label for="circularimage" class="form-label">Image URL</label>
-            <input type="file" class="form-control" id="circularimage" placeholder="chooseimagae">
-          </div>
-  
-          <div class="d-grid">
-            <button type="submit" class="btn btn-primary btn-block">Save</button>
-          </div>
-        </form>
-      </div>
+<div class="modal fade" id="memberModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <form id="memberForm" class="p-4">
+        <input type="hidden" id="circularId">
+        <h5 class="modal-title mb-3 text-center">Add Circular</h5>
+
+        <div class="mb-3">
+          <label for="title" class="form-label">Clean title</label>
+          <input type="text" class="form-control" id="title" placeholder="Enter clean title" required>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Image Preview</label><br>
+          <img id="imagePreview" src="" width="100" class="rounded mb-2" style="cursor:pointer;" title="Click to change image" />
+
+
+        </div>
+
+        <div class="mb-4">
+          <label for="circularimage" class="form-label">Choose Image</label>
+          <input type="file" class="form-control" id="circularimage" accept="image/*">
+          <small id="editNote" class="text-muted"></small>
+        </div>
+       
+
+        <div class="d-grid">
+          <button type="submit" class="btn btn-primary btn-block">Save</button>
+        </div>
+      </form>
     </div>
   </div>
-  
+</div>
 
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="admin-roles.js" defer></script>
-  <script>
-  // Session Management Functions
-  function checkAuth() {
-    const session = localStorage.getItem('adminSession');
-    if (!session) {
-      window.location.href = 'login.html';
-      return false;
-    }
-    
-    const sessionData = JSON.parse(session);
-    if (!sessionData.isLoggedIn) {
-      window.location.href = 'login.html';
-      return false;
-    }
-    
-    // Check if session is older than 24 hours
-    const loginTime = new Date(sessionData.loginTime);
-    const now = new Date();
-    const hoursDiff = (now - loginTime) / (1000 * 60 * 60);
-    
-    if (hoursDiff > 24) {
-      logout();
-      return false;
-    }
-    
-    return true;
-  }
-  
-  function logout() {
-    localStorage.removeItem('adminSession');
-    window.location.href = 'login.html';
-  }
-  
-  // Check authentication on page load
-  document.addEventListener('DOMContentLoaded', function() {
-    if (!checkAuth()) return;
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="admin-roles.js" defer></script>
+<script>
+/* =====================================================
+   CONFIG
+===================================================== */
+const API_BASE = "https://siteareahyderabadbackend.onrender.com";
+const memberModal = new bootstrap.Modal(document.getElementById("memberModal"));
+const preview = document.getElementById("imagePreview");
+
+/* -------------------
+   SIDEBAR DROPDOWN
+-------------------- */
+document.querySelectorAll(".dropdown-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const parent = btn.closest(".dropdown-container");
+    parent.classList.toggle("active");
   });
+});
 
-    const memberModal = new bootstrap.Modal(document.getElementById('memberModal'));
-  
-    function openForm() {
-      memberModal.show();
-    }
-  
-    // ✅ Handle Add Circular Form Submit
-    document.getElementById('memberForm').addEventListener('submit', async function (e) {
-  e.preventDefault();
-  const title = document.getElementById('title').value;
-  const fileInput = document.getElementById('circularimage');
-  let image = '';
-  if (fileInput.files && fileInput.files[0]) {
-    image = await toBase64(fileInput.files[0]);
-  } else if (fileInput.value && !fileInput.files.length) {
-    image = fileInput.value;
-  }
-  const payload = { title, image };
-  let id = document.getElementById('circularId')?.value || null;
-  let response;
-  if (id) {
-    response = await fetch(`https://siteareahyderabadbackend.onrender.com/update-clean/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-  } else {
-    response = await fetch('https://siteareahyderabadbackend.onrender.com/add-clean', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-  }
-  const result = await response.json();
-  if (response.ok) {
-    alert(`✅ Circular ${id ? 'updated' : 'added'} successfully!`);
-    memberModal.hide();
-    document.getElementById('memberForm').reset();
-    fetchCirculars();
-  } else {
-    alert('❌ Error: ' + result.message);
+/* -------------------
+   MODAL OPEN
+-------------------- */
+function openForm() {
+  document.getElementById("memberForm").reset();
+  document.getElementById("circularId").value = "";
+  preview.src = "https://via.placeholder.com/100";
+  document.querySelector("#memberModal .modal-title").innerText = "Add Circular";
+  document.getElementById("editNote").innerText = "";
+  memberModal.show();
+}
+window.openForm = openForm;
+
+/* -------------------
+   IMAGE PREVIEW
+-------------------- */
+document.getElementById("circularimage").addEventListener("change", function () {
+  const file = this.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      preview.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
   }
 });
 
-// Helper function to convert file to base64
-function toBase64(file) {
+/* -------------------
+   TOKEN HELPERS
+-------------------- */
+function loadToken() {
+  try {
+    const adminData = JSON.parse(localStorage.getItem("adminSession"));
+    if (adminData?.session?.access_token) {
+      return { token: adminData.session.access_token };
+    }
+  } catch {}
+  return { token: null };
+}
+
+async function authorizedFetch(url, options = {}) {
+  const { token } = loadToken();
+  if (!token) {
+    alert("⚠️ Not logged in!");
+    window.location.href = "index.html";
+    throw new Error("No token");
+  }
+
+  options.headers = {
+    ...(options.headers || {}),
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+  return fetch(url, options);
+}
+
+/* -------------------
+   TO BASE64
+-------------------- */
+async function toBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.readAsDataURL(file);
     reader.onload = () => resolve(reader.result);
-    reader.onerror = error => reject(error);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
   });
 }
 
-    // 📦 Fetch and list circulars
-    async function fetchCirculars() {
+// Compress image file (resize + quality) and return dataURL
+async function compressImageFile(file, maxWidth = 1024, maxHeight = 1024, quality = 0.7) {
+  if (!file || !file.type.startsWith('image/')) return null;
+  const dataUrl = await new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(r.result);
+    r.onerror = () => reject(r.error);
+    r.readAsDataURL(file);
+  });
+
+  const img = await new Promise((resolve, reject) => {
+    const i = new Image();
+    i.onload = () => resolve(i);
+    i.onerror = reject;
+    i.src = dataUrl;
+  });
+
+  let { width, height } = img;
+  let targetWidth = width;
+  let targetHeight = height;
+  if (width > maxWidth || height > maxHeight) {
+    const ratio = Math.min(maxWidth / width, maxHeight / height);
+    targetWidth = Math.round(width * ratio);
+    targetHeight = Math.round(height * ratio);
+  }
+
+  const canvas = document.createElement('canvas');
+  canvas.width = targetWidth;
+  canvas.height = targetHeight;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
+
+  const mime = file.type === 'image/png' ? 'image/jpeg' : file.type;
+  return canvas.toDataURL(mime, quality);
+}
+
+/* -------------------
+   ROLE BADGE
+-------------------- */
+function showRoleBadge(roles) {
   try {
-    const response = await fetch('https://siteareahyderabadbackend.onrender.com/get-clean');
-    const result = await response.json();
-    console.log(result);
+    const badge = document.getElementById('roleBadge');
+    if (!badge) return;
+    badge.style.display = 'inline-block';
+    badge.textContent = 'Role: ' + (Array.isArray(roles) ? roles.join(', ') : String(roles));
+  } catch (e) { console.warn('showRoleBadge error', e); }
+}
 
-    const tbody = document.getElementById('memberTable');
-    tbody.innerHTML = '';
+// Listen for roles load event from admin-roles.js
+document.addEventListener('adminRolesLoaded', (e) => {
+  try { showRoleBadge(e.detail.roles || []); } catch (err) { console.warn(err); }
+});
 
-    // Yahaan mesage ka use karein
-    result.mesage.forEach(clean => {
-      const tr = document.createElement('tr');
+// If roles already present on window, show immediately
+if (window.adminRoles && Array.isArray(window.adminRoles.roles) && window.adminRoles.roles.length) {
+  showRoleBadge(window.adminRoles.roles);
+}
+
+/* -------------------
+   FETCH LIST
+-------------------- */
+async function fetchCirculars() {
+  try {
+    const res = await authorizedFetch(`${API_BASE}/get-clean`);
+    const data = await res.json();
+    const tbody = document.getElementById("memberTable");
+    tbody.innerHTML = "";
+
+    const items = data?.message || data?.mesage || data?.data || [];
+
+    if (!Array.isArray(items) || !items.length) {
+      tbody.innerHTML = `<tr><td colspan="3" class="text-center text-muted">No records found</td></tr>`;
+      return;
+    }
+
+    const rolesArr = (window.adminRoles?.roles || []).map(r => String(r).toLowerCase());
+
+    items.forEach(item => {
+      const imgURL = item.cleanimage || "https://via.placeholder.com/100";
+      const canDelete = rolesArr.includes('superadmin') || rolesArr.includes('admin');
+
+      const tr = document.createElement("tr");
       tr.innerHTML = `
-        <td><img src="${clean.cleanimage || 'https://via.placeholder.com/60'}" class="rounded" width="60" /></td>
-        <td>${clean.title || 'N/A'}</td>
-        
+        <td>${item.title || "N/A"}</td>
+        <td><img src="${imgURL}" width="60" class="rounded"></td>
         <td>
-          <button class="btn btn-sm btn-edit" data-id="${clean.id}">Edit</button>
-          <button class="btn btn-sm btn-delete btn-danger" data-id="${clean.id}">Delete</button>
+          <button class="btn btn-sm btn-primary btn-edit"
+            data-id="${item.id}"
+            data-title="${item.title}"
+            data-img="${imgURL}">Edit</button>
+          ${canDelete ? `<button class="btn btn-sm btn-danger btn-delete" data-id="${item.id}">Delete</button>` : ""}
         </td>
       `;
-      console.log(clean.id)
       tbody.appendChild(tr);
     });
-
   } catch (err) {
-    console.error('Fetch Error:', err);
+    console.error("Fetch error:", err);
   }
 }
 
-fetchCirculars();
+/* -------------------
+   ADD / UPDATE
+-------------------- */
+/* -------------------
+   ADD / UPDATE CIRCULAR
+-------------------- */
+document.getElementById("memberForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-    function openForm() {
-  document.getElementById('memberForm').reset();
-  document.getElementById('circularId').value = '';
-  document.querySelector('#memberModal .modal-title').innerText = 'Add Circular';
-  memberModal.show();
-}
+  const id = document.getElementById("circularId").value?.trim();
+  const title = document.getElementById("title").value.trim();
+  const fileInput = document.getElementById("circularimage");
+  const newFile = fileInput.files[0];
 
-    document.addEventListener('click', async function (e) {
-  // ✏️ Edit Handler (already added)
-  if (e.target.classList.contains('btn-edit')) {
-    const row = e.target.closest('tr');
-    const id = e.target.getAttribute('data-id');
+  // Old image from preview (if editing)
+  const oldImage = document.getElementById("imagePreview").src;
 
-    const image = row.querySelector('img').src;
-    const name = row.children[1].textContent.trim();
+  const btn = e.submitter || document.querySelector("button[type='submit']");
+  btn.disabled = true;
+  btn.innerText = "⏳ Saving...";
 
-    document.getElementById('circularId').value = id;
-    document.getElementById('title').value = name;
-    // document.getElementById('circularimage').value = image; // Remove or comment this line
+  try {
+    let image = null;
 
+    // ✅ New image selected → compress then convert to dataURL (faster upload)
+    if (newFile) {
+      try {
+        image = await compressImageFile(newFile, 1024, 1024, 0.7);
+      } catch (err) {
+        console.warn('Compression failed, falling back to raw:', err);
+        image = await toBase64(newFile);
+      }
+    }
+    // ✅ Editing & no new image → keep old
+    else if (id && oldImage && !oldImage.includes("placeholder")) {
+      image = oldImage;
+    }
+    // ✅ Adding & no image → optional: alert
+    else if (!id && !newFile) {
+      alert("⚠️ Please upload an image.");
+      btn.disabled = false;
+      btn.innerText = "Save";
+      return;
+    }
+
+    // Prepare payload
+    const payload = { title };
+    if (image) payload.image = image; // attach ONLY if exists
+
+    const endpoint = id ? `${API_BASE}/update-clean/${id}` : `${API_BASE}/add-clean`;
+    const method = id ? "PUT" : "POST";
+
+    console.log("🧾 Sending Payload:", payload);
+
+    const res = await authorizedFetch(endpoint, {
+      method,
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) {
+      const txt = await res.text();
+      console.error("❌ Server error:", txt);
+      alert("Save failed: " + res.statusText);
+      return;
+    }
+
+    alert(`✅ ${id ? "Updated" : "Added"} successfully!`);
+    memberModal.hide();
+    fetchCirculars();
+  } catch (err) {
+    console.error("❌ Network error:", err);
+    alert("Network error — check console");
+  } finally {
+    btn.disabled = false;
+    btn.innerText = "Save";
+    fileInput.value = "";
+  }
+});
+
+
+/* -------------------
+   EDIT / DELETE
+-------------------- */
+document.addEventListener("click", async (e) => {
+  if (e.target.classList.contains("btn-edit")) {
+    const id = e.target.dataset.id;
+    const title = e.target.dataset.title;
+    const imgSrc = e.target.dataset.img;
+
+    document.getElementById("circularId").value = id;
+    document.getElementById("title").value = title;
+    document.getElementById("circularimage").value = "";
+
+    preview.src = imgSrc && imgSrc !== "null" ? imgSrc : "https://via.placeholder.com/100";
+
+    document.getElementById("editNote").innerText =
+      "🖼 Existing image will be kept unless you upload a new one.";
+    document.querySelector("#memberModal .modal-title").innerText = "Edit Circular";
     memberModal.show();
   }
 
-  // ❌ Delete Handler
-  if (e.target.classList.contains('btn-delete')) {
-    const id = e.target.getAttribute('data-id');
-    const confirmed = confirm("Are you sure you want to delete this circular?");
-    if (!confirmed) return;
+  if (e.target.classList.contains("btn-delete")) {
+    const id = e.target.dataset.id;
+    if (!confirm("Are you sure you want to delete this item?")) return;
 
     try {
-      const response = await fetch(`https://siteareahyderabadbackend.onrender.com/delete-clean/${id}`, {
-        method: 'DELETE'
-      });
-
-      const result = await response.json();
-
-      if (response.ok) {
-        alert('✅ Circular deleted successfully!');
-        fetchCirculars(); // 🔄 Refresh the list
+      const res = await authorizedFetch(`${API_BASE}/delete-clean/${id}`, { method: "DELETE" });
+      if (res.ok) {
+        alert("🗑️ Deleted successfully!");
+        fetchCirculars();
       } else {
-        alert('❌ Error: ' + result.message);
+        const json = await res.json();
+        alert("❌ Delete failed: " + (json.message || res.status));
       }
-
     } catch (err) {
-      console.error('Delete Error:', err);
-      alert('❌ Internal error while deleting.');
+      console.error(err);
+      alert("Network error while deleting.");
     }
   }
 });
 
+/* -------------------
+   INIT
+-------------------- */
+function initFetchWhenReady() {
+  // If roles already available, fetch immediately and apply any hide rules
+  if (window.adminRoles && Array.isArray(window.adminRoles.roles) && window.adminRoles.roles.length) {
+    try { window.adminRoles.hideIfNeeded && window.adminRoles.hideIfNeeded(); } catch (e) {}
+    fetchCirculars();
+    return;
+  }
 
-  
-    // 🟢 Initial fetch on page load
-    window.onload = fetchCirculars();
-
-    document.addEventListener('DOMContentLoaded', () => {
-  const dropdowns = document.querySelectorAll('.dropdown-container');
-
-  dropdowns.forEach(container => {
-    const btn = container.querySelector('.dropdown-btn');
-    const content = container.querySelector('.dropdown-content');
-
-    btn.addEventListener('click', () => {
-      content.classList.toggle('active');
-    });
+  // Listen for roles load (admin-roles.js will dispatch this)
+  document.addEventListener('adminRolesLoaded', () => {
+    try { window.adminRoles.hideIfNeeded && window.adminRoles.hideIfNeeded(); } catch (e) {}
+    fetchCirculars();
   });
-});
 
-  </script>
-  
+  // As a fallback, ensure we still fetch once DOM is ready after a short timeout
+  document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+      if (!(window.adminRoles && Array.isArray(window.adminRoles.roles) && window.adminRoles.roles.length)) {
+        fetchCirculars();
+      }
+    }, 300);
+  });
+}
+
+initFetchWhenReady();
+
+
+
+</script>
+
+
 
 </body>
 </html>

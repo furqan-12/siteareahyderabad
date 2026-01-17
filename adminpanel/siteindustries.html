@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel - Industries</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+  <style>
+    body {
+      background-color: #ffffff;
+      color: #358232;
+    }
+
+    .sidebar {
+      height: 100vh;
+      background-color: #358232;
+      padding: 1rem;
+      color: white;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 220px;
+    }
+
+    .sidebar h4 {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .sidebar a {
+      display: block;
+      background-color: #d0f0d0;
+      color: #358232;
+      text-decoration: none;
+      margin: 10px 0;
+      padding: 10px 15px;
+      border-radius: 8px;
+      font-weight: 500;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .sidebar a:hover, .sidebar a.active {
+      background-color: #2c6e27;
+      color: #ffffff;
+    }
+
+    .navbar {
+      margin-left: 220px;
+    }
+
+    .main-content {
+      margin-left: 240px;
+      padding: 2rem;
+      background-color: #ffffff;
+    }
+    .dropdown-content {
+  display: none;
+  flex-direction: column;
+  padding-left: 10px;
+}
+
+.dropdown-content.active {
+  display: flex;
+}
+
+.dropdown-btn {
+  display: block;
+  background-color: #d0f0d0;
+  color: #358232;
+  padding: 10px 15px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+}
+
+
+    @media (max-width: 768px) {
+      .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+      }
+      .main-content, .navbar {
+        margin-left: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom px-4 py-2">
+    <a class="navbar-brand d-flex align-items-center" href="#">
+      <img src="../assests/logo.png" height="60px" width="60px" alt="Logo" class="me-2" />
+      <span class="fw-bold text-success" style="font-size: 1rem;">Hyderabad SITE ASSOCIATION OF TRADE AND INDUSTRY</span>
+              <span id="roleBadge" style="margin-left:12px; padding:6px 10px; background:#f0f0f0; border-radius:6px; color:#102b5d; font-weight:600; display:none;">Role: -</span>
+    </a>
+  </nav>
+
+ <div class="sidebar">
+  <h4>📋 Admin Panel</h4>
+  <a href="dashboard.html">🏠 Dashboard</a>
+
+  <div class="dropdown-container">
+    <button class="dropdown-btn">👥 Members ▾</button>
+    <div class="dropdown-content">
+      <a href="adminmembers.html">👤 Committee Members</a>
+      <a href="allmembers.html">👥 All Members</a>
+    </div>
+  </div>
+
+  <a href="adminevents.html">📅 Events</a>
+  <a href="admincircular.html">📢 Circulars</a>
+  <a href="clean&green.html">♻️ Clean&Green</a>
+  <a href="adminpressrelease.html">📰 Press Releases</a>
+  <!--<div class="dropdown-container">-->
+  <!--  <button class="dropdown-btn">🏭 Industry ▾</button>-->
+  <!--  <div class="dropdown-content">-->
+      <a href="adminindustries.html" class="active">🏭 Industry Category</a>
+  <!--  </div>-->
+  <!--</div>-->
+
+  <a href="index.html" onclick="logout()">🚪 Logout</a>
+</div>
+
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <h2 class="mb-4">🏭 Manage Industries</h2>
+
+    <div class="d-flex justify-content-end mb-3">
+      <button class="btn btn-success" onclick="openForm()">➕ Add Industry</button>
+    </div>
+
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>Icon</th>
+          <th>Industry Name</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="industryTable"></tbody>
+    </table>
+  </div>
+
+  <!-- Add/Edit Modal -->
+  <div class="modal fade" id="industryModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <form id="industryForm" class="p-4">
+          <input type="hidden" id="industryId">
+          <h5 class="modal-title mb-3 text-center">Add Industry</h5>
+
+          <div class="mb-3">
+            <label for="name" class="form-label">Industry Name</label>
+            <input type="text" class="form-control" id="name" placeholder="Enter industry name" required>
+          </div>
+
+          <div class="mb-4">
+            <label for="icon" class="form-label">Icon (Emoji or URL)</label>
+            <input type="text" class="form-control" id="icon" placeholder="🧵 or https://example.com/icon.png">
+          </div>
+
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary btn-block">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+
+  <!-- Bootstrap + JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  
+
+
+
+<script src="admin-roles.js" defer></script>
+<script>
+/* ---------- CONFIG ---------- */
+const API_BASE = "https://siteareahyderabadbackend.onrender.com";
+const SUPABASE_URL = "https://uxrfnwbdzrvbqfnjmgpp.supabase.co";
+const SUPABASE_ANON_KEY = "your-public-anon-key";
+const industryModal = new bootstrap.Modal(document.getElementById('industryModal'));
+
+let currentUserRole = null; // 👈 store current role
+
+/* ---------- ROLE BADGE DISPLAY ---------- */
+function showRoleBadge(roles) {
+  try {
+    const badge = document.getElementById('roleBadge');
+    if (!badge) return;
+    badge.style.display = 'inline-block';
+    badge.textContent = 'Role: ' + (Array.isArray(roles) ? roles.join(', ') : String(roles));
+  } catch (e) {
+    console.warn('showRoleBadge error', e);
+  }
+}
+
+// 🟢 Listen for roles loaded event (from admin-roles.js)
+document.addEventListener('adminRolesLoaded', (e) => {
+  const roles = e.detail.roles || [];
+  currentUserRole = Array.isArray(roles) ? roles[0] : roles; // assume single
+  showRoleBadge(roles);
+});
+
+// Fallback if roles already exist
+if (window.adminRoles && window.adminRoles.roles) {
+  currentUserRole = window.adminRoles.roles[0];
+  showRoleBadge(window.adminRoles.roles);
+}
+
+/* ---------- DROPDOWN MENU ---------- */
+document.querySelectorAll(".dropdown-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const content = btn.nextElementSibling;
+    if (!content) return;
+    content.classList.toggle("active");
+    btn.textContent = btn.textContent.includes("▾")
+      ? btn.textContent.replace("▾", "▸")
+      : btn.textContent.replace("▸", "▾");
+  });
+});
+
+/* ---------- TOKEN HELPERS ---------- */
+function loadToken() {
+  const keys = ['sb-uxrfnwbdzrvbqfnjmgpp-auth-token', 'sb:auth.v1.session', 'adminSession'];
+  for (const k of keys) {
+    const raw = localStorage.getItem(k);
+    if (!raw) continue;
+    try {
+      const parsed = JSON.parse(raw);
+      const token =
+        parsed?.access_token ||
+        parsed?.currentSession?.access_token ||
+        parsed?.data?.session?.access_token ||
+        parsed?.session?.access_token ||
+        parsed?.token ||
+        null;
+      const refresh = parsed?.refresh_token || parsed?.session?.refresh_token || null;
+      if (token) return { token, refresh };
+    } catch (e) {
+      console.warn("Invalid JSON in", k);
+    }
+  }
+  return { token: null, refresh: null };
+}
+
+/* ---------- TOKEN REFRESH ---------- */
+async function refreshAccessToken() {
+  const { refresh } = loadToken();
+  if (!refresh) return null;
+  try {
+    const res = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=refresh_token`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": SUPABASE_ANON_KEY,
+      },
+      body: JSON.stringify({ refresh_token: refresh }),
+    });
+    const json = await res.json();
+    if (json?.access_token) {
+      localStorage.setItem("sb-uxrfnwbdzrvbqfnjmgpp-auth-token", JSON.stringify(json));
+      return json.access_token;
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+/* ---------- AUTHORIZED FETCH ---------- */
+async function authorizedFetch(url, options = {}) {
+  let { token } = loadToken();
+  if (!token) {
+    alert("⚠️ Not logged in or token missing!");
+    throw new Error("Missing token");
+  }
+  options.headers = {
+    ...(options.headers || {}),
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+  let res = await fetch(url, options);
+  if (res.status === 401) {
+    const newToken = await refreshAccessToken();
+    if (newToken) {
+      options.headers.Authorization = `Bearer ${newToken}`;
+      res = await fetch(url, options);
+    } else {
+      localStorage.clear();
+      window.location.href = "index.html";
+      return res;
+    }
+  }
+  return res;
+}
+
+/* ---------- FETCH INDUSTRIES ---------- */
+async function fetchIndustries() {
+  try {
+    const res = await authorizedFetch(`${API_BASE}/get-industries`);
+    const data = await res.json();
+    const tbody = document.getElementById("industryTable");
+    tbody.innerHTML = "";
+
+    (data.industries || []).forEach((ind) => {
+      const safeIcon = ind.icon ? ind.icon.replace(/"/g, "&quot;") : "";
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${ind.icon?.startsWith("http") ? `<img src="${ind.icon}" width="40">` : (ind.icon || "🏭")}</td>
+        <td>${ind.name}</td>
+        <td>
+          <button class="btn btn-sm btn-primary btn-edit"
+            data-id="${ind.id}"
+            data-name="${ind.name}"
+            data-icon="${safeIcon}">Edit</button>
+          <button class="btn btn-sm btn-danger btn-delete" data-id="${ind.id}">Delete</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    // 🟡 Hide delete buttons if admin (not superadmin)
+    if (currentUserRole && currentUserRole.toLowerCase() === "admin") {
+      document.querySelectorAll(".btn-delete").forEach(btn => btn.style.display = "none");
+    }
+
+  } catch (err) {
+    console.error("Error fetching industries:", err);
+  }
+}
+
+/* ---------- ADD / UPDATE ---------- */
+document.getElementById("industryForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const id = document.getElementById("industryId").value;
+  const name = document.getElementById("name").value.trim();
+  const icon = document.getElementById("icon").value.trim();
+  if (!name) return alert("Industry name required");
+
+  try {
+    const res = await authorizedFetch(`${API_BASE}/${id ? "update-industry/" + id : "add-industry"}`, {
+      method: id ? "PUT" : "POST",
+      body: JSON.stringify({ name, icon }),
+    });
+    const json = await res.json();
+    if (!res.ok) return alert("Error: " + (json.message || res.status));
+    alert("✅ Saved successfully");
+    industryModal.hide();
+    fetchIndustries();
+  } catch (err) {
+    console.error(err);
+    alert("Network error");
+  }
+});
+
+function openForm() {
+  document.getElementById('industryId').value = '';
+  document.getElementById('name').value = '';
+  document.getElementById('icon').value = '';
+  document.querySelector('#industryModal .modal-title').innerText = 'Add Industry';
+  industryModal.show();
+}
+
+/* ---------- DELETE ---------- */
+document.addEventListener("click", async (e) => {
+  if (e.target.classList.contains("btn-delete")) {
+    if (!confirm("Are you sure you want to delete this industry?")) return;
+    const id = e.target.dataset.id;
+    try {
+      const res = await authorizedFetch(`${API_BASE}/delete-industry/${id}`, {
+        method: "DELETE",
+      });
+      const json = await res.json();
+      if (!res.ok) return alert("Error: " + (json.message || res.status));
+      alert("🗑️ Deleted successfully");
+      fetchIndustries();
+    } catch (err) {
+      console.error(err);
+      alert("Network error");
+    }
+  }
+
+  if (e.target.classList.contains("btn-edit")) {
+    const id = e.target.dataset.id;
+    const name = e.target.dataset.name;
+    const icon = e.target.dataset.icon;
+    document.getElementById("industryId").value = id;
+    document.getElementById("name").value = name;
+    document.getElementById("icon").value = icon;
+    document.querySelector("#industryModal .modal-title").innerText = "Edit Industry";
+    new bootstrap.Modal(document.getElementById("industryModal")).show();
+  }
+});
+
+/* ---------- INIT ---------- */
+(async function init() {
+  console.log("%c[INIT] Loading industries...", "color:blue");
+  await fetchIndustries();
+})();
+</script>
+
+
+
+
+</body>
+</html>

@@ -127,16 +127,15 @@
 
       try {
        const response = await fetch('https://siteareahyderabadbackend.onrender.com/login', {
-  method: 'POST',
-  // content: 'application/json',
-  headers: {
-    'Content-Type': 'application/json',
-
-  },
-  body: JSON.stringify({ email, password }),  
-})
-console.log(response);
+         method: 'POST',
+         headers: {
+           'Content-Type': 'application/json',
+         },
+         body: JSON.stringify({ email, password }),  
+       });
+        console.log('Login response:', response.status);
         const result = await response.json();
+        console.log('Login result:', { ...result, session: result.session ? '(session present)' : '(no session)' });
 
         if (response.ok) {
           messageElem.style.color = 'green';
@@ -146,11 +145,16 @@ console.log(response);
           const sessionData = {
             isLoggedIn: true,
             user: result.user,
-            // Store the full session returned by the backend (if present) which contains access_token
-            session: result.session || null,
+            // Store the full session info returned by backend
+            session: result.session ? {
+              access_token: result.session.access_token,
+              expires_at: result.session.expires_at,
+              refresh_token: result.session.refresh_token
+            } : null,
             loginTime: new Date().toISOString(),
             sessionId: 'session_' + Date.now()
           };
+          console.log('Storing session data:', { ...sessionData, session: sessionData.session ? '(token present)' : '(no token)' });
           localStorage.setItem('adminSession', JSON.stringify(sessionData));
           
           setTimeout(() => {
@@ -169,3 +173,4 @@ console.log(response);
   </script>
 </body>
 </html>
+

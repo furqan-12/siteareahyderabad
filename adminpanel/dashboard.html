@@ -143,6 +143,12 @@
   color: #fff;
 }
 
+.industry-count-card p {
+  font-size: 24px;
+  font-weight: bold;
+  color: #007bff;
+}
+
 /* Show dropdown on button click */
 .dropdown-container.active .dropdown-content {
   display: block;
@@ -167,6 +173,7 @@
     <a class="navbar-brand d-flex align-items-center" href="#">
       <img src="../assests/logo.png" height="60px" width="60px" alt="Logo" class="me-2" />
       <span class="fw-bold text-success" style="font-size: 1rem;">Hyderabad SITE ASSOCIATION OF TRADE AND INDUSTRY</span>
+        <span id="roleBadge" style="margin-left:12px; padding:6px 10px; background:#f0f0f0; border-radius:6px; color:#102b5d; font-weight:600; display:none;">Role: -</span>
     </a>
   </nav>
 
@@ -182,19 +189,12 @@
       </div>
      
     </div>
-
-    <div class="dropdown-container">
-      <button class="dropdown-btn">👥 committees ▾</button>
-      <div class="dropdown-content">
-        <a href="admincommitee.html">👤 custom Committee</a>
-        <a href="admincommitee.html">👥 FBR Committee</a>
-      </div>
-    </div>
     <a href="adminevents.html">📅 Events</a>
     <a href="admincircular.html">📢 Circulars</a>
     <a href="clean&green.html" >♻️ Clean&Green</a>
-
-    <a href="#" onclick="logout()">🚪 Logout</a>
+    <a href="adminpressrelease.html">📰 Press Releases</a>
+    <a href="siteindustries.html" >🏭IndustryCategory</a>
+    <a href="index.html" onclick="logout()">🚪 Logout</a>
 
     <!-- <div id="add-link-form">
       <input type="text" id="linkText" placeholder="Link text">
@@ -226,14 +226,46 @@
         <h3>All active members</h3>
         <p id="all-member-count">Loading...</p>
       </div>
+      <!--<div class="card">-->
+      <!--   <h3>Industries Categories</h3>-->
+      <!--  <p id="industry-count">Loading...</p>-->
+      <!--</div>-->
+      <!--<br>-->
+      <!--<div style="margin-top: 20px; display: flex; gap: 10px; align-items: center;">-->
+      <!--  <input type="text" id="industryInput" placeholder="Enter Industries No"-->
+      <!--    style="padding: 8px 12px; border: 1px solid #ccc; border-radius: 6px; outline: none; font-size: 14px; width: 150px;">-->
+        
+      <!--  <button onclick="updateIndustries()"-->
+      <!--    style="background-color: #2e7d32; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-size: 14px; cursor: pointer; transition: background 0.3s;">-->
+      <!--    Update-->
+      <!--  </button>-->
+      <!--</div>-->
       <div class="card">
-        <h3>Pending Tasks</h3>
-        <p>3</p>
+         <h3>Industries Categories</h3>
+        <p id="industry-count">Loading...</p>
       </div>
     </div>
   </div>
  <script src="admin-roles.js" defer></script>
  <script>
+// Show role badge when roles are available
+function showRoleBadge(roles) {
+  try {
+    const badge = document.getElementById('roleBadge');
+    if (!badge) return;
+    badge.style.display = 'inline-block';
+    badge.textContent = 'Role: ' + (Array.isArray(roles) ? roles.join(', ') : String(roles));
+  } catch (e) { console.warn('showRoleBadge error', e); }
+}
+
+document.addEventListener('adminRolesLoaded', (e) => {
+  showRoleBadge(e.detail.roles || []);
+});
+
+// If roles already present on window (script load order), show immediately
+if (window.adminRoles && Array.isArray(window.adminRoles.roles) && window.adminRoles.roles.length) {
+  showRoleBadge(window.adminRoles.roles);
+}
   // Session Management Functions
   function checkAuth() {
     const session = localStorage.getItem('adminSession');
@@ -386,6 +418,32 @@ async function fetchmembers() {
     });
   });
 });
+
+
+async function loadIndustryCount() {
+  try {
+    const res = await fetch(`https://siteareahyderabadbackend.onrender.com/get-industries`);
+    const json = await res.json();
+    const industries = json.industries || [];
+    const count = industries.length;
+
+    const countElement = document.getElementById('industry-count');
+    if (countElement) {
+      countElement.textContent = count;
+    }
+
+    console.log('Total industries:', count);
+  } catch (err) {
+    console.error('Failed to load industries count:', err);
+    const countElement = document.getElementById('industry-count');
+    if (countElement) {
+      countElement.textContent = 'Error';
+    }
+  }
+}
+
+// Call the function when page loads
+loadIndustryCount();
 
 function updateIndustries() {
     let value = document.getElementById("industryInput").value;
